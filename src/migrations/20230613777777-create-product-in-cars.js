@@ -2,39 +2,40 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("users", {
+    await queryInterface.createTable("product_in_cars", {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      username: {
-        type: Sequelize.STRING(50),
+      car_id: {
+        type: Sequelize.INTEGER,
         allowNull: false,
-      },
-      email: {
-        type: Sequelize.STRING(80),
-        allowNull: false,
-        validate: {
-          isEmail: true,
+        references: {
+          model: "cars",
+          key: "id",
         },
       },
-      password: {
-        type: Sequelize.STRING,
+      product_id: {
+        type: Sequelize.INTEGER,
         allowNull: false,
+        references: {
+          model: "products",
+          key: "id",
+        },
       },
-      avatar: {
-        type: Sequelize.STRING,
-        defaultValue: "../views/images/gorilla.png",
-      },
-      role_id: {
+      quantity: {
         type: Sequelize.INTEGER,
         defaultValue: 1,
       },
-      valid_user: {
-        type: Sequelize.BOOLEAN,
-        defaultValue: false,
+      price: {
+        type: Sequelize.REAL,
+        allowNull: false,
+      },
+      status: {
+        type: Sequelize.ENUM("unpurchased", "purchased"),
+        defaultValue: "unpurchased",
       },
       createdAt: {
         allowNull: true,
@@ -47,6 +48,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("users");
+    await queryInterface.dropTable("product_in_cars");
   },
 };
