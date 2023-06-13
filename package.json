@@ -9,7 +9,9 @@
     "createDB": "npx sequelize db:create",
     "dropDB": "npx sequelize db:drop",
     "migrate": "npx sequelize-cli db:migrate",
-    "undoMigrate": "npx sequelize-cli db:migrate:undo:all"
+    "undoMigrate": "npx sequelize-cli db:migrate:undo:all",
+    "seedAll": "npx sequelize-cli db:seed:all",
+    "undoSeedAll": "npx sequelize-cli db:seed:undo:all"
   },
   "keywords": [
     "e-commerce"

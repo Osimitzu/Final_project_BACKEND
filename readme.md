@@ -20,19 +20,6 @@ npx sequelize-cli model:generate --name product_in_orders --attributes order_id:
 
 ### Notas
 
-- **_Migrations_**
-  Para migrar todo se usa el comando:
-
-  > npx sequelize-cli db:migrate
-
-  Para desmigrar todo se usa el comando:
-
-  > npx sequelize-cli db:migrate:undo:all
-
-  Para desmigrar un solo archivo se usa el comando:
-
-  > npx sequelize-cli db:migrate:undo:all --to nombre-del-archivo.js
-
 - **_Seeders_**
   Para generar una nueva seed
 
@@ -44,4 +31,4 @@ npx sequelize-cli model:generate --name product_in_orders --attributes order_id:
 
   Para sacar información de las tablas en la base de datos
 
-  > npx sequelize-cli db:seed:undo
+  > npx sequelize-cli db:seed:undo:all
