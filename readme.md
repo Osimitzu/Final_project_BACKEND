@@ -2,22 +2,23 @@
 
 Proyecto final academlo...
 
+## Models
+
+npx sequelize-cli model:generate --name users --attributes username:string,email:string,password:string,avatar:string,role_id:integer,valid_user:boolean
+
+npx sequelize-cli model:generate --name roles --attributes role:string,description:string
+
+npx sequelize-cli model:generate --name products --attributes name:string,description:string,price:real,available_qty:integer,status:boolean,user_id:integer,product_image:string
+
+npx sequelize-cli model:generate --name cars --attributes user_id:integer,total_price:real
+
+npx sequelize-cli model:generate --name orders --attributes user_id:integer,total_price:real,status:boolean
+
+npx sequelize-cli model:generate --name product_in_cars --attributes car_id:integer,product_id:integer,quantity:integer,price:real,status:boolean
+
+npx sequelize-cli model:generate --name product_in_orders --attributes order_id:integer,product_id:integer,quantity:integer,price:real
+
 ### Notas
-
-- Crear un modelo
-
-  > En la terminal usamos el comando:
-
-  ```
-  npx sequelize-cli model:generate...
-
-  -- name (nombre del modelo)
-  -- name user
-  -- attributes attr1:type,attr2:type,...,attrN:type
-
-  npx sequelize-cli model:generate --name User --attributes username:string,email:string,password:string
-
-  ```
 
 - **_Migrations_**
   Para migrar todo se usa el comando:
