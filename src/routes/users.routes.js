@@ -3,6 +3,6 @@ const { createNewUserCTRL } = require("../controllers/users.controllers");
 
 const router = Router();
 
-router.post("/users", createNewUserCTRL);
+router.post("/api/v1/users", createNewUserCTRL);
 
 module.exports = router;
