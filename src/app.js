@@ -1,6 +1,7 @@
 const express = require("express");
 require("dotenv").config();
-const apiRoutes = require("./routes/index");
+const apiRoutes = require("./routes");
+const errorRoutes = require("./routes/errors.routes");
 
 const PORT = process.env.PORT || 8000;
 
@@ -13,6 +14,7 @@ app.get("/", (req, res) => {
 });
 
 apiRoutes(app);
+errorRoutes(app);
 
 app.listen(PORT, () => {
   console.log(`Servidor escuchando en el puerto ${PORT}`);

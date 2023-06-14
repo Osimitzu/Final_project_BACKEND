@@ -4,9 +4,9 @@ Proyecto final academlo...
 
 ## Models
 
-npx sequelize-cli model:generate --name users --attributes username:string,email:string,password:string,avatar:string,role_id:integer,valid_user:boolean
-
 npx sequelize-cli model:generate --name roles --attributes role:string,description:string
+
+npx sequelize-cli model:generate --name users --attributes username:string,email:string,password:string,avatar:string,role_id:integer,valid_user:boolean
 
 npx sequelize-cli model:generate --name products --attributes name:string,description:string,price:real,available_qty:integer,status:boolean,user_id:integer,product_image:string
 
