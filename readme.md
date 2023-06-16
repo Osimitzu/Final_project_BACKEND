@@ -20,15 +20,4 @@ npx sequelize-cli model:generate --name product_in_orders --attributes order_id:
 
 ### Notas
 
-- **_Seeders_**
-  Para generar una nueva seed
-
-  > npx sequelize-cli seed:generate --name tableName
-
-  Para meter información de las "seeds" a las tablas en la base de datos
-
-  > npx sequelize-cli db:seed:all
-
-  Para sacar información de las tablas en la base de datos
-
-  > npx sequelize-cli db:seed:undo:all
+Tuve que comentar las relaciones (despues de hacer las migraciones y una vez que comprobe que se hicieron las relaciones correctamente en la base de datos) para poder realizar los endpoints, de lo contrario me tomaba las llaves foraneas como una columna extra en la tabla del modelo que se estuviera realizando.

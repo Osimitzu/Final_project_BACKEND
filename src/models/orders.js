@@ -8,9 +8,9 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
-      orders.belongsTo(models.users, { foreignKey: "user_id" });
-      orders.hasMany(models.product_in_orders, { foreignKey: "order_id" });
+      // Tengo que comentar las relaciones, si no, no me funcionan los endpoints...
+      // orders.belongsTo(models.users, { foreignKey: "user_id" });
+      // orders.hasMany(models.product_in_orders, { foreignKey: "order_id" });
     }
   }
   orders.init(
