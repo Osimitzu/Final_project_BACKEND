@@ -7,12 +7,12 @@ const sendMail = (email, doc, attachments) => {
     .sendMail({
       from: "osimitzuuu@gmail.com",
       to: email,
-      subject: "Bienvenido al Mercado Gorilla",
+      subject: "Welcome to Gorilla Market",
       text: "Mensaje en caso de que el html falle...no jalo el template xd", // El texto plano solo se envia si el html falla
       html: doc,
       attachments,
     })
-    .then(() => console.log("Mensaje enviado"))
+    .then(() => console.log("Message Sent"))
     .catch((err) => console.log(err));
 };
 
