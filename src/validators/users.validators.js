@@ -35,6 +35,32 @@ const createUserValidator = [
   validateResult,
 ];
 
+const loginUserValidator = [
+  check("email", "email error")
+    .exists()
+    .withMessage("email is mandatory")
+    .notEmpty()
+    .withMessage("email can't be empty")
+    .isString()
+    .withMessage("email must be string")
+    .isEmail()
+    .withMessage("email must have right format")
+    .isLength({ min: 10, max: 50 })
+    .withMessage("email must have minimum 10 characters and max 50"),
+  check("password", "password error")
+    .exists()
+    .withMessage("password is mandatory")
+    .notEmpty()
+    .withMessage("password can't be empty")
+    .isString()
+    .withMessage("password must be string")
+    .isLength({ min: 8 })
+    .withMessage("password must have minimum 8 characters"),
+
+  validateResult,
+];
+
 module.exports = {
   createUserValidator,
+  loginUserValidator,
 };
