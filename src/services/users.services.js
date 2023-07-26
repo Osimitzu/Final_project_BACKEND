@@ -18,7 +18,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 const { sendWelcomeMail } = require("../utils/sendMails");
-const { users } = require("../models");
+const { users, cars } = require("../models");
 
 class usersServices {
   static async createNewUserSRVC(username, email, password) {
@@ -83,6 +83,32 @@ class usersServices {
       userData.token = token;
 
       return userData;
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  static async deleteUserSRVC(id) {
+    try {
+      const user = await users.findOne({
+        where: { id },
+      });
+
+      if (!user) {
+        throw {
+          status: 400,
+          name: "Invalid user",
+          message: "User doesn't exist",
+        };
+      }
+
+      await cars.destroy({
+        where: { user_id: id },
+      });
+
+      await users.destroy({
+        where: { id },
+      });
     } catch (err) {
       throw err;
     }
