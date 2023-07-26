@@ -4,6 +4,7 @@ const {
   validateEmail,
   loginCTRL,
   deleteUserCTRL,
+  updateRoleCTRL,
 } = require("../controllers/users.controllers");
 const {
   createUserValidator,
@@ -21,5 +22,7 @@ router.post("/api/v1/users/email-validate", validateEmail);
 router.post("/api/v1/users/login", loginUserValidator, loginCTRL);
 
 router.delete("/api/v1/users/:id", authenticate, hasRoles(2), deleteUserCTRL);
+
+router.put("/api/v1/users/:id", authenticate, hasRoles(2), updateRoleCTRL);
 
 module.exports = router;

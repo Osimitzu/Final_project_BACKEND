@@ -93,9 +93,54 @@ const deleteUserCTRL = async (req, res, next) => {
   }
 };
 
+// const updateRoleCTRL = async (req, res, next) => {
+//   try {
+//     const { role_id } = req.body;
+//     const { id } = req.params;
+
+//     const user = await users.findOne({
+//       where: { id },
+//     });
+
+//     if (!user) {
+//       next({
+//         status: 400,
+//         name: "Invalid user",
+//         message: "User doesn't exists",
+//       });
+//     }
+
+//     await users.update(
+//       {
+//         role_id,
+//       },
+//       {
+//         where: { id },
+//       }
+//     );
+
+//     res.status(201).send("Role has chaged");
+//   } catch (err) {
+//     next(err);
+//   }
+// };
+
+const updateRoleCTRL = async (req, res, next) => {
+  try {
+    const { role_id } = req.body;
+    const { id } = req.params;
+
+    const message = await usersServices.updateRoleSRVC(id, role_id);
+    res.status(201).send(message);
+  } catch (err) {
+    next(err);
+  }
+};
+
 module.exports = {
   createNewUserCTRL,
   validateEmail,
   loginCTRL,
   deleteUserCTRL,
+  updateRoleCTRL,
 };

@@ -13,7 +13,11 @@
 // module.exports = {
 //   createNewUserSRVC,
 // };
-const { createNewUserREPO } = require("../repositories/users.repositories");
+const {
+  createNewUserREPO,
+  updateRoleREPO,
+  deleteUserREPO,
+} = require("../repositories/users.repositories");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
@@ -102,13 +106,29 @@ class usersServices {
         };
       }
 
-      await cars.destroy({
-        where: { user_id: id },
-      });
+      await deleteUserREPO(id);
+    } catch (err) {
+      throw err;
+    }
+  }
 
-      await users.destroy({
+  static async updateRoleSRVC(id, role_id) {
+    try {
+      const user = await users.findOne({
         where: { id },
       });
+
+      if (!user) {
+        throw {
+          status: 400,
+          name: "Invalid user",
+          message: "User doesn't exist",
+        };
+      }
+
+      await updateRoleREPO(id, role_id);
+
+      return "Role has changed";
     } catch (err) {
       throw err;
     }

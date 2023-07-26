@@ -7,18 +7,6 @@ const createNewUserREPO = async (newUser) => {
 };
 
 const deleteUserREPO = async (id) => {
-  const user = await users.findOne({
-    where: { id },
-  });
-
-  if (!user) {
-    throw {
-      status: 400,
-      name: "Invalid user",
-      message: "User doesn't exist",
-    };
-  }
-
   await cars.destroy({
     where: { user_id: id },
   });
@@ -28,7 +16,19 @@ const deleteUserREPO = async (id) => {
   });
 };
 
+const updateRoleREPO = async (id, role_id) => {
+  await users.update(
+    { role_id },
+    {
+      where: { id },
+    }
+  );
+
+  return "Role has changed";
+};
+
 module.exports = {
   createNewUserREPO,
   deleteUserREPO,
+  updateRoleREPO,
 };
