@@ -17,12 +17,13 @@ const {
   createNewUserREPO,
   updateRoleREPO,
   deleteUserREPO,
+  updateUserInfoREPO,
 } = require("../repositories/users.repositories");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 const { sendWelcomeMail } = require("../utils/sendMails");
-const { users, cars } = require("../models");
+const { users } = require("../models");
 
 class usersServices {
   static async createNewUserSRVC(username, email, password) {
@@ -128,7 +129,29 @@ class usersServices {
 
       await updateRoleREPO(id, role_id);
 
-      return "Role has changed";
+      return "Role has been changed";
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  static async updateUserInfoSRVC(id, username, avatar) {
+    try {
+      const user = await users.findOne({
+        where: { id },
+      });
+
+      if (!user) {
+        throw {
+          status: 400,
+          name: "Invalid user",
+          message: "User doesn't exist",
+        };
+      }
+
+      await updateUserInfoREPO(id, username, avatar);
+
+      return "Info has been updated";
     } catch (err) {
       throw err;
     }

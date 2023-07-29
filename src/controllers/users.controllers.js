@@ -2,6 +2,35 @@ const usersServices = require("../services/users.services");
 const jwt = require("jsonwebtoken");
 const { users } = require("../models");
 require("dotenv").config();
+const multer = require("multer");
+const types = ["image/jpeg", "image/png"];
+const upload = multer({
+  storage: multer.diskStorage({
+    destination: "./src/files",
+    filename: (req, file, cb) => {
+      const date = Date.now();
+      cb(null, `../files/${date}-${file.originalname}`);
+    },
+  }),
+  limits: {
+    fileSize: 1000000, // 1000 KyloBytes o un mega aprox
+  },
+  fileFilter: (req, file, cb) => {
+    // Solo aceptaremos archivos .jpeg y .png
+
+    if (!types.includes(file.mimetype)) {
+      cb(
+        {
+          error: "file not supported",
+          message: `Only ${types.join(", ")} mimetypes are allowed`,
+        },
+        false
+      );
+    } else {
+      cb(null, true);
+    }
+  },
+});
 
 const createNewUserCTRL = async (req, res, next) => {
   try {
@@ -137,10 +166,35 @@ const updateRoleCTRL = async (req, res, next) => {
   }
 };
 
+const updateUserInfoCTRL = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { username } = req.body;
+
+    upload.single("avatar")(req, res, async (err) => {
+      if (err) {
+        return next(err);
+      }
+
+      const avatar = req.file ? req.file.filename : undefined;
+
+      const message = await usersServices.updateUserInfoSRVC(
+        id,
+        username,
+        avatar
+      );
+      res.status(201).send(message);
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
 module.exports = {
   createNewUserCTRL,
   validateEmail,
   loginCTRL,
   deleteUserCTRL,
   updateRoleCTRL,
+  updateUserInfoCTRL,
 };

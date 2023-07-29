@@ -23,12 +23,23 @@ const updateRoleREPO = async (id, role_id) => {
       where: { id },
     }
   );
+};
 
-  return "Role has changed";
+const updateUserInfoREPO = async (id, username, avatar) => {
+  await users.update(
+    {
+      username,
+      avatar,
+    },
+    {
+      where: { id },
+    }
+  );
 };
 
 module.exports = {
   createNewUserREPO,
   deleteUserREPO,
   updateRoleREPO,
+  updateUserInfoREPO,
 };
