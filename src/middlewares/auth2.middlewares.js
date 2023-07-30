@@ -26,8 +26,8 @@ const authenticateAndIdCompare = (req, res, next) => {
         message: "Invalid token or missing user ID",
       });
     }
-    console.log(decoded.id);
-    console.log(req.params.id);
+    console.log(decoded.id); // decoded.id me lo pasa como numero y
+    console.log(req.params.id); // req.params.id recibe el id como char en la ruta, tuve cambiar la comparación en el siguiente if de !== a != // tengo duda si es mala practica o no...
     // Verificar que el ID del usuario en el token coincide con el ID en la ruta
     if (decoded.id != req.params.id) {
       return next({
