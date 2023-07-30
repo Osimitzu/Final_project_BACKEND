@@ -1,3 +1,5 @@
+// Este middleware sirve para verificar que el usuario esta autenticado/loggeado, y ademas compara el id que se esta pasando en la ruta para validar que el usuario que genero el token sea el mismo al que se le estan aplicando los cambios o actualizaciones.
+
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
