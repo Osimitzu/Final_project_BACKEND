@@ -171,6 +171,18 @@ const updateUserInfoCTRL = async (req, res, next) => {
     const { id } = req.params;
     const { username } = req.body;
 
+    // const user = await users.findOne({
+    //   where: { id },
+    // });
+
+    // if (!user) {
+    //   throw {
+    //     status: 400,
+    //     name: "Invalid user",
+    //     message: "User doesn't exist",
+    //   };
+    // }
+
     upload.single("avatar")(req, res, async (err) => {
       if (err) {
         return next(err);

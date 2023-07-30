@@ -13,6 +13,7 @@ const {
 } = require("../validators/users.validators");
 const hasRoles = require("../middlewares/role.middlewares");
 const authenticate = require("../middlewares/auth.middlewares");
+const authenticateAndIdCompare = require("../middlewares/auth2.middlewares");
 
 const router = Router();
 
@@ -26,6 +27,10 @@ router.delete("/api/v1/users/:id", authenticate, hasRoles(2), deleteUserCTRL);
 
 router.put("/api/v1/users/role/:id", authenticate, hasRoles(2), updateRoleCTRL);
 
-router.put("/api/v1/users/info/:id", authenticate, updateUserInfoCTRL);
+router.put(
+  "/api/v1/users/info/:id",
+  authenticateAndIdCompare,
+  updateUserInfoCTRL
+);
 
 module.exports = router;

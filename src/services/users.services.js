@@ -82,7 +82,7 @@ class usersServices {
 
       const token = jwt.sign(userData, process.env.JWT_SECRET_LOGIN, {
         algorithm: "HS512",
-        expiresIn: "5m",
+        expiresIn: "60m",
       });
 
       userData.token = token;
@@ -137,17 +137,7 @@ class usersServices {
 
   static async updateUserInfoSRVC(id, username, avatar) {
     try {
-      const user = await users.findOne({
-        where: { id },
-      });
-
-      if (!user) {
-        throw {
-          status: 400,
-          name: "Invalid user",
-          message: "User doesn't exist",
-        };
-      }
+      // Moví la validación de que exista el usuario al controlador para poder usar el middleware de MULTER sin que crashee la aplicación en caso de que el usuario no exista.
 
       await updateUserInfoREPO(id, username, avatar);
 
