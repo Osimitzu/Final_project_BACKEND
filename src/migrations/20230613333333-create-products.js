@@ -39,7 +39,7 @@ module.exports = {
       // },
       product_image: {
         type: Sequelize.STRING,
-        allowNull: false,
+        defaultValue: "../views/images/defaultProductImage.png",
       },
       createdAt: {
         allowNull: true,

@@ -21,3 +21,38 @@ npx sequelize-cli model:generate --name product_in_orders --attributes order_id:
 ### Notas
 
 Tuve que comentar las relaciones (despues de hacer las migraciones y una vez que comprobe que se hicieron las relaciones correctamente en la base de datos) para poder realizar los endpoints, de lo contrario me tomaba las llaves foraneas como una columna extra en la tabla del modelo que se estuviera realizando.
+
+### Users
+
+{
+"username": "Cervantes",
+"email": "cervantes.aocc@gmail.com",
+"password": "12345678"
+}
+
+{
+"username": "Osimitzu",
+"email": "angel_aocc@hotmail.com",
+"password": "12345678"
+}
+
+{
+"username": "Miocid",
+"email": "osimitzuuu@gmail.com",
+"password": "12345678"
+}
+
+{
+"username": "Edelkhai",
+"email": "angelo_aocc@outlook.com",
+"password": "12345678"
+}
+
+### Products
+
+{
+"name": "Product1",
+"description": "Producto mamalon de alta calidad con las tres B",
+"price": 39.99,
+"available_qty": 120
+}
