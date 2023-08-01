@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // Tengo que comentar las relaciones, si no, no me funcionan los endpoints...
-      // products.belongsTo(models.users, { foreignKey: "user_id" });
+      // products.belongsTo(models.users, { foreignKey: "user_id" }); // relación eliminada
       // products.hasMany(models.product_in_orders, { foreignKey: "product_id" });
       // products.hasMany(models.product_in_cars, { foreignKey: "product_id" });
     }
@@ -21,7 +21,7 @@ module.exports = (sequelize, DataTypes) => {
       price: DataTypes.REAL,
       available_qty: DataTypes.INTEGER,
       status: DataTypes.ENUM("available", "unavailable"),
-      user_id: DataTypes.INTEGER,
+      // user_id: DataTypes.INTEGER,
       product_image: DataTypes.STRING,
     },
     {

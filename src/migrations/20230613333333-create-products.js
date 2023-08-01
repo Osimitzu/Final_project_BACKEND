@@ -28,14 +28,15 @@ module.exports = {
         type: Sequelize.ENUM("available", "unavailable"),
         defaultValue: "available",
       },
-      user_id: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-        references: {
-          model: "users",
-          key: "id",
-        },
-      },
+      // Elimine esta relación con los usuarios directamente ya que los productos solo estan relacionados de manera indirecta a traves de las tablas "prodcut-in-order" y "product-in-car"
+      // user_id: {
+      //   type: Sequelize.INTEGER,
+      //   allowNull: false,
+      //   references: {
+      //     model: "users",
+      //     key: "id",
+      //   },
+      // },
       product_image: {
         type: Sequelize.STRING,
         allowNull: false,
