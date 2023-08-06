@@ -2,14 +2,18 @@ const usersServices = require("../services/users.services");
 const jwt = require("jsonwebtoken");
 const { users } = require("../models");
 require("dotenv").config();
+const path = require("path");
 const multer = require("multer");
 const types = ["image/jpeg", "image/png"];
 const upload = multer({
   storage: multer.diskStorage({
-    destination: "./src/files",
+    destination: (req, file, cb) => {
+      const absolutePath = path.resolve("./src/views/profilePictures");
+      cb(null, absolutePath);
+    },
     filename: (req, file, cb) => {
       const date = Date.now();
-      cb(null, `../files/${date}-${file.originalname}`);
+      cb(null, `${date}-${file.originalname}`);
     },
   }),
   limits: {

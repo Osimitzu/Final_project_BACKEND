@@ -5,6 +5,18 @@ const createNewProductREPO = async (newProductData) => {
   return product;
 };
 
+const updateProductImageREPO = async (id, product_image) => {
+  await products.update(
+    {
+      product_image,
+    },
+    {
+      where: { id },
+    }
+  );
+};
+
 module.exports = {
   createNewProductREPO,
+  updateProductImageREPO,
 };
