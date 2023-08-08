@@ -120,7 +120,7 @@ const deleteUserCTRL = async (req, res, next) => {
   try {
     const { id } = req.params;
     await usersServices.deleteUserSRVC(id);
-    res.status(201).send("User deleted");
+    res.status(200).send("User deleted");
   } catch (err) {
     next(err);
   }
@@ -164,7 +164,7 @@ const updateRoleCTRL = async (req, res, next) => {
     const { id } = req.params;
 
     const message = await usersServices.updateRoleSRVC(id, role_id);
-    res.status(201).send(message);
+    res.status(200).send(message);
   } catch (err) {
     next(err);
   }
@@ -199,7 +199,7 @@ const updateUserInfoCTRL = async (req, res, next) => {
         username,
         avatar
       );
-      res.status(201).send(message);
+      res.status(200).send(message);
     });
   } catch (err) {
     next(err);

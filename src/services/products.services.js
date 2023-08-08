@@ -1,6 +1,8 @@
+const { products } = require("../models");
 const {
   createNewProductREPO,
   updateProductImageREPO,
+  updateProductInfoREPO,
 } = require("../repositories/products.repositories");
 
 class productsServices {
@@ -17,6 +19,42 @@ class productsServices {
       await updateProductImageREPO(id, product_image);
 
       return "Image has been updated";
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  static async updateProductInfoSRVC(
+    id,
+    name,
+    description,
+    price,
+    available_qty,
+    status
+  ) {
+    try {
+      const product = await products.findOne({
+        where: { id },
+      });
+
+      if (!product) {
+        throw {
+          status: 400,
+          name: "Invalid product",
+          message: "Product doesn't exist",
+        };
+      }
+      if (available_qty < 1 ? (status = "unavailable") : (status = "available"))
+        await updateProductInfoREPO(
+          id,
+          name,
+          description,
+          price,
+          available_qty,
+          status
+        );
+
+      return "Info has been updated";
     } catch (err) {
       throw err;
     }

@@ -64,8 +64,28 @@ const updateProductImageCTRL = async (req, res, next) => {
         product_image
       );
 
-      res.status(201).send(message);
+      res.status(200).send(message);
     });
+  } catch (err) {
+    next(err);
+  }
+};
+
+const updateProductInfoCTRL = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { name, description, price, available_qty, status } = req.body;
+
+    const message = await productsServices.updateProductInfoSRVC(
+      id,
+      name,
+      description,
+      price,
+      available_qty,
+      status
+    );
+
+    res.status(200).send(message);
   } catch (err) {
     next(err);
   }
@@ -74,4 +94,5 @@ const updateProductImageCTRL = async (req, res, next) => {
 module.exports = {
   createNewProductCTRL,
   updateProductImageCTRL,
+  updateProductInfoCTRL,
 };

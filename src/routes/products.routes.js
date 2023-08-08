@@ -4,6 +4,7 @@ const hasRoles = require("../middlewares/role.middlewares");
 const {
   createNewProductCTRL,
   updateProductImageCTRL,
+  updateProductInfoCTRL,
 } = require("../controllers/products.controllers");
 const { createProductValidator } = require("../validators/products.validators");
 
@@ -23,4 +24,12 @@ router.put(
   hasRoles(2),
   updateProductImageCTRL
 );
+
+router.put(
+  "/api/v1/products/info/:id",
+  authenticate,
+  hasRoles(2),
+  updateProductInfoCTRL
+);
+
 module.exports = router;

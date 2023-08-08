@@ -16,7 +16,30 @@ const updateProductImageREPO = async (id, product_image) => {
   );
 };
 
+const updateProductInfoREPO = async (
+  id,
+  name,
+  description,
+  price,
+  available_qty,
+  status
+) => {
+  await products.update(
+    {
+      name,
+      description,
+      price,
+      available_qty,
+      status,
+    },
+    {
+      where: { id },
+    }
+  );
+};
+
 module.exports = {
   createNewProductREPO,
   updateProductImageREPO,
+  updateProductInfoREPO,
 };
