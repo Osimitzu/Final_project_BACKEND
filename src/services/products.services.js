@@ -3,6 +3,7 @@ const {
   createNewProductREPO,
   updateProductImageREPO,
   updateProductInfoREPO,
+  getAllProductsREPO,
 } = require("../repositories/products.repositories");
 
 class productsServices {
@@ -55,6 +56,15 @@ class productsServices {
         );
 
       return "Info has been updated";
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  static async getAllProductsSRVC() {
+    try {
+      const allProducts = await getAllProductsREPO();
+      return allProducts;
     } catch (err) {
       throw err;
     }

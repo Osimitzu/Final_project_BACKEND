@@ -38,8 +38,18 @@ const updateProductInfoREPO = async (
   );
 };
 
+const getAllProductsREPO = async () => {
+  const allProducts = await products.findAll({
+    attributes: {
+      exclude: ["createdAt", "updatedAt"],
+    },
+  });
+  return allProducts;
+};
+
 module.exports = {
   createNewProductREPO,
   updateProductImageREPO,
   updateProductInfoREPO,
+  getAllProductsREPO,
 };

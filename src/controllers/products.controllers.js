@@ -91,8 +91,18 @@ const updateProductInfoCTRL = async (req, res, next) => {
   }
 };
 
+const getAllProductsCTRL = async (req, res, next) => {
+  try {
+    const allProducts = await productsServices.getAllProductsSRVC();
+    res.json(allProducts);
+  } catch (err) {
+    next(err);
+  }
+};
+
 module.exports = {
   createNewProductCTRL,
   updateProductImageCTRL,
   updateProductInfoCTRL,
+  getAllProductsCTRL,
 };

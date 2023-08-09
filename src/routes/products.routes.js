@@ -5,6 +5,7 @@ const {
   createNewProductCTRL,
   updateProductImageCTRL,
   updateProductInfoCTRL,
+  getAllProductsCTRL,
 } = require("../controllers/products.controllers");
 const { createProductValidator } = require("../validators/products.validators");
 
@@ -31,5 +32,7 @@ router.put(
   hasRoles(2),
   updateProductInfoCTRL
 );
+
+router.get("/api/v1/products", authenticate, getAllProductsCTRL);
 
 module.exports = router;
