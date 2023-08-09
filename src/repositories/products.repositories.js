@@ -40,8 +40,11 @@ const updateProductInfoREPO = async (
 
 const getAllProductsREPO = async () => {
   const allProducts = await products.findAll({
+    where: {
+      status: "available",
+    },
     attributes: {
-      exclude: ["createdAt", "updatedAt"],
+      exclude: ["createdAt", "updatedAt", "status"],
     },
   });
   return allProducts;
