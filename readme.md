@@ -20,7 +20,9 @@ npx sequelize-cli model:generate --name product_in_orders --attributes order_id:
 
 ### Notas
 
-Tuve que comentar las relaciones (despues de hacer las migraciones y una vez que comprobe que se hicieron las relaciones correctamente en la base de datos) para poder realizar los endpoints, de lo contrario me tomaba las llaves foraneas como una columna extra en la tabla del modelo que se estuviera realizando.
+<!-- Tuve que comentar las relaciones (despues de hacer las migraciones y una vez que comprobe que se hicieron las relaciones correctamente en la base de datos) para poder realizar los endpoints, de lo contrario me tomaba las llaves foraneas como una columna extra en la tabla del modelo que se estuviera realizando. -->
+
+<!-- Productos con precio de 1 millon en adelante se ven raros en la base de datos -->
 
 ### Users
 

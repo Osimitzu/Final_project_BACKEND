@@ -6,6 +6,7 @@ const {
   updateProductImageCTRL,
   updateProductInfoCTRL,
   getAllProductsCTRL,
+  deleteProductCTRL,
 } = require("../controllers/products.controllers");
 const { createProductValidator } = require("../validators/products.validators");
 
@@ -34,5 +35,13 @@ router.put(
 );
 
 router.get("/api/v1/products", authenticate, getAllProductsCTRL);
+
+// Productos con precio de 1 millon en adelante se ven raros en la base de datos
+router.delete(
+  "/api/v1/products/delete/:id",
+  authenticate,
+  hasRoles(2),
+  deleteProductCTRL
+);
 
 module.exports = router;

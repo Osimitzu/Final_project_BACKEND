@@ -100,9 +100,20 @@ const getAllProductsCTRL = async (req, res, next) => {
   }
 };
 
+const deleteProductCTRL = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    await productsServices.deleteProductSRVC(id);
+    res.status(200).send("Product deleted");
+  } catch (err) {
+    next(err);
+  }
+};
+
 module.exports = {
   createNewProductCTRL,
   updateProductImageCTRL,
   updateProductInfoCTRL,
   getAllProductsCTRL,
+  deleteProductCTRL,
 };

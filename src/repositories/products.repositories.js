@@ -50,9 +50,16 @@ const getAllProductsREPO = async () => {
   return allProducts;
 };
 
+const deleteProductREPO = async (id) => {
+  await products.destroy({
+    where: { id },
+  });
+};
+
 module.exports = {
   createNewProductREPO,
   updateProductImageREPO,
   updateProductInfoREPO,
   getAllProductsREPO,
+  deleteProductREPO,
 };
