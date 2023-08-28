@@ -3,6 +3,7 @@ const {
   createProductInPivotREPO,
   updateQuantityInPivotREPO,
   updateTotalInCarREPO,
+  getAllProductsInCarREPO,
 } = require("../repositories/cars.ropositories");
 
 class carsServices {
@@ -19,6 +20,15 @@ class carsServices {
       }
 
       await updateTotalInCarREPO(price, car_id, quantity);
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  static async getAllProductsInCarSRVC(user_id) {
+    try {
+      const productsInCar = await getAllProductsInCarREPO(user_id);
+      return productsInCar;
     } catch (err) {
       throw err;
     }

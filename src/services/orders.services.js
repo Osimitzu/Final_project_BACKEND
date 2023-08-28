@@ -5,6 +5,7 @@ class ordersServices {
   static async buyProductsInCarSRVC(user_id, products) {
     try {
       let total = 0;
+      // el forEach se puede cambiar por el metodo "reduce"
       products.forEach((product) => {
         total += product.price * product.quantity;
       });

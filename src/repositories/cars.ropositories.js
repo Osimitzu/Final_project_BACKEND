@@ -46,9 +46,42 @@ const updateTotalInCarREPO = async (price, car_id, quantity) => {
   return car;
 };
 
+const getAllProductsInCarREPO = async (user_id) => {
+  const car = await cars.findOne({
+    where: { user_id },
+  });
+
+  if (!car) {
+    return res.status(400).json({
+      error: "Invalid car",
+      message: "Car doesn't exist",
+    });
+  }
+
+  const productsInCar = await product_in_cars.findAll({
+    where: { car_id: car.id },
+    attributes: {
+      exclude: ["createdAt", "updatedAt"],
+    },
+  });
+  // total_price del carrito
+  const total_price = productsInCar.reduce((total, product) => {
+    return total + product.price * product.quantity;
+  }, 0);
+
+  // Objeto que incluye tanto los productos como el total_price
+  const result = {
+    total_price,
+    products: productsInCar,
+  };
+
+  return result;
+};
+
 module.exports = {
   getProductFromPivotREPO,
   createProductInPivotREPO,
   updateQuantityInPivotREPO,
   updateTotalInCarREPO,
+  getAllProductsInCarREPO,
 };

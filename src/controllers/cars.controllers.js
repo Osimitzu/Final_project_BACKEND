@@ -15,6 +15,17 @@ const addProductToCarCTRL = async (req, res, next) => {
   }
 };
 
+const getAllProductsInCarCTRL = async (req, res, next) => {
+  try {
+    const { user_id } = req.params;
+    const productsInCar = await carsServices.getAllProductsInCarSRVC(user_id);
+    res.status(200).json(productsInCar);
+  } catch (err) {
+    next(err);
+  }
+};
+
 module.exports = {
   addProductToCarCTRL,
+  getAllProductsInCarCTRL,
 };
