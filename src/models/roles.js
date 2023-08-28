@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // Tengo que comentar las relaciones, si no, no me funcionan los endpoints...
-      // roles.hasMany(models.users, { foreignKey: "role_id" });
+      roles.hasMany(models.users, { foreignKey: "role_id" });
     }
   }
   roles.init(

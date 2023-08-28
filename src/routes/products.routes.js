@@ -34,7 +34,7 @@ router.put(
   updateProductInfoCTRL
 );
 
-router.get("/api/v1/products", authenticate, getAllProductsCTRL);
+router.get("/api/v1/products", getAllProductsCTRL);
 
 router.delete(
   "/api/v1/products/delete/:id",

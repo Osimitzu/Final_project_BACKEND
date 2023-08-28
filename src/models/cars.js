@@ -9,8 +9,12 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // Tengo que comentar las relaciones, si no, no me funcionan los endpoints...
-      // cars.belongsTo(models.users, { foreignKey: "user_id" });
-      // cars.hasMany(models.product_in_cars, { foreignKey: "car_id" });
+      cars.belongsTo(models.users, { foreignKey: "user_id" });
+      // cars.hasMany(models.product_in_cars, { foreignKey: "car_id" }); // relacion cambiada a:
+      cars.belongsToMany(models.products, {
+        through: "product_in_cars",
+        foreignKey: "car_id",
+      });
     }
   }
   cars.init(

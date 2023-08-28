@@ -10,8 +10,16 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // Tengo que comentar las relaciones, si no, no me funcionan los endpoints...
       // products.belongsTo(models.users, { foreignKey: "user_id" }); // relación eliminada
-      // products.hasMany(models.product_in_orders, { foreignKey: "product_id" });
-      // products.hasMany(models.product_in_cars, { foreignKey: "product_id" });
+      // products.hasMany(models.product_in_orders, { foreignKey: "product_id" }); // relacion cambiada a:
+      products.belongsToMany(models.orders, {
+        through: "product_in_orders",
+        foreignKey: "product_id",
+      });
+      // products.hasMany(models.product_in_cars, { foreignKey: "product_id" }); // relacion cambiada a:
+      products.belongsToMany(models.cars, {
+        through: "product_in_cars",
+        foreignKey: "product_id",
+      });
     }
   }
   products.init(
