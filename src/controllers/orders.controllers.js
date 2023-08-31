@@ -11,6 +11,16 @@ const buyProductsInCarCTRL = async (req, res, next) => {
   }
 };
 
+const getAllPendingOrdersCTRL = async (req, res, next) => {
+  try {
+    const pendingOrders = await ordersServices.getAllPendingOrdersSRVC();
+    res.status(200).json(pendingOrders);
+  } catch (err) {
+    next(err);
+  }
+};
+
 module.exports = {
   buyProductsInCarCTRL,
+  getAllPendingOrdersCTRL,
 };

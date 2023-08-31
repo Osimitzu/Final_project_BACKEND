@@ -1,5 +1,8 @@
 const { product_in_orders } = require("../models");
-const { buyProductsInCarREPO } = require("../repositories/orders.repositories");
+const {
+  buyProductsInCarREPO,
+  getAllPendingOrdersREPO,
+} = require("../repositories/orders.repositories");
 
 class ordersServices {
   static async buyProductsInCarSRVC(user_id, products) {
@@ -26,6 +29,15 @@ class ordersServices {
       };
 
       return orderCompleted;
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  static async getAllPendingOrdersSRVC() {
+    try {
+      const pendingOrders = await getAllPendingOrdersREPO();
+      return pendingOrders;
     } catch (err) {
       throw err;
     }
