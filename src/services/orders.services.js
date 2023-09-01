@@ -2,7 +2,10 @@ const { product_in_orders } = require("../models");
 const {
   buyProductsInCarREPO,
   getAllPendingOrdersREPO,
+  infoForMail,
+  emptyCar,
 } = require("../repositories/orders.repositories");
+const { sendOrderDetailsMail } = require("../utils/sendMails");
 
 class ordersServices {
   static async buyProductsInCarSRVC(user_id, products) {
@@ -27,6 +30,13 @@ class ordersServices {
         total_price: order.total_price,
         products: productsWithOrder,
       };
+
+      await emptyCar(user_id);
+
+      const userEmail = await infoForMail(user_id);
+      if (userEmail) {
+        await sendOrderDetailsMail(userEmail);
+      }
 
       return orderCompleted;
     } catch (err) {

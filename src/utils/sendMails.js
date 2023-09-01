@@ -2,6 +2,7 @@ const transporter = require("./mailer");
 const ejs = require("ejs");
 const path = require("path");
 
+// Email enviado al registrarse:
 const sendMail = (email, doc, attachments) => {
   transporter
     .sendMail({
@@ -12,7 +13,7 @@ const sendMail = (email, doc, attachments) => {
       html: doc,
       attachments,
     })
-    .then(() => console.log("Message Sent"))
+    .then(() => console.log("Welcome message Sent"))
     .catch((err) => console.log(err));
 };
 
@@ -70,6 +71,35 @@ const sendWelcomeMail = async (email, data) => {
   sendMail(email, doc, attachments);
 };
 
+// Email con los detalles de la compra:
+const sendThanksMail = (userEmail, doc, attachments) => {
+  transporter
+    .sendMail({
+      from: "osimitzuuu@gmail.com",
+      to: userEmail,
+      subject: "Thank's for your purchase at Gorilla Market",
+      text: "Mensaje en caso de que el html falle...no jalo el template xd", // El texto plano solo se envia si el html falla
+      html: doc,
+      attachments,
+    })
+    .then(() => console.log("Order Details Sent"))
+    .catch((err) => console.log(err));
+};
+
+const sendOrderDetailsMail = async (userEmail) => {
+  const filePath = path.join(
+    __dirname,
+    "../views/emailTemplates/purchaseThanks/orderDetails.ejs"
+  );
+
+  const doc = await ejs.renderFile(filePath);
+
+  const attachments = [{}];
+
+  sendThanksMail(userEmail, doc, attachments);
+};
+
 module.exports = {
   sendWelcomeMail,
+  sendOrderDetailsMail,
 };

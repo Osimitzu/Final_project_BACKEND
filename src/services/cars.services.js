@@ -11,7 +11,7 @@ class carsServices {
     try {
       const product = await getProductFromPivotREPO(product_id, car_id);
 
-      if (product.length < 1 || product.status == "purchased") {
+      if (product.length < 1) {
         await createProductInPivotREPO(product_id, price, quantity, car_id);
       }
 
