@@ -20,7 +20,18 @@ const getAllPendingOrdersCTRL = async (req, res, next) => {
   }
 };
 
+const completeOrderCTRL = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    await ordersServices.completeOrderSRVC(id);
+    res.status(200).send("Order completed");
+  } catch (err) {
+    next(err);
+  }
+};
+
 module.exports = {
   buyProductsInCarCTRL,
   getAllPendingOrdersCTRL,
+  completeOrderCTRL,
 };

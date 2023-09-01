@@ -4,6 +4,7 @@ const {
   getAllPendingOrdersREPO,
   infoForMail,
   emptyCar,
+  completeOrderREPO,
 } = require("../repositories/orders.repositories");
 const { sendOrderDetailsMail } = require("../utils/sendMails");
 
@@ -48,6 +49,14 @@ class ordersServices {
     try {
       const pendingOrders = await getAllPendingOrdersREPO();
       return pendingOrders;
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  static async completeOrderSRVC(id) {
+    try {
+      await completeOrderREPO(id);
     } catch (err) {
       throw err;
     }

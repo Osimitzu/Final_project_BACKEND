@@ -121,9 +121,19 @@ const getAllPendingOrdersREPO = async () => {
   return pendingOrders;
 };
 
+const completeOrderREPO = async (id) => {
+  await orders.update(
+    { status: "completed" },
+    {
+      where: { id },
+    }
+  );
+};
+
 module.exports = {
   buyProductsInCarREPO,
   getAllPendingOrdersREPO,
   infoForMail,
   emptyCar,
+  completeOrderREPO,
 };
