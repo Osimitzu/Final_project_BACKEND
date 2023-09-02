@@ -11,7 +11,8 @@
     "migrate": "npx sequelize-cli db:migrate",
     "undoMigrate": "npx sequelize-cli db:migrate:undo:all",
     "seedAll": "npx sequelize-cli db:seed:all",
-    "undoSeedAll": "npx sequelize-cli db:seed:undo:all"
+    "undoSeedAll": "npx sequelize-cli db:seed:undo:all",
+    "test": "jest"
   },
   "keywords": [
     "e-commerce"
@@ -35,6 +36,7 @@
     "swagger-ui-express": "^4.6.3"
   },
   "devDependencies": {
+    "jest": "^29.6.4",
     "nodemon": "^2.0.22"
   }
 }
