@@ -37,9 +37,17 @@ const updateUserInfoREPO = async (id, username, avatar) => {
   );
 };
 
+const passwordResetREPO = async (email) => {
+  const user = await users.findOne({
+    where: { email },
+  });
+  return user;
+};
+
 module.exports = {
   createNewUserREPO,
   deleteUserREPO,
   updateRoleREPO,
   updateUserInfoREPO,
+  passwordResetREPO,
 };

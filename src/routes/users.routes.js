@@ -6,6 +6,7 @@ const {
   deleteUserCTRL,
   updateRoleCTRL,
   updateUserInfoCTRL,
+  passwordResetCTRL,
 } = require("../controllers/users.controllers");
 const {
   createUserValidator,
@@ -32,5 +33,7 @@ router.put(
   authenticateAndIdCompare,
   updateUserInfoCTRL
 );
+
+router.put("/api/v1/users/passwordReset", authenticate, passwordResetCTRL);
 
 module.exports = router;

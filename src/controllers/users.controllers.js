@@ -206,6 +206,16 @@ const updateUserInfoCTRL = async (req, res, next) => {
   }
 };
 
+const passwordResetCTRL = async (req, res, next) => {
+  try {
+    const { email } = req.body;
+    await usersServices.passwordResetSRVC(email);
+    res.status(200).send("Please check out your email to reset your password");
+  } catch (err) {
+    next(err);
+  }
+};
+
 module.exports = {
   createNewUserCTRL,
   validateEmail,
@@ -213,4 +223,5 @@ module.exports = {
   deleteUserCTRL,
   updateRoleCTRL,
   updateUserInfoCTRL,
+  passwordResetCTRL,
 };

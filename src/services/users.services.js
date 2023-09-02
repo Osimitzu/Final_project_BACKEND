@@ -18,11 +18,15 @@ const {
   updateRoleREPO,
   deleteUserREPO,
   updateUserInfoREPO,
+  passwordResetREPO,
 } = require("../repositories/users.repositories");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
-const { sendWelcomeMail } = require("../utils/sendMails");
+const {
+  sendWelcomeMail,
+  sendPasswordResetMail,
+} = require("../utils/sendMails");
 const { users } = require("../models");
 
 class usersServices {
@@ -145,6 +149,19 @@ class usersServices {
     } catch (err) {
       throw err;
     }
+  }
+
+  static async passwordResetSRVC(email) {
+    const user = await passwordResetREPO(email);
+
+    if (!user) {
+      throw {
+        error: "Invalid user",
+        message: "User doesn't exist",
+      };
+    }
+
+    await sendPasswordResetMail(email);
   }
 }
 

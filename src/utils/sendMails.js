@@ -99,7 +99,35 @@ const sendOrderDetailsMail = async (userEmail) => {
   sendThanksMail(userEmail, doc, attachments);
 };
 
+// Email para restablecer contraseña:
+const passwordResetMail = (email, doc, attachments) => {
+  transporter
+    .sendMail({
+      from: "osimitzuuu@gmail.com",
+      to: email,
+      subject: "Password Reset - Gorilla Market",
+      text: "Mensaje en caso de que el html falle...no jalo el template xd", // El texto plano solo se envia si el html falla
+      html: doc,
+      attachments,
+    })
+    .then(() => console.log("Password reset mail sent"))
+    .catch((err) => console.log(err));
+};
+
+const sendPasswordResetMail = async (email) => {
+  const filePath = path.join(
+    __dirname,
+    "../views/emailTemplates/passwordReset/passwordReset.ejs"
+  );
+
+  const doc = await ejs.renderFile(filePath);
+
+  const attachments = [{}];
+
+  passwordResetMail(email, doc, attachments);
+};
 module.exports = {
   sendWelcomeMail,
   sendOrderDetailsMail,
+  sendPasswordResetMail,
 };
