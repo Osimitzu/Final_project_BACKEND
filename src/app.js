@@ -50,12 +50,17 @@ app.use(express.json());
 app.use(cors());
 
 app.get("/", (req, res) => {
-  res.send("Servidor OK");
+  // res.send("Servidor OK");
+  res.json({
+    message: "Servidor OK",
+  });
 });
 
 apiRoutes(app);
 errorRoutes(app);
 
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   console.log(`Servidor escuchando en el puerto ${PORT}`);
 });
+
+module.exports = { app, server };

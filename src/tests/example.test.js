@@ -6,27 +6,31 @@ const isEven = (a) => {
   return a % 2 === 0;
 };
 
-test("Si ingresamos un 5 debe retornar false (no es par)", () => {
-  // Arrange
-  const a = 5;
-  // Act
-  const result = isEven(a);
-  // Assert
-  // * Matcher
-  expect(result).toBeFalsy();
-});
+// Agrupar pruebas
 
-test("Si ingresamos el 20 debe retornar true (es par)", () => {
-  // Arrange
-  const a = 20;
-  // Act
-  const result = isEven(a);
-  // Assert
-  expect(result).toBeTruthy();
-});
+describe("Pruebas para la función de numeros pares:", () => {
+  test("Si ingresamos un 5 debe retornar false (no es par)", () => {
+    // Arrange
+    const a = 5;
+    // Act
+    const result = isEven(a);
+    // Assert
+    // * Matcher
+    expect(result).toBeFalsy();
+  });
 
-test("Si ingresamos un valor no numerico debemos regresar 'El valor no es un numero'", () => {
-  const value = "Hola";
-  const result = isEven(value);
-  expect(result).toMatch("El valor no es un numero");
+  test("Si ingresamos el 20 debe retornar true (es par)", () => {
+    // Arrange
+    const a = 20;
+    // Act
+    const result = isEven(a);
+    // Assert
+    expect(result).toBeTruthy();
+  });
+
+  test("Si ingresamos un valor no numerico debemos regresar 'El valor no es un numero'", () => {
+    const value = "Hola";
+    const result = isEven(value);
+    expect(result).toMatch("El valor no es un numero");
+  });
 });
