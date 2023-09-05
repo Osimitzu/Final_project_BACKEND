@@ -8,7 +8,7 @@ const ordersRoutes = require("./orders.routes");
 
 // recibe como parametro una instancia de expres
 const apiRoutes = (app) => {
-  app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDoc));
+  app.use("/api/v1/docs", swaggerUi.serve, swaggerUi.setup(swaggerDoc));
   app.use(usersRoutes);
   app.use(productsRoutes);
   app.use(carsRoutes);

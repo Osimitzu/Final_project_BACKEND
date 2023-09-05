@@ -18,7 +18,7 @@ const authenticateAndIdCompare = require("../middlewares/auth2.middlewares");
 
 const router = Router();
 
-router.post("/api/v1/users", createUserValidator, createNewUserCTRL);
+router.post("/api/v1/users/register", createUserValidator, createNewUserCTRL);
 
 router.post("/api/v1/users/email-validate", validateEmail);
 

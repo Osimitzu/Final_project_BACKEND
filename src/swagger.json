@@ -2,7 +2,99 @@
   "openapi": "3.0.0",
   "info": {
     "title": "E-commerce API",
-    "description": "Un API para un e-commerce de productos...",
+    "description": "This API is tailored for a customized e-commerce platform, featuring an administrative dashboard for product and order management, while restricting purchases to registered users.",
+    "contact": {
+      "name": "Osiris Contreras",
+      "url": "https://github.com/Osimitzu",
+      "email": "angel_aocc@hotmail.com"
+    },
     "version": "1.0.0"
+  },
+  "paths": {
+    "/api/v1/users/register": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "This endpoint enables the creation of a new user or registration in the system.",
+        "description": "In order to create a new user, it is essential to provide a valid email address, a password with a minimum of 8 characters, and a username. These fields are mandatory.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/register"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorName": {
+                      "type": "string",
+                      "example": "Validation error"
+                    },
+                    "message": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/users/login": {}
+  },
+  "components": {
+    "schemas": {
+      "register": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string",
+            "example": "Cervantes"
+          },
+          "email": {
+            "type": "string",
+            "example": "cervantes.aocc@gmail.com"
+          },
+          "password": {
+            "type": "string",
+            "example": "12345678"
+          }
+        }
+      },
+      "login": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "example": "osiris@academlo.com"
+          },
+          "password": {
+            "type": "string",
+            "example": "12345678"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
   }
 }
