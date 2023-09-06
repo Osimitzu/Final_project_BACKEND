@@ -14,7 +14,7 @@
     "/api/v1/users/register": {
       "post": {
         "tags": ["Users"],
-        "summary": "This endpoint enables the creation of a new user or registration in the system.",
+        "summary": "User register",
         "description": "In order to create a new user, it is essential to provide a valid email address, a password with a minimum of 8 characters, and a username. These fields are mandatory.",
         "requestBody": {
           "content": {
@@ -36,14 +36,23 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "errorName": {
+                    "error": {
                       "type": "string",
-                      "example": "Validation error"
+                      "example": "Invalid or missing data"
                     },
                     "message": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
+                      "type": "object",
+                      "properties": {
+                        "errorQty": {
+                          "type": "number",
+                          "example": 2
+                        }
+                      },
+                      "errors": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
                       }
                     }
                   }
@@ -54,7 +63,111 @@
         }
       }
     },
-    "/api/v1/users/login": {}
+    "/api/v1/users/login": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "User Login",
+        "description": "Allows a registered user to log in by providing their email and password.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/login"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "accessToken": {
+                      "type": "string",
+                      "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+                    },
+                    "user": {
+                      "$ref": "#/components/schemas/user"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorName": {
+                      "type": "string",
+                      "example": "Unauthorized"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Invalid email or password."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/products": {
+      "get": {
+        "tags": ["Products"],
+        "summary": "Get All Products",
+        "description": "Through this endpoint, you can retrieve all products with the 'available' status.",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "integer",
+                        "example": 5
+                      },
+                      "name": {
+                        "type": "string",
+                        "example": "Product-7"
+                      },
+                      "description": {
+                        "type": "string",
+                        "example": "High-quality product with an outstanding value-for-money proposition."
+                      },
+                      "price": {
+                        "type": "number",
+                        "example": 99.99
+                      },
+                      "available_qty": {
+                        "type": "integer",
+                        "example": 10
+                      },
+                      "product_image": {
+                        "type": "string",
+                        "example": "1691291544581-banana4.png"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
   },
   "components": {
     "schemas": {
