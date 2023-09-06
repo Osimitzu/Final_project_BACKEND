@@ -50,6 +50,16 @@ const getAllProductsREPO = async () => {
   return allProducts;
 };
 
+const getProductByIdREPO = async (id) => {
+  const product = await products.findOne({
+    where: { id },
+    attributes: {
+      exclude: ["createdAt", "updatedAt"],
+    },
+  });
+  return product;
+};
+
 const deleteProductREPO = async (id) => {
   await products.destroy({
     where: { id },
@@ -61,5 +71,6 @@ module.exports = {
   updateProductImageREPO,
   updateProductInfoREPO,
   getAllProductsREPO,
+  getProductByIdREPO,
   deleteProductREPO,
 };

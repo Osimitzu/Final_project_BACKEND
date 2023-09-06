@@ -7,6 +7,7 @@ const {
   updateProductInfoCTRL,
   getAllProductsCTRL,
   deleteProductCTRL,
+  getProductByIdCTRL,
 } = require("../controllers/products.controllers");
 const { createProductValidator } = require("../validators/products.validators");
 
@@ -35,6 +36,8 @@ router.put(
 );
 
 router.get("/api/v1/products", getAllProductsCTRL);
+
+router.get("/api/v1/products/singleProduct/:id", getProductByIdCTRL);
 
 router.delete(
   "/api/v1/products/delete/:id",

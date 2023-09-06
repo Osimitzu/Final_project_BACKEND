@@ -5,6 +5,7 @@ const {
   updateProductInfoREPO,
   getAllProductsREPO,
   deleteProductREPO,
+  getProductByIdREPO,
 } = require("../repositories/products.repositories");
 
 class productsServices {
@@ -66,6 +67,24 @@ class productsServices {
     try {
       const allProducts = await getAllProductsREPO();
       return allProducts;
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  static async getProductByIdSRVC(id) {
+    try {
+      const product = await getProductByIdREPO(id);
+
+      if (!product) {
+        throw {
+          status: 400,
+          name: "Invalid product",
+          message: "Product doesn't exist",
+        };
+      }
+
+      return product;
     } catch (err) {
       throw err;
     }

@@ -100,6 +100,16 @@ const getAllProductsCTRL = async (req, res, next) => {
   }
 };
 
+const getProductByIdCTRL = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const product = await productsServices.getProductByIdSRVC(id);
+    res.status(200).json(product);
+  } catch (err) {
+    next(err);
+  }
+};
+
 const deleteProductCTRL = async (req, res, next) => {
   try {
     const { id } = req.params;
@@ -115,5 +125,6 @@ module.exports = {
   updateProductImageCTRL,
   updateProductInfoCTRL,
   getAllProductsCTRL,
+  getProductByIdCTRL,
   deleteProductCTRL,
 };
