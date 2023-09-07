@@ -14,7 +14,7 @@ const { createProductValidator } = require("../validators/products.validators");
 const router = Router();
 
 router.post(
-  "/api/v1/products",
+  "/api/v1/products/create",
   authenticate,
   hasRoles(2),
   createProductValidator,
@@ -35,7 +35,7 @@ router.put(
   updateProductInfoCTRL
 );
 
-router.get("/api/v1/products", getAllProductsCTRL);
+router.get("/api/v1/products/all", getAllProductsCTRL);
 
 router.get("/api/v1/products/singleProduct/:id", getProductByIdCTRL);
 

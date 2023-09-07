@@ -11,7 +11,13 @@ const {
 class productsServices {
   static async createNewProductSRVC(name, description, price, available_qty) {
     try {
-      await createNewProductREPO({ name, description, price, available_qty });
+      const product = await createNewProductREPO({
+        name,
+        description,
+        price,
+        available_qty,
+      });
+      return product;
     } catch (err) {
       throw err;
     }

@@ -82,7 +82,7 @@ class usersServices {
 
       const { id, username, avatar, role_id } = user;
 
-      const userData = { id, username, email, password, avatar, role_id };
+      const userData = { id, username, email, avatar, role_id };
 
       const token = jwt.sign(userData, process.env.JWT_SECRET_LOGIN, {
         algorithm: "HS512",

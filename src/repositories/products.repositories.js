@@ -2,6 +2,16 @@ const { products } = require("../models");
 
 const createNewProductREPO = async (newProductData) => {
   const product = await products.create(newProductData);
+
+  if (product.available_qty === 0 || product.available_qty < 1) {
+    await products.update(
+      // También funciona así: { status: (product.status = "unavailable") },
+      { status: "unavailable" },
+      {
+        where: { id: product.id },
+      }
+    );
+  }
   return product;
 };
 

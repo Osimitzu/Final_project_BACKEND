@@ -85,12 +85,12 @@
                 "schema": {
                   "type": "object",
                   "properties": {
+                    "user": {
+                      "$ref": "#/components/schemas/user"
+                    },
                     "accessToken": {
                       "type": "string",
                       "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
-                    },
-                    "user": {
-                      "$ref": "#/components/schemas/user"
                     }
                   }
                 }
@@ -120,10 +120,22 @@
         }
       }
     },
-    "/api/v1/products": {
+    "/api/v1/products/create": {
+      "post": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "tags": ["Products"],
+        "summary": "Create new product",
+        "description": "This endpoint is used to create a new product. To do so, it is mandatory to provide the product name and price. Optionally, you can add a description and the available quantity. If the available quantity is not specified, it will be automatically set to 1. Additionally, a default image will be assigned to the product, which can be changed later using another endpoint if desired."
+      }
+    },
+    "/api/v1/products/all": {
       "get": {
         "tags": ["Products"],
-        "summary": "Get All Products",
+        "summary": "Get all products",
         "description": "Through this endpoint, you can retrieve all products with the 'available' status.",
         "responses": {
           "200": {
@@ -132,35 +144,34 @@
               "application/json": {
                 "schema": {
                   "type": "array",
-                  "items": {
-                    "type": "object",
-                    "properties": {
-                      "id": {
-                        "type": "integer",
-                        "example": 5
-                      },
-                      "name": {
-                        "type": "string",
-                        "example": "Product-7"
-                      },
-                      "description": {
-                        "type": "string",
-                        "example": "High-quality product with an outstanding value-for-money proposition."
-                      },
-                      "price": {
-                        "type": "number",
-                        "example": 99.99
-                      },
-                      "available_qty": {
-                        "type": "integer",
-                        "example": 10
-                      },
-                      "product_image": {
-                        "type": "string",
-                        "example": "1691291544581-banana4.png"
-                      }
-                    }
-                  }
+                  "items": { "$ref": "#/components/schemas/product" }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/products/singleProduct/{id}": {
+      "get": {
+        "tags": ["Products"],
+        "summary": "Get One Product",
+        "description": "Using this endpoint, we can retrieve a specific product by passing the 'id' as a parameter.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Enter the product ID you wish to search for."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/product"
                 }
               }
             }
@@ -188,16 +199,70 @@
           }
         }
       },
+      "user": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 6
+          },
+          "username": {
+            "type": "string",
+            "example": "Cervantes"
+          },
+          "email": {
+            "type": "string",
+            "example": "cervantes.aocc@gmail.com"
+          },
+          "avatar": {
+            "type": "string",
+            "example": "1693224115672-gorillaProfilePic.jpg"
+          },
+          "role_id": {
+            "type": "integer",
+            "example": 2
+          }
+        }
+      },
       "login": {
         "type": "object",
         "properties": {
           "email": {
             "type": "string",
-            "example": "osiris@academlo.com"
+            "example": "cervantes.aocc@gmail.com"
           },
           "password": {
             "type": "string",
             "example": "12345678"
+          }
+        }
+      },
+      "product": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 5
+          },
+          "name": {
+            "type": "string",
+            "example": "Product-7"
+          },
+          "description": {
+            "type": "string",
+            "example": "High-quality product with an outstanding value-for-money proposition."
+          },
+          "price": {
+            "type": "number",
+            "example": 99.99
+          },
+          "available_qty": {
+            "type": "integer",
+            "example": 10
+          },
+          "product_image": {
+            "type": "string",
+            "example": "1691291544581-banana4.png"
           }
         }
       }
