@@ -4,12 +4,11 @@ require("dotenv").config();
 
 const authenticate = (req, res, next) => {
   try {
-    // recuperar el token
+    // recuperar el token en postgres:
+    // const token = req.headers["access-token"];
 
-    const token = req.headers["access-token"];
-
-    // change authentication with bearer token
-    // const token = req.headers.authorization.split(" ")[1];
+    // recuperar token en swagger:
+    const token = req.headers.authorization.split(" ")[1];
 
     if (!token) {
       return next({

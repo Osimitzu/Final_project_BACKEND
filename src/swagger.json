@@ -129,7 +129,72 @@
         ],
         "tags": ["Products"],
         "summary": "Create new product",
-        "description": "This endpoint is used to create a new product. To do so, it is mandatory to provide the product name and price. Optionally, you can add a description and the available quantity. If the available quantity is not specified, it will be automatically set to 1. Additionally, a default image will be assigned to the product, which can be changed later using another endpoint if desired."
+        "description": "This endpoint is used to create a new product, for which it is mandatory to provide the product name and price. Optionally, you can add a description and the available quantity. If the available quantity is not specified, it will be automatically set to 1. Additionally, a default image will be assigned to the product, which can be changed later using another endpoint if desired. NOTE: To use this endpoint, administrator privileges are required.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/newProduct"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Invalid or missing data"
+                    },
+                    "message": {
+                      "type": "object",
+                      "properties": {
+                        "errorQty": {
+                          "type": "number",
+                          "example": 2
+                        }
+                      },
+                      "errors": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorName": {
+                      "type": "string",
+                      "example": "Role required"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Sorry Osimitzu only admins can access here"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/api/v1/products/all": {
@@ -234,6 +299,27 @@
           "password": {
             "type": "string",
             "example": "12345678"
+          }
+        }
+      },
+      "newProduct": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Product-7"
+          },
+          "description": {
+            "type": "string",
+            "example": "High-quality product with an outstanding value-for-money proposition."
+          },
+          "price": {
+            "type": "number",
+            "example": 99.99
+          },
+          "available_qty": {
+            "type": "integer",
+            "example": 10
           }
         }
       },
