@@ -1,224 +1,348 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "title": "E-commerce API",
+    "title": "Final Project // E-commerce API",
     "description": "This API is tailored for a customized e-commerce platform, featuring an administrative dashboard for product and order management, while restricting purchases to registered users.",
-    "contact": {
-      "name": "Osiris Contreras",
-      "url": "https://github.com/Osimitzu",
-      "email": "angel_aocc@hotmail.com"
-    },
-    "version": "1.0.0"
+    "contact": {},
+    "version": "1.0"
   },
+  "servers": [
+    {
+      "url": "https://localhost:8000/api/v1",
+      "variables": {}
+    }
+  ],
   "paths": {
-    "/api/v1/users/register": {
+    "/users/register": {
       "post": {
         "tags": ["Users"],
-        "summary": "User register",
-        "description": "In order to create a new user, it is essential to provide a valid email address, a password with a minimum of 8 characters, and a username. These fields are mandatory.",
+        "summary": "Create New User",
+        "description": "To create a new user, it is essential to provide a valid email address, a password with a minimum of 8 characters, and a username. These fields are mandatory. If the information is provided correctly, you will receive an email to validate your user account.",
+        "operationId": "CreateNewUser",
+        "parameters": [],
         "requestBody": {
+          "description": "",
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/register"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Created"
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string",
-                      "example": "Invalid or missing data"
-                    },
-                    "message": {
-                      "type": "object",
-                      "properties": {
-                        "errorQty": {
-                          "type": "number",
-                          "example": 2
-                        }
-                      },
-                      "errors": {
-                        "type": "array",
-                        "items": {
-                          "type": "string"
-                        }
-                      }
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/CreateNewUserRequest"
+                  },
+                  {
+                    "example": {
+                      "username": "Cervantes",
+                      "email": "cervantes.aocc@gmail.com",
+                      "password": "12345678"
                     }
                   }
-                }
+                ]
+              },
+              "example": {
+                "username": "Cervantes",
+                "email": "cervantes.aocc@gmail.com",
+                "password": "12345678"
               }
             }
-          }
-        }
-      }
-    },
-    "/api/v1/users/login": {
-      "post": {
-        "tags": ["Users"],
-        "summary": "User Login",
-        "description": "Allows a registered user to log in by providing their email and password.",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/login"
-              }
-            }
-          }
+          },
+          "required": true
         },
         "responses": {
           "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "user": {
-                      "$ref": "#/components/schemas/user"
-                    },
-                    "accessToken": {
-                      "type": "string",
-                      "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "errorName": {
-                      "type": "string",
-                      "example": "Unauthorized"
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Invalid email or password."
-                    }
-                  }
-                }
-              }
-            }
+            "description": "",
+            "headers": {}
           }
-        }
+        },
+        "deprecated": false
       }
     },
-    "/api/v1/products/create": {
+    "/users/login": {
       "post": {
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
-        "tags": ["Products"],
-        "summary": "Create new product",
-        "description": "This endpoint is used to create a new product, for which it is mandatory to provide the product name and price. Optionally, you can add a description and the available quantity. If the available quantity is not specified, it will be automatically set to 1. Additionally, a default image will be assigned to the product, which can be changed later using another endpoint if desired. NOTE: To use this endpoint, administrator privileges are required.",
+        "tags": ["Users"],
+        "summary": "Login",
+        "description": "Allows a registered user to log in by providing their email and password.",
+        "operationId": "Login",
+        "parameters": [],
         "requestBody": {
+          "description": "",
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/newProduct"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/LoginRequest"
+                  },
+                  {
+                    "example": {
+                      "email": "cervantes.aocc@gmail.com",
+                      "password": "12345678"
+                    }
+                  }
+                ]
+              },
+              "example": {
+                "email": "cervantes.aocc@gmail.com",
+                "password": "12345678"
               }
             }
-          }
+          },
+          "required": true
         },
         "responses": {
-          "201": {
-            "description": "Created"
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string",
-                      "example": "Invalid or missing data"
-                    },
-                    "message": {
-                      "type": "object",
-                      "properties": {
-                        "errorQty": {
-                          "type": "number",
-                          "example": 2
-                        }
-                      },
-                      "errors": {
-                        "type": "array",
-                        "items": {
-                          "type": "string"
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "errorName": {
-                      "type": "string",
-                      "example": "Role required"
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Sorry Osimitzu only admins can access here"
-                    }
-                  }
-                }
-              }
-            }
+          "200": {
+            "description": "",
+            "headers": {}
           }
-        }
+        },
+        "deprecated": false
       }
     },
-    "/api/v1/products/image/{id}": {
-      "put": {
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
-        "tags": ["Products"],
-        "summary": "Update Product Image",
-        "description": "This endpoint allows us to update the image of our product, which must be in JPEG or PNG format and should not exceed 1000 kilobytes in size. NOTE: To use this endpoint, administrator privileges are required.",
+    "/users/delete/9": {
+      "delete": {
+        "tags": ["Users"],
+        "summary": "Delete User",
+        "description": "To delete a user, it is necessary to pass the user ID you wish to remove through the route parameters. To use this route, you must be logged in and have administrator permissions.",
+        "operationId": "DeleteUser",
         "parameters": [
           {
-            "name": "id",
-            "in": "path",
+            "name": "access-token",
+            "in": "header",
+            "description": "",
             "required": true,
-            "description": "Please enter the product ID for which you wish to update the image."
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "example": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwidXNlcm5hbWUiOiJDZXJ2YW50ZXMiLCJlbWFpbCI6ImNlcnZhbnRlcy5hb2NjQGdtYWlsLmNvbSIsInBhc3N3b3JkIjoiMTIzNDU2NzgiLCJhdmF0YXIiOiIxNjkzMjI0MTE1NjcyLWdvcmlsbGFQcm9maWxlUGljLmpwZyIsInJvbGVfaWQiOjIsImlhdCI6MTY5MzIyNDU0OSwiZXhwIjoxNjkzMjI4MTQ5fQ.Bi8KTpLJzZM5KJgYVc0z8TGc8oU45bsdDJ1pBQZUMQcQxi3K7HDb0YYcvLcDFKFC7dVjncADLcn2oRPhvc8cPw"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/users/role/6": {
+      "put": {
+        "tags": ["Users"],
+        "summary": "Update User Role",
+        "description": "To update a user's role, it is necessary to provide the user ID to whom we want to change the role through the route parameters. In the request body, we must include the \"role_id\" field that we wish to assign, which is an integer; 1 for a standard user and 2 for an administrator. Only administrators have the authority to assign roles.",
+        "operationId": "UpdateUserRole",
+        "parameters": [
+          {
+            "name": "access-token",
+            "in": "header",
+            "description": "",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "example": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwidXNlcm5hbWUiOiJDZXJ2YW50ZXMiLCJlbWFpbCI6ImNlcnZhbnRlcy5hb2NjQGdtYWlsLmNvbSIsInBhc3N3b3JkIjoiMTIzNDU2NzgiLCJhdmF0YXIiOiIuLi92aWV3cy9pbWFnZXMvZ29yaWxsYS5wbmciLCJyb2xlX2lkIjoyLCJpYXQiOjE2OTMyMjM5NDUsImV4cCI6MTY5MzIyNzU0NX0.0YNwHNcvlSelg1JKGCM416N6ddoY64Mp0ht5muvEfGaI9Q_H68k7xoCvFb23nK-dI7fMRSkQaOxQQ_WyGMP4tw"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/UpdateUserRoleRequest"
+                  },
+                  {
+                    "example": {
+                      "role_id": 2
+                    }
+                  }
+                ]
+              },
+              "example": {
+                "role_id": 2
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/users/info/6": {
+      "put": {
+        "tags": ["Users"],
+        "summary": "Update User Info",
+        "description": "Through this endpoint, it is possible to update the username and avatar of a user. In the route parameters, we need to provide the user ID for whom we wish to update their information. In the request body, we can include the new username and avatar. The avatar must be an image with a maximum size of 1000 kilobytes and in either JPEG or PNG format. Both fields can be updated, or just one, depending on the requirements. To use this route, it is necessary to be logged in.",
+        "operationId": "UpdateUserInfo",
+        "parameters": [
+          {
+            "name": "access-token",
+            "in": "header",
+            "description": "",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "example": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwidXNlcm5hbWUiOiJDZXJ2YW50ZXMiLCJlbWFpbCI6ImNlcnZhbnRlcy5hb2NjQGdtYWlsLmNvbSIsInBhc3N3b3JkIjoiMTIzNDU2NzgiLCJhdmF0YXIiOiIuLi92aWV3cy9pbWFnZXMvZ29yaWxsYS5wbmciLCJyb2xlX2lkIjoyLCJpYXQiOjE2OTMyMjM5NDUsImV4cCI6MTY5MzIyNzU0NX0.0YNwHNcvlSelg1JKGCM416N6ddoY64Mp0ht5muvEfGaI9Q_H68k7xoCvFb23nK-dI7fMRSkQaOxQQ_WyGMP4tw"
+            }
           }
         ],
         "requestBody": {
           "content": {
             "multipart/form-data": {
+              "encoding": {},
               "schema": {
+                "required": ["avatar"],
+                "type": "object",
+                "properties": {
+                  "avatar": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/users/passwordReset": {
+      "put": {
+        "tags": ["Users"],
+        "summary": "Password Reset",
+        "description": "To use this endpoint, it is only necessary to provide the email address of the user for whom you wish to reset the password through the request body. Subsequently, you will receive an email with instructions to reset it.",
+        "operationId": "PasswordReset",
+        "parameters": [],
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/PasswordResetRequest"
+                  },
+                  {
+                    "example": {
+                      "email": "cervantes.aocc@gmail.com"
+                    }
+                  }
+                ]
+              },
+              "example": {
+                "email": "cervantes.aocc@gmail.com"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/products/create": {
+      "post": {
+        "tags": ["Products"],
+        "summary": "Create New Product",
+        "description": "This endpoint is used to create a new product, for which it is mandatory to provide the product name and price. Optionally, you can add a description and the available quantity. If the available quantity is not specified, it will be automatically set to 1. Additionally, a default image will be assigned to the product, which can be changed later using another endpoint if desired. NOTE: To use this endpoint, administrator privileges are required.",
+        "operationId": "CreateNewProduct",
+        "parameters": [
+          {
+            "name": "access-token",
+            "in": "header",
+            "description": "",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "example": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwidXNlcm5hbWUiOiJDZXJ2YW50ZXMiLCJlbWFpbCI6ImNlcnZhbnRlcy5hb2NjQGdtYWlsLmNvbSIsImF2YXRhciI6IjE2OTMyMjQxMTU2NzItZ29yaWxsYVByb2ZpbGVQaWMuanBnIiwicm9sZV9pZCI6MiwiaWF0IjoxNjk0MDUzODYzLCJleHAiOjE2OTQwNTc0NjN9.9dbYMLAdklP_b0MXpgzwEZDeAbKulREAcmMnW72lljrRC1huFPLck8fs2HczPMG4McRXp-EaJ-1bzgE9M8BdsA"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/CreateNewProductRequest"
+                  },
+                  {
+                    "example": {
+                      "name": "Product-25",
+                      "description": "Descipcion del producto pwoqeurpoiuqwe",
+                      "price": 99.99,
+                      "available_qty": -14
+                    }
+                  }
+                ]
+              },
+              "example": {
+                "name": "Product-25",
+                "description": "Descipcion del producto pwoqeurpoiuqwe",
+                "price": 99.99,
+                "available_qty": -14
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/products/image/13": {
+      "put": {
+        "tags": ["Products"],
+        "summary": "Update Product Image",
+        "description": "This endpoint allows us to update the image of our product, which must be in JPEG or PNG format and should not exceed 1000 kilobytes in size. NOTE: To use this endpoint, administrator privileges are required.",
+        "operationId": "UpdateProductImage",
+        "parameters": [
+          {
+            "name": "access-token",
+            "in": "header",
+            "description": "",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "example": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJDZXJ2YW50ZXMiLCJlbWFpbCI6ImNlcnZhbnRlcy5hb2NjQGdtYWlsLmNvbSIsInBhc3N3b3JkIjoiMTIzNDU2NzgiLCJhdmF0YXIiOiIxNjkxMjg5MTU2NTg3LWlvLmpwZyIsInJvbGVfaWQiOjIsImlhdCI6MTY5MTI5MDA0NywiZXhwIjoxNjkxMjkzNjQ3fQ.fn1Q4rvUhfQ5dt2r8Jn3RQcgXuBx_cb_WD5rIBjSLd5Qx-oJ_D0m3dSjcu-CKPu5RhBB5-PXg6CKRsgzDS4AXA"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "encoding": {},
+              "schema": {
+                "required": ["product_image"],
                 "type": "object",
                 "properties": {
                   "product_image": {
@@ -228,177 +352,518 @@
                 }
               }
             }
-          }
+          },
+          "required": false
         },
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "",
+            "headers": {}
           }
-        }
+        },
+        "deprecated": false
       }
     },
-    "/api/v1/products/all": {
-      "get": {
+    "/products/info/9": {
+      "put": {
         "tags": ["Products"],
-        "summary": "Get all products",
-        "description": "Through this endpoint, you can retrieve all products with the 'available' status.",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": { "$ref": "#/components/schemas/product" }
-                }
-              }
+        "summary": "Update Product Info",
+        "description": "To update a product's information, administrator privileges are required. It is possible to update the name, description, price, and available quantity. It is not necessary to provide all fields in the request body, only the ones you wish to update. Additionally, in the route parameters, we must include the product ID we want to update.",
+        "operationId": "UpdateProductInfo",
+        "parameters": [
+          {
+            "name": "access-token",
+            "in": "header",
+            "description": "",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "example": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJDZXJ2YW50ZXMiLCJlbWFpbCI6ImNlcnZhbnRlcy5hb2NjQGdtYWlsLmNvbSIsInBhc3N3b3JkIjoiMTIzNDU2NzgiLCJhdmF0YXIiOiIxNjkxMjg5MTU2NTg3LWlvLmpwZyIsInJvbGVfaWQiOjIsImlhdCI6MTY5MTQ3MTYyNywiZXhwIjoxNjkxNDc1MjI3fQ.QYFjHxx7CVLdpxJiWn2VQsVQgHdNqP3lxig_ckD8HDt6xOjDcwGBV6Ck4Qhu21aTC6a3-Obk1en6uFxBmAJKaQ"
             }
           }
-        }
+        ],
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/UpdateProductInfoRequest"
+                  },
+                  {
+                    "example": {
+                      "name": "Banana Premium",
+                      "description": "banana buena bonita y barata",
+                      "price": 249.99,
+                      "available_qty": 0
+                    }
+                  }
+                ]
+              },
+              "example": {
+                "name": "Banana Premium",
+                "description": "banana buena bonita y barata",
+                "price": 249.99,
+                "available_qty": 0
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        },
+        "deprecated": false
       }
     },
-    "/api/v1/products/singleProduct/{id}": {
+    "/products/all": {
+      "get": {
+        "tags": ["Products"],
+        "summary": "Get All Products",
+        "description": "Through this endpoint, you can retrieve all products with the 'available' status.",
+        "operationId": "GetAllProducts",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/products/singleProduct/9": {
       "get": {
         "tags": ["Products"],
         "summary": "Get One Product",
         "description": "Using this endpoint, we can retrieve a specific product by passing the 'id' as a parameter.",
+        "operationId": "GetOneProduct",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/products/delete/22": {
+      "delete": {
+        "tags": ["Products"],
+        "summary": "Delete Product",
+        "description": "To delete a product, it is necessary to have administrator permissions and provide the product ID that we want to delete in the route parameters.",
+        "operationId": "DeleteProduct",
         "parameters": [
           {
-            "name": "id",
-            "in": "path",
+            "name": "access-token",
+            "in": "header",
+            "description": "",
             "required": true,
-            "description": "Enter the product ID you wish to search for."
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "example": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwidXNlcm5hbWUiOiJDZXJ2YW50ZXMiLCJlbWFpbCI6ImNlcnZhbnRlcy5hb2NjQGdtYWlsLmNvbSIsInBhc3N3b3JkIjoiMTIzNDU2NzgiLCJhdmF0YXIiOiIxNjkzMjI0MTE1NjcyLWdvcmlsbGFQcm9maWxlUGljLmpwZyIsInJvbGVfaWQiOjIsImlhdCI6MTY5MzIyNDU0OSwiZXhwIjoxNjkzMjI4MTQ5fQ.Bi8KTpLJzZM5KJgYVc0z8TGc8oU45bsdDJ1pBQZUMQcQxi3K7HDb0YYcvLcDFKFC7dVjncADLcn2oRPhvc8cPw"
+            }
           }
         ],
         "responses": {
           "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/product"
-                }
-              }
+            "description": "",
+            "headers": {}
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/cars/addProduct/5": {
+      "post": {
+        "tags": ["Cars"],
+        "summary": "Add Product to Car",
+        "description": "Through this endpoint, we have the ability to add a product to our shopping cart. To do so, it is necessary to be logged in. In the route parameters, we must provide the ID of the cart to which we want to add the products. In the request body, it is mandatory to include the ID and price of the product we wish to add. Optionally, we can specify the quantity we want to add; if not specified, a default quantity of 1 will be added automatically.",
+        "operationId": "AddProducttoCar",
+        "parameters": [
+          {
+            "name": "access-token",
+            "in": "header",
+            "description": "",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "example": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwidXNlcm5hbWUiOiJDZXJ2YW50ZXMiLCJlbWFpbCI6ImNlcnZhbnRlcy5hb2NjQGdtYWlsLmNvbSIsImF2YXRhciI6IjE2OTMyMjQxMTU2NzItZ29yaWxsYVByb2ZpbGVQaWMuanBnIiwicm9sZV9pZCI6MiwiaWF0IjoxNjk0MTM5NDU1LCJleHAiOjE2OTQxNDMwNTV9.doE-t3J0Ss7IfbAV1CMi-r2rTUN44aYhsoW_SsUxNDG27mGBYd9ufCsNco_Ih93kQM78ugJwXdw92jofTleImQ"
             }
           }
-        }
+        ],
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/AddProducttoCarRequest"
+                  },
+                  {
+                    "example": {
+                      "product_id": 14,
+                      "price": 69.99,
+                      "quantity": 3
+                    }
+                  }
+                ]
+              },
+              "example": {
+                "product_id": 14,
+                "price": 69.99,
+                "quantity": 3
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/cars/products/6": {
+      "get": {
+        "tags": ["Cars"],
+        "summary": "Get All Products in Car",
+        "description": "To view the products in a user's cart, it is necessary to be logged in and provide the user ID in the route parameters.",
+        "operationId": "GetAllProductsinCar",
+        "parameters": [
+          {
+            "name": "access-token",
+            "in": "header",
+            "description": "",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "example": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwidXNlcm5hbWUiOiJDZXJ2YW50ZXMiLCJlbWFpbCI6ImNlcnZhbnRlcy5hb2NjQGdtYWlsLmNvbSIsImF2YXRhciI6IjE2OTMyMjQxMTU2NzItZ29yaWxsYVByb2ZpbGVQaWMuanBnIiwicm9sZV9pZCI6MiwiaWF0IjoxNjk0MTQwMDQ3LCJleHAiOjE2OTQxNDM2NDd9.wvY89abtFQLqstZNyxcWBKYnqH3hmmNt2yD_ntRtJ8avlKLvLBFZy6x74gEp4GStzShKFL8Dc3dKRgEULWYzkw"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/orders/buy": {
+      "post": {
+        "tags": ["Orders"],
+        "summary": "Buy Products in Car",
+        "description": "With this endpoint, we can proceed to purchase the products in our shopping cart. To do so, it is necessary to be logged in first. In the request body, we must include the user's ID who is making the purchase, along with an array of the products being bought. Each product in the array should specify the product_id, quantity, and price. After using this endpoint, the user's cart will be automatically emptied, and the user will receive an email with the details of their purchase.",
+        "operationId": "BuyProductsinCar",
+        "parameters": [
+          {
+            "name": "access-token",
+            "in": "header",
+            "description": "",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "example": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwidXNlcm5hbWUiOiJDZXJ2YW50ZXMiLCJlbWFpbCI6ImNlcnZhbnRlcy5hb2NjQGdtYWlsLmNvbSIsImF2YXRhciI6IjE2OTMyMjQxMTU2NzItZ29yaWxsYVByb2ZpbGVQaWMuanBnIiwicm9sZV9pZCI6MiwiaWF0IjoxNjk0MTQ1MjQ0LCJleHAiOjE2OTQxNDg4NDR9.At-NFqn1K1Ak3aohKzFQ9O-umDLGw4NFDec-iqBbyAlfnlF6x_h8Z5_A1Pyu2ZCjEb5T9NGzoGA5G_hJ702g7g"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BuyProductsinCarRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/orders/allPendingOrders": {
+      "get": {
+        "tags": ["Orders"],
+        "summary": "Get All Pending Orders",
+        "description": "Since this is a customized e-commerce platform, only administrators have access to this endpoint. Furthermore, being logged in is a requirement to view all orders with the 'pending' status.",
+        "operationId": "GetAllPendingOrders",
+        "parameters": [
+          {
+            "name": "access-token",
+            "in": "header",
+            "description": "",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "example": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwidXNlcm5hbWUiOiJDZXJ2YW50ZXMiLCJlbWFpbCI6ImNlcnZhbnRlcy5hb2NjQGdtYWlsLmNvbSIsImF2YXRhciI6IjE2OTMyMjQxMTU2NzItZ29yaWxsYVByb2ZpbGVQaWMuanBnIiwicm9sZV9pZCI6MiwiaWF0IjoxNjk0MTQ1NTYyLCJleHAiOjE2OTQxNDkxNjJ9.uX1wILCmlvGhTf2BNCsRWsnaS11-ks7hPlaquNpqRXuVApLGDWfH4xL7jN4-BWvkF1tHHbQzp7_HJdvNIBbRag"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/orders/completeOrder/13": {
+      "put": {
+        "tags": ["Orders"],
+        "summary": "Complete Order",
+        "description": "To complete an order, it is necessary to be logged in and have administrator privileges. The only action required is to provide the ID of the order you wish to mark as completed in the route parameters.",
+        "operationId": "CompleteOrder",
+        "parameters": [
+          {
+            "name": "access-token",
+            "in": "header",
+            "description": "",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "example": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwidXNlcm5hbWUiOiJDZXJ2YW50ZXMiLCJlbWFpbCI6ImNlcnZhbnRlcy5hb2NjQGdtYWlsLmNvbSIsInBhc3N3b3JkIjoiMTIzNDU2NzgiLCJhdmF0YXIiOiIxNjkzMjI0MTE1NjcyLWdvcmlsbGFQcm9maWxlUGljLmpwZyIsInJvbGVfaWQiOjIsImlhdCI6MTY5MzYxMTExOSwiZXhwIjoxNjkzNjE0NzE5fQ.-mR7dVE1ulk3i61pQ0wXIBcAnLNvVRO0-8Qp1OcXtW2pAxVr-hpTtTupXBaPzN8X7BhnlZjdT0uRhcA6MZZkPg"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        },
+        "deprecated": false
       }
     }
   },
   "components": {
     "schemas": {
-      "register": {
+      "CreateNewUserRequest": {
+        "title": "CreateNewUserRequest",
+        "required": ["username", "email", "password"],
         "type": "object",
         "properties": {
           "username": {
-            "type": "string",
-            "example": "Cervantes"
+            "type": "string"
           },
           "email": {
-            "type": "string",
-            "example": "cervantes.aocc@gmail.com"
+            "type": "string"
           },
           "password": {
-            "type": "string",
-            "example": "12345678"
+            "type": "string"
           }
+        },
+        "example": {
+          "username": "Cervantes",
+          "email": "cervantes.aocc@gmail.com",
+          "password": "12345678"
         }
       },
-      "user": {
+      "LoginRequest": {
+        "title": "LoginRequest",
+        "required": ["email", "password"],
         "type": "object",
         "properties": {
-          "id": {
-            "type": "integer",
-            "example": 6
-          },
-          "username": {
-            "type": "string",
-            "example": "Cervantes"
-          },
           "email": {
-            "type": "string",
-            "example": "cervantes.aocc@gmail.com"
+            "type": "string"
           },
-          "avatar": {
-            "type": "string",
-            "example": "1693224115672-gorillaProfilePic.jpg"
-          },
+          "password": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "email": "cervantes.aocc@gmail.com",
+          "password": "12345678"
+        }
+      },
+      "UpdateUserRoleRequest": {
+        "title": "UpdateUserRoleRequest",
+        "required": ["role_id"],
+        "type": "object",
+        "properties": {
           "role_id": {
             "type": "integer",
-            "example": 2
+            "format": "int32"
           }
+        },
+        "example": {
+          "role_id": 2
         }
       },
-      "login": {
+      "PasswordResetRequest": {
+        "title": "PasswordResetRequest",
+        "required": ["email"],
         "type": "object",
         "properties": {
           "email": {
-            "type": "string",
-            "example": "cervantes.aocc@gmail.com"
-          },
-          "password": {
-            "type": "string",
-            "example": "12345678"
+            "type": "string"
           }
+        },
+        "example": {
+          "email": "cervantes.aocc@gmail.com"
         }
       },
-      "newProduct": {
+      "CreateNewProductRequest": {
+        "title": "CreateNewProductRequest",
+        "required": ["name", "description", "price", "available_qty"],
         "type": "object",
         "properties": {
           "name": {
-            "type": "string",
-            "example": "Product-7"
+            "type": "string"
           },
           "description": {
-            "type": "string",
-            "example": "High-quality product with an outstanding value-for-money proposition."
+            "type": "string"
           },
           "price": {
-            "type": "number",
-            "example": 99.99
+            "type": "number"
           },
           "available_qty": {
             "type": "integer",
-            "example": 10
+            "format": "int32"
+          }
+        },
+        "example": {
+          "name": "Product-25",
+          "description": "Descipcion del producto pwoqeurpoiuqwe",
+          "price": 99.99,
+          "available_qty": -14
+        }
+      },
+      "UpdateProductInfoRequest": {
+        "title": "UpdateProductInfoRequest",
+        "required": ["name", "description", "price", "available_qty"],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "price": {
+            "type": "number"
+          },
+          "available_qty": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "example": {
+          "name": "Banana Premium",
+          "description": "banana buena bonita y barata",
+          "price": 249.99,
+          "available_qty": 0
+        }
+      },
+      "AddProducttoCarRequest": {
+        "title": "AddProducttoCarRequest",
+        "required": ["product_id", "price", "quantity"],
+        "type": "object",
+        "properties": {
+          "product_id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "price": {
+            "type": "number"
+          },
+          "quantity": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "example": {
+          "product_id": 14,
+          "price": 69.99,
+          "quantity": 3
+        }
+      },
+      "BuyProductsinCarRequest": {
+        "title": "BuyProductsinCarRequest",
+        "required": ["user_id", "products"],
+        "type": "object",
+        "properties": {
+          "user_id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "products": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Product"
+            },
+            "description": ""
           }
         }
       },
-      "product": {
+      "Product": {
+        "title": "Product",
+        "required": ["product_id", "quantity", "price"],
         "type": "object",
         "properties": {
-          "id": {
+          "product_id": {
             "type": "integer",
-            "example": 5
+            "format": "int32"
           },
-          "name": {
-            "type": "string",
-            "example": "Product-7"
-          },
-          "description": {
-            "type": "string",
-            "example": "High-quality product with an outstanding value-for-money proposition."
+          "quantity": {
+            "type": "integer",
+            "format": "int32"
           },
           "price": {
-            "type": "number",
-            "example": 99.99
-          },
-          "available_qty": {
-            "type": "integer",
-            "example": 10
-          },
-          "product_image": {
-            "type": "string",
-            "example": "1691291544581-banana4.png"
+            "oneOf": [
+              {
+                "type": "integer",
+                "format": "int32"
+              },
+              {
+                "type": "number"
+              }
+            ]
           }
         }
-      }
-    },
-    "securitySchemes": {
-      "bearerAuth": {
-        "type": "http",
-        "scheme": "bearer",
-        "bearerFormat": "JWT"
       }
     }
-  }
+  },
+  "tags": [
+    {
+      "name": "Users",
+      "description": "Users Routes"
+    },
+    {
+      "name": "Products",
+      "description": "Products Routes"
+    },
+    {
+      "name": "Cars",
+      "description": "Cars Routes"
+    },
+    {
+      "name": "Orders",
+      "description": "Orders Routes"
+    }
+  ]
 }
