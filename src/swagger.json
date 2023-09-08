@@ -12,7 +12,7 @@
   },
   "servers": [
     {
-      "url": "https://localhost:8000/api/v1",
+      "url": "/api/v1",
       "variables": {}
     }
   ],
@@ -20,12 +20,10 @@
     "/users/register": {
       "post": {
         "tags": ["Users"],
-        "summary": "Create New User",
+        "summary": "User register",
         "description": "To create a new user, it is essential to provide a valid email address, a password with a minimum of 8 characters, and a username. These fields are mandatory. If the information is provided correctly, you will receive an email to validate your user account.",
         "operationId": "CreateNewUser",
-        "parameters": [],
         "requestBody": {
-          "description": "",
           "content": {
             "application/json": {
               "schema": {
@@ -41,20 +39,45 @@
                     }
                   }
                 ]
-              },
-              "example": {
-                "username": "Cervantes",
-                "email": "cervantes.aocc@gmail.com",
-                "password": "12345678"
               }
             }
           },
           "required": true
         },
         "responses": {
-          "200": {
-            "description": "",
-            "headers": {}
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Invalid or missing data"
+                    },
+                    "message": {
+                      "type": "object",
+                      "properties": {
+                        "errorQty": {
+                          "type": "number",
+                          "example": 2
+                        }
+                      },
+                      "errors": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
           }
         },
         "deprecated": false
@@ -66,9 +89,7 @@
         "summary": "Login",
         "description": "Allows a registered user to log in by providing their email and password.",
         "operationId": "Login",
-        "parameters": [],
         "requestBody": {
-          "description": "",
           "content": {
             "application/json": {
               "schema": {
@@ -83,10 +104,6 @@
                     }
                   }
                 ]
-              },
-              "example": {
-                "email": "cervantes.aocc@gmail.com",
-                "password": "12345678"
               }
             }
           },
@@ -94,62 +111,107 @@
         },
         "responses": {
           "200": {
-            "description": "",
-            "headers": {}
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/UserRequest"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorName": {
+                      "type": "string",
+                      "example": "Unauthorized"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Invalid email or password."
+                    }
+                  }
+                }
+              }
+            }
           }
         },
         "deprecated": false
       }
     },
-    "/users/delete/9": {
+    "/users/delete/{id}": {
       "delete": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "tags": ["Users"],
         "summary": "Delete User",
         "description": "To delete a user, it is necessary to pass the user ID you wish to remove through the route parameters. To use this route, you must be logged in and have administrator permissions.",
         "operationId": "DeleteUser",
         "parameters": [
           {
-            "name": "access-token",
-            "in": "header",
-            "description": "",
+            "name": "id",
+            "in": "path",
             "required": true,
-            "style": "simple",
-            "schema": {
-              "type": "string",
-              "example": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwidXNlcm5hbWUiOiJDZXJ2YW50ZXMiLCJlbWFpbCI6ImNlcnZhbnRlcy5hb2NjQGdtYWlsLmNvbSIsInBhc3N3b3JkIjoiMTIzNDU2NzgiLCJhdmF0YXIiOiIxNjkzMjI0MTE1NjcyLWdvcmlsbGFQcm9maWxlUGljLmpwZyIsInJvbGVfaWQiOjIsImlhdCI6MTY5MzIyNDU0OSwiZXhwIjoxNjkzMjI4MTQ5fQ.Bi8KTpLJzZM5KJgYVc0z8TGc8oU45bsdDJ1pBQZUMQcQxi3K7HDb0YYcvLcDFKFC7dVjncADLcn2oRPhvc8cPw"
-            }
+            "description": "Please enter the user ID you want to delete."
           }
         ],
         "responses": {
           "200": {
-            "description": "",
-            "headers": {}
+            "description": "User deleted"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorName": {
+                      "type": "string",
+                      "example": "Invalid user"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "User doesn't exists"
+                    }
+                  }
+                }
+              }
+            }
           }
         },
         "deprecated": false
       }
     },
-    "/users/role/6": {
+    "/users/role/{id}": {
       "put": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "tags": ["Users"],
         "summary": "Update User Role",
         "description": "To update a user's role, it is necessary to provide the user ID to whom we want to change the role through the route parameters. In the request body, we must include the \"role_id\" field that we wish to assign, which is an integer; 1 for a standard user and 2 for an administrator. Only administrators have the authority to assign roles.",
         "operationId": "UpdateUserRole",
         "parameters": [
           {
-            "name": "access-token",
-            "in": "header",
-            "description": "",
+            "name": "id",
+            "in": "path",
             "required": true,
-            "style": "simple",
-            "schema": {
-              "type": "string",
-              "example": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwidXNlcm5hbWUiOiJDZXJ2YW50ZXMiLCJlbWFpbCI6ImNlcnZhbnRlcy5hb2NjQGdtYWlsLmNvbSIsInBhc3N3b3JkIjoiMTIzNDU2NzgiLCJhdmF0YXIiOiIuLi92aWV3cy9pbWFnZXMvZ29yaWxsYS5wbmciLCJyb2xlX2lkIjoyLCJpYXQiOjE2OTMyMjM5NDUsImV4cCI6MTY5MzIyNzU0NX0.0YNwHNcvlSelg1JKGCM416N6ddoY64Mp0ht5muvEfGaI9Q_H68k7xoCvFb23nK-dI7fMRSkQaOxQQ_WyGMP4tw"
-            }
+            "description": "Please enter the user ID you want to change role."
           }
         ],
         "requestBody": {
-          "description": "",
           "content": {
             "application/json": {
               "schema": {
@@ -163,9 +225,6 @@
                     }
                   }
                 ]
-              },
-              "example": {
-                "role_id": 2
               }
             }
           },
@@ -173,36 +232,54 @@
         },
         "responses": {
           "200": {
-            "description": "",
-            "headers": {}
+            "description": "Role has been updated"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorName": {
+                      "type": "string",
+                      "example": "Invalid user"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "User doesn't exists"
+                    }
+                  }
+                }
+              }
+            }
           }
         },
-        "deprecated": false
+        "deprecated": true
       }
     },
-    "/users/info/6": {
+    "/users/info/{id}": {
       "put": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "tags": ["Users"],
         "summary": "Update User Info",
-        "description": "Through this endpoint, it is possible to update the username and avatar of a user. In the route parameters, we need to provide the user ID for whom we wish to update their information. In the request body, we can include the new username and avatar. The avatar must be an image with a maximum size of 1000 kilobytes and in either JPEG or PNG format. Both fields can be updated, or just one, depending on the requirements. To use this route, it is necessary to be logged in.",
+        "description": "Through this endpoint, it is possible to update the username and avatar of a user. In the route parameters, we need to provide the user ID for whom we wish to update their information. In the request body, we can include the new username and avatar. The avatar must be an image with a maximum size of 1000 kilobytes and in either JPEG or PNG format. Only one field at a time can be updated, depending on the requirements. To use this route, it is necessary to be logged in.",
         "operationId": "UpdateUserInfo",
         "parameters": [
           {
-            "name": "access-token",
-            "in": "header",
-            "description": "",
+            "name": "id",
+            "in": "path",
             "required": true,
-            "style": "simple",
-            "schema": {
-              "type": "string",
-              "example": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwidXNlcm5hbWUiOiJDZXJ2YW50ZXMiLCJlbWFpbCI6ImNlcnZhbnRlcy5hb2NjQGdtYWlsLmNvbSIsInBhc3N3b3JkIjoiMTIzNDU2NzgiLCJhdmF0YXIiOiIuLi92aWV3cy9pbWFnZXMvZ29yaWxsYS5wbmciLCJyb2xlX2lkIjoyLCJpYXQiOjE2OTMyMjM5NDUsImV4cCI6MTY5MzIyNzU0NX0.0YNwHNcvlSelg1JKGCM416N6ddoY64Mp0ht5muvEfGaI9Q_H68k7xoCvFb23nK-dI7fMRSkQaOxQQ_WyGMP4tw"
-            }
+            "description": "Please enter the user ID you want to change role."
           }
         ],
         "requestBody": {
           "content": {
             "multipart/form-data": {
-              "encoding": {},
               "schema": {
                 "required": ["avatar"],
                 "type": "object",
@@ -213,14 +290,45 @@
                   }
                 }
               }
+            },
+            "application/json": {
+              "schema": {
+                "required": ["username"],
+                "type": "object",
+                "properties": {
+                  "username": {
+                    "type": "string",
+                    "example": "LukeW"
+                  }
+                }
+              }
             }
           },
           "required": false
         },
         "responses": {
           "200": {
-            "description": "",
-            "headers": {}
+            "description": "Info has been updated"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorName": {
+                      "type": "string",
+                      "example": "Unauthorized"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Token does not belong to this user"
+                    }
+                  }
+                }
+              }
+            }
           }
         },
         "deprecated": false
@@ -232,9 +340,7 @@
         "summary": "Password Reset",
         "description": "To use this endpoint, it is only necessary to provide the email address of the user for whom you wish to reset the password through the request body. Subsequently, you will receive an email with instructions to reset it.",
         "operationId": "PasswordReset",
-        "parameters": [],
         "requestBody": {
-          "description": "",
           "content": {
             "application/json": {
               "schema": {
@@ -248,9 +354,6 @@
                     }
                   }
                 ]
-              },
-              "example": {
-                "email": "cervantes.aocc@gmail.com"
               }
             }
           },
@@ -258,8 +361,27 @@
         },
         "responses": {
           "200": {
-            "description": "",
-            "headers": {}
+            "description": "Please check out your email to reset your password"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorName": {
+                      "type": "string",
+                      "example": "Invalid user"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "User doesn't exists"
+                    }
+                  }
+                }
+              }
+            }
           }
         },
         "deprecated": false
@@ -704,6 +826,37 @@
           "password": "12345678"
         }
       },
+      "UserRequest": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "username": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "avatar": {
+            "type": "string"
+          },
+          "role_id": {
+            "type": "integer"
+          },
+          "token": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "id": 6,
+          "username": "Cervantes",
+          "email": "cervantes.aocc@gmail.com",
+          "avatar": "1693224115672-gorillaProfilePic.jpg",
+          "role_id": 2,
+          "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+        }
+      },
       "UpdateUserRoleRequest": {
         "title": "UpdateUserRoleRequest",
         "required": ["role_id"],
@@ -849,6 +1002,13 @@
             ]
           }
         }
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
       }
     }
   },

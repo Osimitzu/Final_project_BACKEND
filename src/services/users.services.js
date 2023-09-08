@@ -133,7 +133,7 @@ class usersServices {
 
       await updateRoleREPO(id, role_id);
 
-      return "Role has been changed";
+      return "Role has been updated";
     } catch (err) {
       throw err;
     }

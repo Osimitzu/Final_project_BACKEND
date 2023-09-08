@@ -31,7 +31,12 @@ router.delete(
   deleteUserCTRL
 );
 
-router.put("/api/v1/users/role/:id", authenticate, hasRoles(2), updateRoleCTRL);
+router.put(
+  "-temporalDeprecated-/api/v1/users/role/:id/-deprecated-",
+  authenticate,
+  hasRoles(2),
+  updateRoleCTRL
+);
 
 router.put(
   "/api/v1/users/info/:id",

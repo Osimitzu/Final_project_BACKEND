@@ -5,7 +5,11 @@ require("dotenv").config();
 
 const authenticateAndIdCompare = (req, res, next) => {
   try {
-    const token = req.headers["access-token"];
+    // recuperar el token en postgres:
+    // const token = req.headers["access-token"];
+
+    // recuperar token en swagger:
+    const token = req.headers.authorization.split(" ")[1];
 
     if (!token) {
       return next({
