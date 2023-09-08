@@ -197,6 +197,46 @@
         }
       }
     },
+    "/api/v1/products/image/{id}": {
+      "put": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "tags": ["Products"],
+        "summary": "Update Product Image",
+        "description": "This endpoint allows us to update the image of our product, which must be in JPEG or PNG format and should not exceed 1000 kilobytes in size. NOTE: To use this endpoint, administrator privileges are required.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Please enter the product ID for which you wish to update the image."
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "product_image": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/v1/products/all": {
       "get": {
         "tags": ["Products"],
