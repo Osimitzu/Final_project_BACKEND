@@ -1,10 +1,14 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "title": "Final Project // E-commerce API",
+    "title": "E-commerce API",
     "description": "This API is tailored for a customized e-commerce platform, featuring an administrative dashboard for product and order management, while restricting purchases to registered users.",
-    "contact": {},
-    "version": "1.0"
+    "contact": {
+      "name": "Osiris Contreras",
+      "url": "https://github.com/Osimitzu",
+      "email": "angel_aocc@hotmail.com"
+    },
+    "version": "1.0.0"
   },
   "servers": [
     {
