@@ -24,7 +24,12 @@ router.post("/api/v1/users/email-validate", validateEmail);
 
 router.post("/api/v1/users/login", loginUserValidator, loginCTRL);
 
-router.delete("/api/v1/users/:id", authenticate, hasRoles(2), deleteUserCTRL);
+router.delete(
+  "/api/v1/users/delete/:id",
+  authenticate,
+  hasRoles(2),
+  deleteUserCTRL
+);
 
 router.put("/api/v1/users/role/:id", authenticate, hasRoles(2), updateRoleCTRL);
 
@@ -34,6 +39,6 @@ router.put(
   updateUserInfoCTRL
 );
 
-router.put("/api/v1/users/passwordReset", authenticate, passwordResetCTRL);
+router.put("/api/v1/users/passwordReset", passwordResetCTRL);
 
 module.exports = router;
