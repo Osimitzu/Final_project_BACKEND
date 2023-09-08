@@ -16,6 +16,13 @@ const createProductInPivotREPO = async (
   quantity,
   car_id
 ) => {
+  if (quantity < 1) {
+    throw {
+      status: 400,
+      name: "Invalid quantity of products",
+      message: "To add a product the amount must be greater than 0",
+    };
+  }
   const product = await product_in_cars.create({
     product_id,
     price,
