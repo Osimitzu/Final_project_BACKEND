@@ -9,7 +9,7 @@ const hasRoles = require("../middlewares/role.middlewares");
 
 const router = Router();
 
-router.post("/api/v1/orders/buy", buyProductsInCarCTRL);
+router.post("/api/v1/orders/buy", authenticate, buyProductsInCarCTRL);
 
 router.get(
   "/api/v1/orders/allPendingOrders",
