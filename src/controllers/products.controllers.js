@@ -1,5 +1,6 @@
 const productsServices = require("../services/products.services");
 const path = require("path");
+const { products } = require("../models");
 const multer = require("multer");
 const types = ["image/jpeg", "image/png"];
 const upload = multer({
@@ -51,6 +52,18 @@ const createNewProductCTRL = async (req, res, next) => {
 const updateProductImageCTRL = async (req, res, next) => {
   try {
     const { id } = req.params;
+
+    const product = await products.findOne({
+      where: { id },
+    });
+
+    if (!product) {
+      throw {
+        status: 400,
+        name: "Invalid product",
+        message: "Product doesn't exist",
+      };
+    }
 
     upload.single("product_image")(req, res, async (err) => {
       if (err) {

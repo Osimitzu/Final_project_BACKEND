@@ -13,7 +13,7 @@
   "servers": [
     {
       "url": "/api/v1",
-      "variables": {}
+      "description": "Default description"
     }
   ],
   "paths": {
@@ -116,7 +116,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "$ref": "#/components/schemas/UserRequest"
+                  "$ref": "#/components/schemas/ResponseUser"
                 }
               }
             }
@@ -182,6 +182,46 @@
                     "message": {
                       "type": "string",
                       "example": "User doesn't exists"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorName": {
+                      "type": "string",
+                      "example": "Role required"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Sorry Osimitzu only admins can access here"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "498": {
+            "description": "Token expired/invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorName": {
+                      "type": "string",
+                      "example": "Invalid or expired token"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Token is not valid or is expired, please check it out and try again"
                     }
                   }
                 }
@@ -253,6 +293,46 @@
                 }
               }
             }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorName": {
+                      "type": "string",
+                      "example": "Role required"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Sorry Osimitzu only admins can access here"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "498": {
+            "description": "Token expired/invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorName": {
+                      "type": "string",
+                      "example": "Invalid or expired token"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Token is not valid or is expired, please check it out and try again"
+                    }
+                  }
+                }
+              }
+            }
           }
         },
         "deprecated": true
@@ -274,7 +354,7 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "description": "Please enter the user ID you want to change role."
+            "description": "Please enter the user ID you want to update."
           }
         ],
         "requestBody": {
@@ -324,6 +404,62 @@
                     "message": {
                       "type": "string",
                       "example": "Token does not belong to this user"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorName": {
+                      "type": "string",
+                      "example": "Role required"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Sorry Osimitzu only admins can access here"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "498": {
+            "description": "Token expired/invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorName": {
+                      "type": "string",
+                      "example": "Invalid or expired token"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Token is not valid or is expired, please check it out and try again"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Only image/jpeg, image/png mimetypes are allowed"
                     }
                   }
                 }
@@ -389,25 +525,16 @@
     },
     "/products/create": {
       "post": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "tags": ["Products"],
         "summary": "Create New Product",
         "description": "This endpoint is used to create a new product, for which it is mandatory to provide the product name and price. Optionally, you can add a description and the available quantity. If the available quantity is not specified, it will be automatically set to 1. Additionally, a default image will be assigned to the product, which can be changed later using another endpoint if desired. NOTE: To use this endpoint, administrator privileges are required.",
         "operationId": "CreateNewProduct",
-        "parameters": [
-          {
-            "name": "access-token",
-            "in": "header",
-            "description": "",
-            "required": true,
-            "style": "simple",
-            "schema": {
-              "type": "string",
-              "example": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwidXNlcm5hbWUiOiJDZXJ2YW50ZXMiLCJlbWFpbCI6ImNlcnZhbnRlcy5hb2NjQGdtYWlsLmNvbSIsImF2YXRhciI6IjE2OTMyMjQxMTU2NzItZ29yaWxsYVByb2ZpbGVQaWMuanBnIiwicm9sZV9pZCI6MiwiaWF0IjoxNjk0MDUzODYzLCJleHAiOjE2OTQwNTc0NjN9.9dbYMLAdklP_b0MXpgzwEZDeAbKulREAcmMnW72lljrRC1huFPLck8fs2HczPMG4McRXp-EaJ-1bzgE9M8BdsA"
-            }
-          }
-        ],
         "requestBody": {
-          "description": "",
           "content": {
             "application/json": {
               "schema": {
@@ -418,55 +545,107 @@
                   {
                     "example": {
                       "name": "Product-25",
-                      "description": "Descipcion del producto pwoqeurpoiuqwe",
+                      "description": "Descipcion del producto pwoqeuradfgasd",
                       "price": 99.99,
-                      "available_qty": -14
+                      "available_qty": 10
                     }
                   }
                 ]
-              },
-              "example": {
-                "name": "Product-25",
-                "description": "Descipcion del producto pwoqeurpoiuqwe",
-                "price": 99.99,
-                "available_qty": -14
               }
             }
           },
           "required": true
         },
         "responses": {
-          "200": {
-            "description": "",
-            "headers": {}
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorName": {
+                      "type": "string",
+                      "example": "Validation error"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "price is mandatory"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorName": {
+                      "type": "string",
+                      "example": "Role required"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Sorry Osimitzu only admins can access here"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "498": {
+            "description": "Token expired/invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorName": {
+                      "type": "string",
+                      "example": "Invalid or expired token"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Token is not valid or is expired, please check it out and try again"
+                    }
+                  }
+                }
+              }
+            }
           }
         },
         "deprecated": false
       }
     },
-    "/products/image/13": {
+    "/products/image/{id}": {
       "put": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "tags": ["Products"],
         "summary": "Update Product Image",
         "description": "This endpoint allows us to update the image of our product, which must be in JPEG or PNG format and should not exceed 1000 kilobytes in size. NOTE: To use this endpoint, administrator privileges are required.",
         "operationId": "UpdateProductImage",
         "parameters": [
           {
-            "name": "access-token",
-            "in": "header",
-            "description": "",
+            "name": "id",
+            "in": "path",
             "required": true,
-            "style": "simple",
-            "schema": {
-              "type": "string",
-              "example": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJDZXJ2YW50ZXMiLCJlbWFpbCI6ImNlcnZhbnRlcy5hb2NjQGdtYWlsLmNvbSIsInBhc3N3b3JkIjoiMTIzNDU2NzgiLCJhdmF0YXIiOiIxNjkxMjg5MTU2NTg3LWlvLmpwZyIsInJvbGVfaWQiOjIsImlhdCI6MTY5MTI5MDA0NywiZXhwIjoxNjkxMjkzNjQ3fQ.fn1Q4rvUhfQ5dt2r8Jn3RQcgXuBx_cb_WD5rIBjSLd5Qx-oJ_D0m3dSjcu-CKPu5RhBB5-PXg6CKRsgzDS4AXA"
-            }
+            "description": "Please enter the product id of the product you wish to update the image."
           }
         ],
         "requestBody": {
           "content": {
             "multipart/form-data": {
-              "encoding": {},
               "schema": {
                 "required": ["product_image"],
                 "type": "object",
@@ -483,34 +662,108 @@
         },
         "responses": {
           "200": {
-            "description": "",
-            "headers": {}
+            "description": "Image has been updated"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorName": {
+                      "type": "string",
+                      "example": "Invalid product"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Product doesn't exist"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorName": {
+                      "type": "string",
+                      "example": "Role required"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Sorry Osimitzu only admins can access here"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "498": {
+            "description": "Token expired/invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorName": {
+                      "type": "string",
+                      "example": "Invalid or expired token"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Token is not valid or is expired, please check it out and try again"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Only image/jpeg, image/png mimetypes are allowed"
+                    }
+                  }
+                }
+              }
+            }
           }
         },
         "deprecated": false
       }
     },
-    "/products/info/9": {
+    "/products/info/{id}": {
       "put": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "tags": ["Products"],
         "summary": "Update Product Info",
         "description": "To update a product's information, administrator privileges are required. It is possible to update the name, description, price, and available quantity. It is not necessary to provide all fields in the request body, only the ones you wish to update. Additionally, in the route parameters, we must include the product ID we want to update.",
         "operationId": "UpdateProductInfo",
         "parameters": [
           {
-            "name": "access-token",
-            "in": "header",
-            "description": "",
+            "name": "id",
+            "in": "path",
             "required": true,
-            "style": "simple",
-            "schema": {
-              "type": "string",
-              "example": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJDZXJ2YW50ZXMiLCJlbWFpbCI6ImNlcnZhbnRlcy5hb2NjQGdtYWlsLmNvbSIsInBhc3N3b3JkIjoiMTIzNDU2NzgiLCJhdmF0YXIiOiIxNjkxMjg5MTU2NTg3LWlvLmpwZyIsInJvbGVfaWQiOjIsImlhdCI6MTY5MTQ3MTYyNywiZXhwIjoxNjkxNDc1MjI3fQ.QYFjHxx7CVLdpxJiWn2VQsVQgHdNqP3lxig_ckD8HDt6xOjDcwGBV6Ck4Qhu21aTC6a3-Obk1en6uFxBmAJKaQ"
-            }
+            "description": "Please enter the product id of the product you wish to update."
           }
         ],
         "requestBody": {
-          "description": "",
           "content": {
             "application/json": {
               "schema": {
@@ -523,16 +776,10 @@
                       "name": "Banana Premium",
                       "description": "banana buena bonita y barata",
                       "price": 249.99,
-                      "available_qty": 0
+                      "available_qty": 10
                     }
                   }
                 ]
-              },
-              "example": {
-                "name": "Banana Premium",
-                "description": "banana buena bonita y barata",
-                "price": 249.99,
-                "available_qty": 0
               }
             }
           },
@@ -540,8 +787,67 @@
         },
         "responses": {
           "200": {
-            "description": "",
-            "headers": {}
+            "description": "Info has been updated"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorName": {
+                      "type": "string",
+                      "example": "Invalid product"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Product doesn't exist"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorName": {
+                      "type": "string",
+                      "example": "Role required"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Sorry Osimitzu only admins can access here"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "498": {
+            "description": "Token expired/invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorName": {
+                      "type": "string",
+                      "example": "Invalid or expired token"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Token is not valid or is expired, please check it out and try again"
+                    }
+                  }
+                }
+              }
+            }
           }
         },
         "deprecated": false
@@ -550,58 +856,165 @@
     "/products/all": {
       "get": {
         "tags": ["Products"],
-        "summary": "Get All Products",
+        "summary": "Get All Available Products",
         "description": "Through this endpoint, you can retrieve all products with the 'available' status.",
         "operationId": "GetAllProducts",
-        "parameters": [],
         "responses": {
           "200": {
-            "description": "",
-            "headers": {}
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/ResponseProducts"
+                    }
+                  ]
+                }
+              }
+            }
           }
         },
         "deprecated": false
       }
     },
-    "/products/singleProduct/9": {
+    "/products/singleProduct/{id}": {
       "get": {
         "tags": ["Products"],
         "summary": "Get One Product",
         "description": "Using this endpoint, we can retrieve a specific product by passing the 'id' as a parameter.",
         "operationId": "GetOneProduct",
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Please enter the product id of the product you want to see information."
+          }
+        ],
         "responses": {
           "200": {
-            "description": "",
-            "headers": {}
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/ResponseOneProduct"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorName": {
+                      "type": "string",
+                      "example": "Invalid product"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Product doesn't exist"
+                    }
+                  }
+                }
+              }
+            }
           }
         },
         "deprecated": false
       }
     },
-    "/products/delete/22": {
+    "/products/delete/{id}": {
       "delete": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "tags": ["Products"],
         "summary": "Delete Product",
         "description": "To delete a product, it is necessary to have administrator permissions and provide the product ID that we want to delete in the route parameters.",
         "operationId": "DeleteProduct",
         "parameters": [
           {
-            "name": "access-token",
-            "in": "header",
-            "description": "",
+            "name": "id",
+            "in": "path",
             "required": true,
-            "style": "simple",
-            "schema": {
-              "type": "string",
-              "example": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwidXNlcm5hbWUiOiJDZXJ2YW50ZXMiLCJlbWFpbCI6ImNlcnZhbnRlcy5hb2NjQGdtYWlsLmNvbSIsInBhc3N3b3JkIjoiMTIzNDU2NzgiLCJhdmF0YXIiOiIxNjkzMjI0MTE1NjcyLWdvcmlsbGFQcm9maWxlUGljLmpwZyIsInJvbGVfaWQiOjIsImlhdCI6MTY5MzIyNDU0OSwiZXhwIjoxNjkzMjI4MTQ5fQ.Bi8KTpLJzZM5KJgYVc0z8TGc8oU45bsdDJ1pBQZUMQcQxi3K7HDb0YYcvLcDFKFC7dVjncADLcn2oRPhvc8cPw"
-            }
+            "description": "Please enter the product id of the product you wish to delete."
           }
         ],
         "responses": {
           "200": {
-            "description": "",
-            "headers": {}
+            "description": "Product Deleted"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorName": {
+                      "type": "string",
+                      "example": "Invalid product"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Product doesn't exist"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorName": {
+                      "type": "string",
+                      "example": "Role required"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Sorry Osimitzu only admins can access here"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "498": {
+            "description": "Token expired/invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorName": {
+                      "type": "string",
+                      "example": "Invalid or expired token"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Token is not valid or is expired, please check it out and try again"
+                    }
+                  }
+                }
+              }
+            }
           }
         },
         "deprecated": false
@@ -826,7 +1239,9 @@
           "password": "12345678"
         }
       },
-      "UserRequest": {
+      "ResponseUser": {
+        "title": "ResponseUser",
+        "required": [""],
         "type": "object",
         "properties": {
           "id": {
@@ -886,7 +1301,7 @@
       },
       "CreateNewProductRequest": {
         "title": "CreateNewProductRequest",
-        "required": ["name", "description", "price", "available_qty"],
+        "required": ["name", "price"],
         "type": "object",
         "properties": {
           "name": {
@@ -905,14 +1320,13 @@
         },
         "example": {
           "name": "Product-25",
-          "description": "Descipcion del producto pwoqeurpoiuqwe",
+          "description": "Descipcion del producto pwoqeurpoiuqweafgadfgasd",
           "price": 99.99,
-          "available_qty": -14
+          "available_qty": 10
         }
       },
       "UpdateProductInfoRequest": {
         "title": "UpdateProductInfoRequest",
-        "required": ["name", "description", "price", "available_qty"],
         "type": "object",
         "properties": {
           "name": {
@@ -933,7 +1347,104 @@
           "name": "Banana Premium",
           "description": "banana buena bonita y barata",
           "price": 249.99,
-          "available_qty": 0
+          "available_qty": 10
+        }
+      },
+      "ResponseProducts": {
+        "title": "ResponseProducts",
+        "required": [""],
+        "type": "array",
+        "properties": [
+          {
+            "id": {
+              "type": "integer"
+            },
+            "name": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "price": {
+              "type": "number"
+            },
+            "available_qty": {
+              "type": "integer"
+            },
+            "product_image": {
+              "type": "string"
+            }
+          }
+        ],
+        "example": [
+          {
+            "id": 6,
+            "name": "Product-1",
+            "description": "Default description",
+            "price": 99.99,
+            "available_qty": 30,
+            "product_image": "1694488546355-HildayTwig.jpg"
+          },
+          {
+            "id": 9,
+            "name": "Product-7",
+            "description": "Default description",
+            "price": 21.59,
+            "available_qty": 2,
+            "product_image": "1694488546355-HildayTwig.jpg"
+          },
+          {
+            "id": 11,
+            "name": "Product-24",
+            "description": "Default description",
+            "price": 12.0,
+            "available_qty": 98,
+            "product_image": "1694488546355-HildayTwig.jpg"
+          },
+          {
+            "id": 18,
+            "name": "Product-41",
+            "description": "Default description",
+            "price": 34.5,
+            "available_qty": 16,
+            "product_image": "1694488546355-HildayTwig.jpg"
+          }
+        ]
+      },
+      "ResponseOneProduct": {
+        "title": "ResponseProducts",
+        "required": [""],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "price": {
+            "type": "number"
+          },
+          "available_qty": {
+            "type": "integer"
+          },
+          "status": "available",
+          "product_image": {
+            "type": "string"
+          }
+        },
+
+        "example": {
+          "id": 6,
+          "name": "Product-1",
+          "description": "Default description",
+          "price": 99.99,
+          "available_qty": 30,
+          "status": "available",
+          "product_image": "1694488546355-HildayTwig.jpg"
         }
       },
       "AddProducttoCarRequest": {

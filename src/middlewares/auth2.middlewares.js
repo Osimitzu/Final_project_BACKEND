@@ -27,7 +27,8 @@ const authenticateAndIdCompare = (req, res, next) => {
       return next({
         status: 498,
         name: "Invalid or expired token",
-        message: "Invalid token or missing user ID",
+        message:
+          "Token is not valid or is expired, please check it out and try again",
       });
     }
     console.log(decoded.id); // decoded.id me lo pasa como numero y
@@ -47,7 +48,8 @@ const authenticateAndIdCompare = (req, res, next) => {
     return next({
       status: 498,
       name: "Invalid or expired token",
-      message: err.message,
+      message:
+        "Token is not valid or is expired, please check it out and try again",
     });
   }
 };

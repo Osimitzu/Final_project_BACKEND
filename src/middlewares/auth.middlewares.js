@@ -32,7 +32,8 @@ const authenticate = (req, res, next) => {
     return next({
       status: 498,
       name: "Invalid or expired token",
-      message: err,
+      message:
+        "Token is not valid or is expired, please check it out and try again",
     });
   }
 };
