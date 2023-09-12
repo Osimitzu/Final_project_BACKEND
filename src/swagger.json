@@ -1020,7 +1020,7 @@
         "deprecated": false
       }
     },
-    "/cars/addProduct/{id}": {
+    "/carts/addProduct/{id}": {
       "post": {
         "security": [
           {
@@ -1108,7 +1108,7 @@
         "deprecated": false
       }
     },
-    "/cars/products/{user_id}": {
+    "/carts/products/{user_id}": {
       "get": {
         "security": [
           {

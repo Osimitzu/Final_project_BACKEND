@@ -8,10 +8,10 @@ const authenticateAndIdCompare = require("../middlewares/auth2.middlewares");
 
 const router = Router();
 
-router.post("/api/v1/cars/addProduct/:id", authenticate, addProductToCarCTRL);
+router.post("/api/v1/carts/addProduct/:id", authenticate, addProductToCarCTRL);
 
 router.get(
-  "/api/v1/cars/products/:user_id",
+  "/api/v1/carts/products/:user_id",
   authenticate,
   getAllProductsInCarCTRL
 );
