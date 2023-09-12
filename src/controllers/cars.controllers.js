@@ -5,7 +5,7 @@ const addProductToCarCTRL = async (req, res, next) => {
     const { product_id, price, quantity } = req.body;
     const car_id = parseInt(req.params.id, 10);
     if (isNaN(car_id)) {
-      return res.status(400).json({ error: "Invalid car ID" });
+      return res.status(400).json({ error: "Invalid cart ID" });
     }
 
     await carsServices.addProductToCarSRVC(product_id, price, quantity, car_id);

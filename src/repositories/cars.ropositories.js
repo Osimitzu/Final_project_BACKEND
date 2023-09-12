@@ -1,5 +1,31 @@
-const { cars, product_in_cars, products } = require("../models");
+const { cars, product_in_cars, products, users } = require("../models");
 const { Op } = require("sequelize");
+
+const carExistREPO = async (car_id) => {
+  const car = await cars.findOne({
+    where: { id: car_id },
+  });
+  if (!car) {
+    throw {
+      status: 400,
+      name: "Invalid cart",
+      message: "Cart doesn't exist",
+    };
+  }
+};
+
+const productExistREPO = async (product_id, price) => {
+  const product = await products.findOne({
+    where: { id: product_id },
+  });
+  if (!product || product.price !== price) {
+    throw {
+      status: 400,
+      name: "Invalid product",
+      message: "Product doesn't exist",
+    };
+  }
+};
 
 const getProductFromPivotREPO = async (product_id, car_id) => {
   const product = await product_in_cars.findAll({
@@ -16,13 +42,6 @@ const createProductInPivotREPO = async (
   quantity,
   car_id
 ) => {
-  if (quantity < 1) {
-    throw {
-      status: 400,
-      name: "Invalid quantity of products",
-      message: "To add a product the amount must be greater than 0",
-    };
-  }
   const product = await product_in_cars.create({
     product_id,
     price,
@@ -43,26 +62,63 @@ const updateQuantityInPivotREPO = async (car_id, quantity) => {
   );
 };
 
+const updateQuantityInPivotNoQuantityREPO = async (car_id) => {
+  const quantity = 1;
+  await product_in_cars.increment(
+    {
+      quantity,
+    },
+    {
+      where: { car_id },
+    }
+  );
+};
+
 const updateTotalInCarREPO = async (price, car_id, quantity) => {
-  const car = await cars.increment(
-    { total_price: price * quantity },
+  await cars.increment(
+    {
+      total_price: price * quantity,
+    },
     {
       where: { id: car_id },
     }
   );
-  return car;
+};
+
+const updateTotalInCarNoQuantityREPO = async (price, car_id) => {
+  await cars.increment(
+    {
+      total_price: price * 1,
+    },
+    {
+      where: { id: car_id },
+    }
+  );
 };
 
 const getAllProductsInCarREPO = async (user_id) => {
+  const user = await users.findOne({
+    where: { id: user_id },
+  });
+
+  if (!user) {
+    throw {
+      status: 400,
+      name: "Invalid user",
+      message: "User doesn't exist",
+    };
+  }
+
   const car = await cars.findOne({
     where: { user_id },
   });
 
   if (!car) {
-    return res.status(400).json({
-      error: "Invalid car",
-      message: "Car doesn't exist",
-    });
+    throw {
+      status: 400,
+      name: "Invalid cart",
+      message: "Cart doesn't exist",
+    };
   }
 
   const productsInCar = await product_in_cars.findAll({
@@ -86,9 +142,13 @@ const getAllProductsInCarREPO = async (user_id) => {
 };
 
 module.exports = {
+  carExistREPO,
+  productExistREPO,
   getProductFromPivotREPO,
   createProductInPivotREPO,
   updateQuantityInPivotREPO,
+  updateQuantityInPivotNoQuantityREPO,
   updateTotalInCarREPO,
+  updateTotalInCarNoQuantityREPO,
   getAllProductsInCarREPO,
 };

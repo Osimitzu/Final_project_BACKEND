@@ -1020,27 +1020,26 @@
         "deprecated": false
       }
     },
-    "/cars/addProduct/5": {
+    "/cars/addProduct/{id}": {
       "post": {
-        "tags": ["Cars"],
-        "summary": "Add Product to Car",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "tags": ["Carts"],
+        "summary": "Add Product to Cart",
         "description": "Through this endpoint, we have the ability to add a product to our shopping cart. To do so, it is necessary to be logged in. In the route parameters, we must provide the ID of the cart to which we want to add the products. In the request body, it is mandatory to include the ID and price of the product we wish to add. Optionally, we can specify the quantity we want to add; if not specified, a default quantity of 1 will be added automatically.",
         "operationId": "AddProducttoCar",
         "parameters": [
           {
-            "name": "access-token",
-            "in": "header",
-            "description": "",
+            "name": "id",
+            "in": "path",
             "required": true,
-            "style": "simple",
-            "schema": {
-              "type": "string",
-              "example": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwidXNlcm5hbWUiOiJDZXJ2YW50ZXMiLCJlbWFpbCI6ImNlcnZhbnRlcy5hb2NjQGdtYWlsLmNvbSIsImF2YXRhciI6IjE2OTMyMjQxMTU2NzItZ29yaWxsYVByb2ZpbGVQaWMuanBnIiwicm9sZV9pZCI6MiwiaWF0IjoxNjk0MTM5NDU1LCJleHAiOjE2OTQxNDMwNTV9.doE-t3J0Ss7IfbAV1CMi-r2rTUN44aYhsoW_SsUxNDG27mGBYd9ufCsNco_Ih93kQM78ugJwXdw92jofTleImQ"
-            }
+            "description": "Please enter the ID of the shopping cart to which the product will be added."
           }
         ],
         "requestBody": {
-          "description": "",
           "content": {
             "application/json": {
               "schema": {
@@ -1056,11 +1055,6 @@
                     }
                   }
                 ]
-              },
-              "example": {
-                "product_id": 14,
-                "price": 69.99,
-                "quantity": 3
               }
             }
           },
@@ -1068,36 +1062,122 @@
         },
         "responses": {
           "200": {
-            "description": "",
-            "headers": {}
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorName": {
+                      "type": "string",
+                      "example": "Invalid cart"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Cart doesn't exist"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "498": {
+            "description": "Token expired/invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorName": {
+                      "type": "string",
+                      "example": "Invalid or expired token"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Token is not valid or is expired, please check it out and try again"
+                    }
+                  }
+                }
+              }
+            }
           }
         },
         "deprecated": false
       }
     },
-    "/cars/products/6": {
+    "/cars/products/{user_id}": {
       "get": {
-        "tags": ["Cars"],
-        "summary": "Get All Products in Car",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "tags": ["Carts"],
+        "summary": "Get All Products in Cart",
         "description": "To view the products in a user's cart, it is necessary to be logged in and provide the user ID in the route parameters.",
         "operationId": "GetAllProductsinCar",
         "parameters": [
           {
-            "name": "access-token",
-            "in": "header",
-            "description": "",
+            "name": "user_id",
+            "in": "path",
             "required": true,
-            "style": "simple",
-            "schema": {
-              "type": "string",
-              "example": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwidXNlcm5hbWUiOiJDZXJ2YW50ZXMiLCJlbWFpbCI6ImNlcnZhbnRlcy5hb2NjQGdtYWlsLmNvbSIsImF2YXRhciI6IjE2OTMyMjQxMTU2NzItZ29yaWxsYVByb2ZpbGVQaWMuanBnIiwicm9sZV9pZCI6MiwiaWF0IjoxNjk0MTQwMDQ3LCJleHAiOjE2OTQxNDM2NDd9.wvY89abtFQLqstZNyxcWBKYnqH3hmmNt2yD_ntRtJ8avlKLvLBFZy6x74gEp4GStzShKFL8Dc3dKRgEULWYzkw"
-            }
+            "description": "Please enter the user id to see the products on the user's cart"
           }
         ],
         "responses": {
           "200": {
-            "description": "",
-            "headers": {}
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/AllProductsInCar"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorName": {
+                      "type": "string",
+                      "example": "Invalid user"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "User doesn't exist"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "498": {
+            "description": "Token expired/invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorName": {
+                      "type": "string",
+                      "example": "Invalid or expired token"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Token is not valid or is expired, please check it out and try again"
+                    }
+                  }
+                }
+              }
+            }
           }
         },
         "deprecated": false
@@ -1105,25 +1185,16 @@
     },
     "/orders/buy": {
       "post": {
-        "tags": ["Orders"],
-        "summary": "Buy Products in Car",
-        "description": "With this endpoint, we can proceed to purchase the products in our shopping cart. To do so, it is necessary to be logged in first. In the request body, we must include the user's ID who is making the purchase, along with an array of the products being bought. Each product in the array should specify the product_id, quantity, and price. After using this endpoint, the user's cart will be automatically emptied, and the user will receive an email with the details of their purchase.",
-        "operationId": "BuyProductsinCar",
-        "parameters": [
+        "security": [
           {
-            "name": "access-token",
-            "in": "header",
-            "description": "",
-            "required": true,
-            "style": "simple",
-            "schema": {
-              "type": "string",
-              "example": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwidXNlcm5hbWUiOiJDZXJ2YW50ZXMiLCJlbWFpbCI6ImNlcnZhbnRlcy5hb2NjQGdtYWlsLmNvbSIsImF2YXRhciI6IjE2OTMyMjQxMTU2NzItZ29yaWxsYVByb2ZpbGVQaWMuanBnIiwicm9sZV9pZCI6MiwiaWF0IjoxNjk0MTQ1MjQ0LCJleHAiOjE2OTQxNDg4NDR9.At-NFqn1K1Ak3aohKzFQ9O-umDLGw4NFDec-iqBbyAlfnlF6x_h8Z5_A1Pyu2ZCjEb5T9NGzoGA5G_hJ702g7g"
-            }
+            "bearerAuth": []
           }
         ],
+        "tags": ["Orders"],
+        "summary": "Buy Products in Cart",
+        "description": "With this endpoint, we can proceed to purchase the products in our shopping cart. To do so, it is necessary to be logged in first. In the request body, we must include the user's ID who is making the purchase, along with an array of the products being bought. Each product in the array should specify the product_id, quantity, and price. After using this endpoint, the user's cart will be automatically emptied, and the user will receive an email with the details of their purchase.",
+        "operationId": "BuyProductsinCart",
         "requestBody": {
-          "description": "",
           "content": {
             "application/json": {
               "schema": {
@@ -1135,8 +1206,7 @@
         },
         "responses": {
           "200": {
-            "description": "",
-            "headers": {}
+            "description": "OK"
           }
         },
         "deprecated": false
@@ -1449,7 +1519,7 @@
       },
       "AddProducttoCarRequest": {
         "title": "AddProducttoCarRequest",
-        "required": ["product_id", "price", "quantity"],
+        "required": ["product_id", "price"],
         "type": "object",
         "properties": {
           "product_id": {
@@ -1477,14 +1547,14 @@
         "properties": {
           "user_id": {
             "type": "integer",
-            "format": "int32"
+            "format": "int32",
+            "example": 6
           },
           "products": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/Product"
-            },
-            "description": ""
+            }
           }
         }
       },
@@ -1495,23 +1565,62 @@
         "properties": {
           "product_id": {
             "type": "integer",
-            "format": "int32"
+            "format": "int32",
+            "example": "19"
           },
           "quantity": {
             "type": "integer",
-            "format": "int32"
+            "format": "int32",
+            "example": 3
           },
           "price": {
-            "oneOf": [
-              {
-                "type": "integer",
-                "format": "int32"
-              },
-              {
-                "type": "number"
-              }
-            ]
+            "type": "number",
+            "example": 30
           }
+        }
+      },
+      "AllProductsInCar": {
+        "title": "AllProductsInCar",
+        "type": "object",
+        "properties": {
+          "total_price": {
+            "type": "number",
+            "example": 489.93
+          },
+          "products": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ProductsInCar"
+            }
+          }
+        }
+      },
+      "ProductsInCar": {
+        "title": "ProductsInCar",
+        "type": "array",
+        "properties": {
+          "car_id": {
+            "type": "integer"
+          },
+          "product_id": {
+            "type": "integer"
+          },
+          "quantity": {
+            "type": "integer"
+          },
+          "price": {
+            "type": "number"
+          },
+          "status": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "car_id": 5,
+          "product_id": 14,
+          "quantity": 7,
+          "price": 69.99,
+          "status": "unpurchased"
         }
       }
     },
@@ -1533,8 +1642,8 @@
       "description": "Products Routes"
     },
     {
-      "name": "Cars",
-      "description": "Cars Routes"
+      "name": "Carts",
+      "description": "Carts Routes"
     },
     {
       "name": "Orders",
