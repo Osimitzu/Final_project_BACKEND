@@ -5,12 +5,15 @@ const {
   infoForMail,
   emptyCar,
   completeOrderREPO,
+  verifyCar,
 } = require("../repositories/orders.repositories");
 const { sendOrderDetailsMail } = require("../utils/sendMails");
 
 class ordersServices {
   static async buyProductsInCarSRVC(user_id, products) {
     try {
+      await verifyCar(user_id);
+
       let total = 0;
       // el forEach se puede cambiar por el metodo "reduce"
       products.forEach((product) => {

@@ -13,6 +13,7 @@
 // module.exports = {
 //   createNewUserSRVC,
 // };
+const { users, cars } = require("../models");
 const {
   createNewUserREPO,
   updateRoleREPO,
@@ -27,7 +28,6 @@ const {
   sendWelcomeMail,
   sendPasswordResetMail,
 } = require("../utils/sendMails");
-const { users } = require("../models");
 
 class usersServices {
   static async createNewUserSRVC(username, email, password) {
@@ -54,17 +54,26 @@ class usersServices {
         where: { email },
       });
 
+      const car = await cars.findOne({
+        where: { user_id: user.id },
+      });
+
       if (!user) {
+        // throw {
+        //   status: 400,
+        //   name: "Invalid email",
+        //   message: "Email doesn't exist",
+        // };
         throw {
-          status: 400,
-          name: "Invalid email",
-          message: "email doesn't exist",
+          status: 401,
+          name: "Unauthorized",
+          message: "Invalid email or password",
         };
       }
 
       if (!user.valid_user) {
         throw {
-          status: 400,
+          status: 401,
           name: "Email is not verified",
           message: "user has not verified his email",
         };
@@ -73,16 +82,28 @@ class usersServices {
       const validPassword = await bcrypt.compare(password, user.password);
 
       if (!validPassword) {
+        // throw {
+        //   status: 400,
+        //   name: "Invalid password",
+        //   message: "Your password doesn't match with user email",
+        // };
         throw {
-          status: 400,
-          name: "Invalid password",
-          message: "Your password doesn't match with user email",
+          status: 401,
+          name: "Unauthorized",
+          message: "Invalid email or password",
         };
       }
 
       const { id, username, avatar, role_id } = user;
 
-      const userData = { id, username, email, avatar, role_id };
+      const userData = {
+        id,
+        username,
+        email,
+        avatar,
+        role_id,
+        car_id: car.id,
+      };
 
       const token = jwt.sign(userData, process.env.JWT_SECRET_LOGIN, {
         algorithm: "HS512",

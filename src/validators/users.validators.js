@@ -53,9 +53,7 @@ const loginUserValidator = [
     .notEmpty()
     .withMessage("password can't be empty")
     .isString()
-    .withMessage("password must be string")
-    .isLength({ min: 8 })
-    .withMessage("password must have minimum 8 characters"),
+    .withMessage("password must be string"),
 
   validateResult,
 ];

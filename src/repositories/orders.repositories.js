@@ -7,6 +7,28 @@ const {
   cars,
 } = require("../models");
 
+const verifyCar = async (user_id) => {
+  const car = await cars.findOne({
+    where: { user_id },
+  });
+
+  if (!car) {
+    throw {
+      status: 400,
+      name: "Invalid user",
+      message: "User doesn't exist",
+    };
+  }
+
+  if (car.total_price === 0) {
+    throw {
+      status: 400,
+      name: "Invalid order",
+      message: "User's cart is empty",
+    };
+  }
+};
+
 const buyProductsInCarREPO = async (user_id, total_price) => {
   const order = await orders.create(user_id, total_price);
   return order;
@@ -122,6 +144,18 @@ const getAllPendingOrdersREPO = async () => {
 };
 
 const completeOrderREPO = async (id) => {
+  const order = await orders.findOne({
+    where: { id },
+  });
+
+  if (!order || order.status === "completed") {
+    throw {
+      status: 400,
+      name: "Invalid order",
+      message: "Order doesn't exist or has been already completed",
+    };
+  }
+
   await orders.update(
     { status: "completed" },
     {
@@ -131,6 +165,7 @@ const completeOrderREPO = async (id) => {
 };
 
 module.exports = {
+  verifyCar,
   buyProductsInCarREPO,
   getAllPendingOrdersREPO,
   infoForMail,

@@ -2,7 +2,7 @@
   "openapi": "3.0.0",
   "info": {
     "title": "E-commerce API",
-    "description": "This API is tailored for a customized e-commerce platform, featuring an administrative dashboard for product and order management, while restricting purchases to registered users.",
+    "description": "This API is designed for a custom e-commerce platform, and features an administrative panel for product and order management, while restricting purchases to registered users. IMPORTANT: To use the routes that ask for administrator permissions, you must use the user that is in the 'login' example.",
     "contact": {
       "name": "Osiris Contreras",
       "url": "https://github.com/Osimitzu",
@@ -87,7 +87,7 @@
       "post": {
         "tags": ["Users"],
         "summary": "Login",
-        "description": "Allows a registered user to log in by providing their email and password.",
+        "description": "Allows a registered user to log in by providing their email and password. NOTE: Use this email and password to log in as an administrator if you want to test routes that ask for administrator permission.",
         "operationId": "Login",
         "requestBody": {
           "content": {
@@ -121,6 +121,26 @@
               }
             }
           },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorName": {
+                      "type": "string",
+                      "example": "Validation error"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "password is mandatory"
+                    }
+                  }
+                }
+              }
+            }
+          },
           "401": {
             "description": "Unauthorized",
             "content": {
@@ -134,7 +154,7 @@
                     },
                     "message": {
                       "type": "string",
-                      "example": "Invalid email or password."
+                      "example": "Invalid email or password"
                     }
                   }
                 }
@@ -1036,7 +1056,7 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "description": "Please enter the ID of the shopping cart to which the product will be added."
+            "description": "Please enter the ID of the shopping cart to which the product will be added. NOTE: You can get this when you logged in as 'car_id'"
           }
         ],
         "requestBody": {
@@ -1206,7 +1226,55 @@
         },
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/OrderDetailsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorName": {
+                      "type": "string",
+                      "example": "Invalid order"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "User's cart is empty"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "498": {
+            "description": "Token expired/invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorName": {
+                      "type": "string",
+                      "example": "Invalid or expired token"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Token is not valid or is expired, please check it out and try again"
+                    }
+                  }
+                }
+              }
+            }
           }
         },
         "deprecated": false
@@ -1214,55 +1282,145 @@
     },
     "/orders/allPendingOrders": {
       "get": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "tags": ["Orders"],
         "summary": "Get All Pending Orders",
         "description": "Since this is a customized e-commerce platform, only administrators have access to this endpoint. Furthermore, being logged in is a requirement to view all orders with the 'pending' status.",
         "operationId": "GetAllPendingOrders",
-        "parameters": [
-          {
-            "name": "access-token",
-            "in": "header",
-            "description": "",
-            "required": true,
-            "style": "simple",
-            "schema": {
-              "type": "string",
-              "example": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwidXNlcm5hbWUiOiJDZXJ2YW50ZXMiLCJlbWFpbCI6ImNlcnZhbnRlcy5hb2NjQGdtYWlsLmNvbSIsImF2YXRhciI6IjE2OTMyMjQxMTU2NzItZ29yaWxsYVByb2ZpbGVQaWMuanBnIiwicm9sZV9pZCI6MiwiaWF0IjoxNjk0MTQ1NTYyLCJleHAiOjE2OTQxNDkxNjJ9.uX1wILCmlvGhTf2BNCsRWsnaS11-ks7hPlaquNpqRXuVApLGDWfH4xL7jN4-BWvkF1tHHbQzp7_HJdvNIBbRag"
-            }
-          }
-        ],
         "responses": {
           "200": {
-            "description": "",
-            "headers": {}
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorName": {
+                      "type": "string",
+                      "example": "Role required"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Sorry Osimitzu only admins can access here"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "498": {
+            "description": "Token expired/invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorName": {
+                      "type": "string",
+                      "example": "Invalid or expired token"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Token is not valid or is expired, please check it out and try again"
+                    }
+                  }
+                }
+              }
+            }
           }
         },
         "deprecated": false
       }
     },
-    "/orders/completeOrder/13": {
+    "/orders/completeOrder/{id}": {
       "put": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "tags": ["Orders"],
         "summary": "Complete Order",
         "description": "To complete an order, it is necessary to be logged in and have administrator privileges. The only action required is to provide the ID of the order you wish to mark as completed in the route parameters.",
         "operationId": "CompleteOrder",
         "parameters": [
           {
-            "name": "access-token",
-            "in": "header",
-            "description": "",
+            "name": "id",
+            "in": "path",
             "required": true,
-            "style": "simple",
-            "schema": {
-              "type": "string",
-              "example": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwidXNlcm5hbWUiOiJDZXJ2YW50ZXMiLCJlbWFpbCI6ImNlcnZhbnRlcy5hb2NjQGdtYWlsLmNvbSIsInBhc3N3b3JkIjoiMTIzNDU2NzgiLCJhdmF0YXIiOiIxNjkzMjI0MTE1NjcyLWdvcmlsbGFQcm9maWxlUGljLmpwZyIsInJvbGVfaWQiOjIsImlhdCI6MTY5MzYxMTExOSwiZXhwIjoxNjkzNjE0NzE5fQ.-mR7dVE1ulk3i61pQ0wXIBcAnLNvVRO0-8Qp1OcXtW2pAxVr-hpTtTupXBaPzN8X7BhnlZjdT0uRhcA6MZZkPg"
-            }
+            "description": "Please enter the ID of the order you wish to mark as completed. Note: This action cannot be reversed."
           }
         ],
         "responses": {
           "200": {
-            "description": "",
-            "headers": {}
+            "description": "Order completed"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorName": {
+                      "type": "string",
+                      "example": "Invalid order"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Order doesn't exist or has been already completed"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorName": {
+                      "type": "string",
+                      "example": "Role required"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Sorry Osimitzu only admins can access here"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "498": {
+            "description": "Token expired/invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorName": {
+                      "type": "string",
+                      "example": "Invalid or expired token"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Token is not valid or is expired, please check it out and try again"
+                    }
+                  }
+                }
+              }
+            }
           }
         },
         "deprecated": false
@@ -1329,6 +1487,9 @@
           "role_id": {
             "type": "integer"
           },
+          "car_id": {
+            "type": "integer"
+          },
           "token": {
             "type": "string"
           }
@@ -1339,6 +1500,7 @@
           "email": "cervantes.aocc@gmail.com",
           "avatar": "1693224115672-gorillaProfilePic.jpg",
           "role_id": 2,
+          "car_id": 5,
           "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
         }
       },
@@ -1565,17 +1727,36 @@
         "properties": {
           "product_id": {
             "type": "integer",
-            "format": "int32",
-            "example": "19"
+            "example": 19
           },
           "quantity": {
             "type": "integer",
-            "format": "int32",
             "example": 3
           },
           "price": {
             "type": "number",
             "example": 30
+          }
+        }
+      },
+      "OrderDetailsResponse": {
+        "title": "BuyProductsinCarRequest",
+        "required": ["user_id", "products"],
+        "type": "object",
+        "properties": {
+          "order_id": {
+            "type": "integer",
+            "example": 3
+          },
+          "total_price": {
+            "type": "number",
+            "example": 90
+          },
+          "products": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Product"
+            }
           }
         }
       },
