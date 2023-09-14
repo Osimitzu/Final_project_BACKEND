@@ -1,0 +1,1426 @@
+openapi: 3.0.0
+info:
+  title: E-commerce API
+  description: "This API is designed for a custom e-commerce platform, and features an administrative panel for product and order management, while restricting purchases to registered users. IMPORTANT: To use the routes that ask for administrator permissions, you must use the user that is in the 'login' example."
+  contact:
+    name: Osiris Contreras
+    url: https://github.com/Osimitzu
+    email: angel_aocc@hotmail.com
+  version: "1.0.0"
+servers:
+  - url: https://e-commerce-backend-sxpd.onrender.com
+    variables: {}
+paths:
+  /api/v1/users/register:
+    post:
+      tags:
+        - Users
+      summary: CreateNewUser
+      description: To create a new user, it is essential to provide a valid email address, a password with a minimum of 8 characters, and a username. These fields are mandatory. If the information is provided correctly, you will receive an email to validate your user account.
+      operationId: CreateNewUser
+      parameters: []
+      requestBody:
+        description: ""
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateNewUserRequest"
+        required: true
+      responses:
+        "201":
+          description: Created
+          headers: {}
+          content: {}
+        "400":
+          description: Bad Request
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiV1UsersRegister400Error1"
+      deprecated: false
+  /api/v1/users/login:
+    post:
+      tags:
+        - Users
+      summary: Login
+      description: "Allows a registered user to log in by providing their email and password. NOTE: Use this email and password to log in as an administrator if you want to test routes that ask for administrator permission."
+      operationId: Login
+      parameters: []
+      requestBody:
+        description: ""
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginRequest"
+        required: true
+      responses:
+        "200":
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseUser"
+        "400":
+          description: Bad Request
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiV1UsersLogin400Error1"
+        "401":
+          description: Unauthorized
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiV1UsersLogin401Error1"
+      deprecated: false
+  /api/v1/users/delete/{id}:
+    delete:
+      tags:
+        - Users
+      summary: DeleteUser
+      description: To delete a user, it is necessary to pass the user ID you wish to remove through the route parameters. To use this route, you must be logged in and have administrator permissions.
+      operationId: DeleteUser
+      parameters:
+        - name: id
+          in: path
+          description: Please enter the user ID you want to delete.
+          required: true
+          style: simple
+          schema:
+            type: string
+      responses:
+        "200":
+          description: User deleted
+          headers: {}
+          content: {}
+        "400":
+          description: Bad Request
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiV1UsersDelete400Error1"
+        "401":
+          description: Unauthorized
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiV1UsersDelete401Error1"
+        "498":
+          description: Token expired/invalid
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiV1UsersDelete498Error1"
+      deprecated: false
+      security:
+        - bearerAuth: []
+  /api/v1/users/role/{id}:
+    put:
+      tags:
+        - Users
+      summary: UpdateUserRole
+      description: To update a user's role, it is necessary to provide the user ID to whom we want to change the role through the route parameters. In the request body, we must include the "role_id" field that we wish to assign, which is an integer; 1 for a standard user and 2 for an administrator. Only administrators have the authority to assign roles.
+      operationId: UpdateUserRole
+      parameters:
+        - name: id
+          in: path
+          description: Please enter the user ID you want to change role.
+          required: true
+          style: simple
+          schema:
+            type: string
+      requestBody:
+        description: ""
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateUserRoleRequest"
+        required: true
+      responses:
+        "200":
+          description: Role has been updated
+          headers: {}
+          content: {}
+        "400":
+          description: Bad Request
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiV1UsersRole400Error1"
+        "401":
+          description: Unauthorized
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiV1UsersRole401Error1"
+        "498":
+          description: Token expired/invalid
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiV1UsersRole498Error1"
+      deprecated: true
+      security:
+        - bearerAuth: []
+  /api/v1/users/info/{id}:
+    put:
+      tags:
+        - Users
+      summary: UpdateUserInfo
+      description: Through this endpoint, it is possible to update the username and avatar of a user. In the route parameters, we need to provide the user ID for whom we wish to update their information. In the request body, we can include the new username and avatar. The avatar must be an image with a maximum size of 1000 kilobytes and in either JPEG or PNG format. Only one field at a time can be updated, depending on the requirements. To use this route, it is necessary to be logged in.
+      operationId: UpdateUserInfo
+      parameters:
+        - name: id
+          in: path
+          description: Please enter the user ID you want to update.
+          required: true
+          style: simple
+          schema:
+            type: string
+      requestBody:
+        content:
+          multipart/form-data:
+            encoding: {}
+            schema:
+              required:
+                - avatar
+              type: object
+              properties:
+                avatar:
+                  type: string
+                  format: binary
+        required: false
+      responses:
+        "200":
+          description: Info has been updated
+          headers: {}
+          content: {}
+        "400":
+          description: Bad Request
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiV1UsersInfo400Error1"
+        "401":
+          description: Unauthorized
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiV1UsersInfo401Error1"
+        "498":
+          description: Token expired/invalid
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiV1UsersInfo498Error1"
+        "500":
+          description: Internal Server Error
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiV1UsersInfo500Error1"
+      deprecated: false
+      security:
+        - bearerAuth: []
+  /api/v1/users/passwordReset:
+    put:
+      tags:
+        - Users
+      summary: PasswordReset
+      description: To use this endpoint, it is only necessary to provide the email address of the user for whom you wish to reset the password through the request body. Subsequently, you will receive an email with instructions to reset it.
+      operationId: PasswordReset
+      parameters: []
+      requestBody:
+        description: ""
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PasswordResetRequest"
+        required: true
+      responses:
+        "200":
+          description: Please check out your email to reset your password
+          headers: {}
+          content: {}
+        "400":
+          description: Bad Request
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiV1UsersPasswordReset400Error1"
+      deprecated: false
+  /api/v1/products/create:
+    post:
+      tags:
+        - Products
+      summary: CreateNewProduct
+      description: "This endpoint is used to create a new product, for which it is mandatory to provide the product name and price. Optionally, you can add a description and the available quantity. If the available quantity is not specified, it will be automatically set to 1. Additionally, a default image will be assigned to the product, which can be changed later using another endpoint if desired. NOTE: To use this endpoint, administrator privileges are required."
+      operationId: CreateNewProduct
+      parameters: []
+      requestBody:
+        description: ""
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateNewProductRequest"
+        required: true
+      responses:
+        "201":
+          description: Created
+          headers: {}
+          content: {}
+        "400":
+          description: Bad Request
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiV1ProductsCreate400Error1"
+        "401":
+          description: Unauthorized
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiV1ProductsCreate401Error1"
+        "498":
+          description: Token expired/invalid
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiV1ProductsCreate498Error1"
+      deprecated: false
+      security:
+        - bearerAuth: []
+  /api/v1/products/image/{id}:
+    put:
+      tags:
+        - Products
+      summary: UpdateProductImage
+      description: "This endpoint allows us to update the image of our product, which must be in JPEG or PNG format and should not exceed 1000 kilobytes in size. NOTE: To use this endpoint, administrator privileges are required."
+      operationId: UpdateProductImage
+      parameters:
+        - name: id
+          in: path
+          description: Please enter the product id of the product you wish to update the image.
+          required: true
+          style: simple
+          schema:
+            type: string
+      requestBody:
+        content:
+          multipart/form-data:
+            encoding: {}
+            schema:
+              required:
+                - product_image
+              type: object
+              properties:
+                product_image:
+                  type: string
+                  format: binary
+        required: false
+      responses:
+        "200":
+          description: Image has been updated
+          headers: {}
+          content: {}
+        "400":
+          description: Bad Request
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiV1ProductsImage400Error1"
+        "401":
+          description: Unauthorized
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiV1ProductsImage401Error1"
+        "498":
+          description: Token expired/invalid
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiV1ProductsImage498Error1"
+        "500":
+          description: Internal Server Error
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiV1ProductsImage500Error1"
+      deprecated: false
+      security:
+        - bearerAuth: []
+  /api/v1/products/info/{id}:
+    put:
+      tags:
+        - Products
+      summary: UpdateProductInfo
+      description: To update a product's information, administrator privileges are required. It is possible to update the name, description, price, and available quantity. It is not necessary to provide all fields in the request body, only the ones you wish to update. Additionally, in the route parameters, we must include the product ID we want to update.
+      operationId: UpdateProductInfo
+      parameters:
+        - name: id
+          in: path
+          description: Please enter the product id of the product you wish to update.
+          required: true
+          style: simple
+          schema:
+            type: string
+      requestBody:
+        description: ""
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateProductInfoRequest"
+        required: true
+      responses:
+        "200":
+          description: Info has been updated
+          headers: {}
+          content: {}
+        "400":
+          description: Bad Request
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiV1ProductsInfo400Error1"
+        "401":
+          description: Unauthorized
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiV1ProductsInfo401Error1"
+        "498":
+          description: Token expired/invalid
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiV1ProductsInfo498Error1"
+      deprecated: false
+      security:
+        - bearerAuth: []
+  /api/v1/products/all:
+    get:
+      tags:
+        - Products
+      summary: GetAllProducts
+      description: Through this endpoint, you can retrieve all products with the 'available' status.
+      operationId: GetAllProducts
+      parameters: []
+      responses:
+        "200":
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                example:
+                  - id: 6
+                    name: Product-1
+                    description: Default description
+                    price: 99.99
+                    available_qty: 30
+                    product_image: 1694488546355-HildayTwig.jpg
+                  - id: 9
+                    name: Product-7
+                    description: Default description
+                    price: 21.59
+                    available_qty: 2
+                    product_image: 1694488546355-HildayTwig.jpg
+                  - id: 11
+                    name: Product-24
+                    description: Default description
+                    price: 12
+                    available_qty: 98
+                    product_image: 1694488546355-HildayTwig.jpg
+                  - id: 18
+                    name: Product-41
+                    description: Default description
+                    price: 34.5
+                    available_qty: 16
+                    product_image: 1694488546355-HildayTwig.jpg
+              example:
+                - id: 6
+                  name: Product-1
+                  description: Default description
+                  price: 99.99
+                  available_qty: 30
+                  product_image: 1694488546355-HildayTwig.jpg
+                - id: 9
+                  name: Product-7
+                  description: Default description
+                  price: 21.59
+                  available_qty: 2
+                  product_image: 1694488546355-HildayTwig.jpg
+                - id: 11
+                  name: Product-24
+                  description: Default description
+                  price: 12
+                  available_qty: 98
+                  product_image: 1694488546355-HildayTwig.jpg
+                - id: 18
+                  name: Product-41
+                  description: Default description
+                  price: 34.5
+                  available_qty: 16
+                  product_image: 1694488546355-HildayTwig.jpg
+      deprecated: false
+  /api/v1/products/singleProduct/{id}:
+    get:
+      tags:
+        - Products
+      summary: GetOneProduct
+      description: Using this endpoint, we can retrieve a specific product by passing the 'id' as a parameter.
+      operationId: GetOneProduct
+      parameters:
+        - name: id
+          in: path
+          description: Please enter the product id of the product you want to see information.
+          required: true
+          style: simple
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseProducts"
+        "400":
+          description: Bad Request
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiV1ProductsSingleProduct400Error1"
+      deprecated: false
+  /api/v1/products/delete/{id}:
+    delete:
+      tags:
+        - Products
+      summary: DeleteProduct
+      description: To delete a product, it is necessary to have administrator permissions and provide the product ID that we want to delete in the route parameters.
+      operationId: DeleteProduct
+      parameters:
+        - name: id
+          in: path
+          description: Please enter the product id of the product you wish to delete.
+          required: true
+          style: simple
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Product Deleted
+          headers: {}
+          content: {}
+        "400":
+          description: Bad Request
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiV1ProductsDelete400Error1"
+        "401":
+          description: Unauthorized
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiV1ProductsDelete401Error1"
+        "498":
+          description: Token expired/invalid
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiV1ProductsDelete498Error1"
+      deprecated: false
+      security:
+        - bearerAuth: []
+  /api/v1/carts/addProduct/{id}:
+    post:
+      tags:
+        - Carts
+      summary: AddProducttoCar
+      description: Through this endpoint, we have the ability to add a product to our shopping cart. To do so, it is necessary to be logged in. In the route parameters, we must provide the ID of the cart to which we want to add the products. In the request body, it is mandatory to include the ID and price of the product we wish to add. Optionally, we can specify the quantity we want to add; if not specified, a default quantity of 1 will be added automatically.
+      operationId: AddProducttoCar
+      parameters:
+        - name: id
+          in: path
+          description: "Please enter the ID of the shopping cart to which the product will be added. NOTE: You can get this when you logged in as 'car_id'"
+          required: true
+          style: simple
+          schema:
+            type: string
+      requestBody:
+        description: ""
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AddProducttoCarRequest"
+        required: true
+      responses:
+        "200":
+          description: OK
+          headers: {}
+          content: {}
+        "400":
+          description: Bad Request
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiV1CartsAddProduct400Error1"
+        "498":
+          description: Token expired/invalid
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiV1CartsAddProduct498Error1"
+      deprecated: false
+      security:
+        - bearerAuth: []
+  /api/v1/carts/products/{user_id}:
+    get:
+      tags:
+        - Carts
+      summary: GetAllProductsinCar
+      description: To view the products in a user's cart, it is necessary to be logged in and provide the user ID in the route parameters.
+      operationId: GetAllProductsinCar
+      parameters:
+        - name: user_id
+          in: path
+          description: Please enter the user id to see the products on the user's cart
+          required: true
+          style: simple
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AllProductsInCar"
+        "400":
+          description: Bad Request
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiV1CartsProducts400Error1"
+        "498":
+          description: Token expired/invalid
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiV1CartsProducts498Error1"
+      deprecated: false
+      security:
+        - bearerAuth: []
+  /api/v1/orders/buy:
+    post:
+      tags:
+        - Orders
+      summary: BuyProductsinCart
+      description: With this endpoint, we can proceed to purchase the products in our shopping cart. To do so, it is necessary to be logged in first. In the request body, we must include the user's ID who is making the purchase, along with an array of the products being bought. Each product in the array should specify the product_id, quantity, and price. After using this endpoint, the user's cart will be automatically emptied, and the user will receive an email with the details of their purchase.
+      operationId: BuyProductsinCart
+      parameters: []
+      requestBody:
+        description: ""
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BuyProductsinCarRequest"
+        required: true
+      responses:
+        "200":
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BuyProductsinCarRequest1"
+        "400":
+          description: Bad Request
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiV1OrdersBuy400Error1"
+        "498":
+          description: Token expired/invalid
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiV1OrdersBuy498Error1"
+      deprecated: false
+      security:
+        - bearerAuth: []
+  /api/v1/orders/allPendingOrders:
+    get:
+      tags:
+        - Orders
+      summary: GetAllPendingOrders
+      description: Since this is a customized e-commerce platform, only administrators have access to this endpoint. Furthermore, being logged in is a requirement to view all orders with the 'pending' status.
+      operationId: GetAllPendingOrders
+      parameters: []
+      responses:
+        "200":
+          description: OK
+          headers: {}
+          content: {}
+        "401":
+          description: Unauthorized
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiV1OrdersAllPendingOrders401Error1"
+        "498":
+          description: Token expired/invalid
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiV1OrdersAllPendingOrders498Error1"
+      deprecated: false
+      security:
+        - bearerAuth: []
+  /api/v1/orders/completeOrder/{id}:
+    put:
+      tags:
+        - Orders
+      summary: CompleteOrder
+      description: To complete an order, it is necessary to be logged in and have administrator privileges. The only action required is to provide the ID of the order you wish to mark as completed in the route parameters.
+      operationId: CompleteOrder
+      parameters:
+        - name: id
+          in: path
+          description: "Please enter the ID of the order you wish to mark as completed. Note: This action cannot be reversed."
+          required: true
+          style: simple
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Order completed
+          headers: {}
+          content: {}
+        "400":
+          description: Bad Request
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiV1OrdersCompleteOrder400Error1"
+        "401":
+          description: Unauthorized
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiV1OrdersCompleteOrder401Error1"
+        "498":
+          description: Token expired/invalid
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiV1OrdersCompleteOrder498Error1"
+      deprecated: false
+      security:
+        - bearerAuth: []
+components:
+  schemas:
+    CreateNewUserRequest:
+      title: CreateNewUserRequest
+      required:
+        - username
+        - email
+        - password
+      type: object
+      properties:
+        username:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+      example:
+        username: Cervantes
+        email: cervantes.aocc@gmail.com
+        password: "12345678"
+    LoginRequest:
+      title: LoginRequest
+      required:
+        - email
+        - password
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+      example:
+        email: cervantes.aocc@gmail.com
+        password: "12345678"
+    ResponseUser:
+      title: ResponseUser
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        username:
+          type: string
+        email:
+          type: string
+        avatar:
+          type: string
+        role_id:
+          type: integer
+          format: int32
+        car_id:
+          type: integer
+          format: int32
+        token:
+          type: string
+      example:
+        id: 6
+        username: Cervantes
+        email: cervantes.aocc@gmail.com
+        avatar: 1693224115672-gorillaProfilePic.jpg
+        role_id: 2
+        car_id: 5
+        token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+    UpdateUserRoleRequest:
+      title: UpdateUserRoleRequest
+      required:
+        - role_id
+      type: object
+      properties:
+        role_id:
+          type: integer
+          format: int32
+      example:
+        role_id: 2
+    PasswordResetRequest:
+      title: PasswordResetRequest
+      required:
+        - email
+      type: object
+      properties:
+        email:
+          type: string
+      example:
+        email: cervantes.aocc@gmail.com
+    CreateNewProductRequest:
+      title: CreateNewProductRequest
+      required:
+        - name
+        - price
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        price:
+          type: number
+        available_qty:
+          type: integer
+          format: int32
+      example:
+        name: Product-25
+        description: Descipcion del producto pwoqeurpoiuqweafgadfgasd
+        price: 99.99
+        available_qty: 10
+    UpdateProductInfoRequest:
+      title: UpdateProductInfoRequest
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        price:
+          type: number
+        available_qty:
+          type: integer
+          format: int32
+      example:
+        name: Banana Premium
+        description: banana buena bonita y barata
+        price: 249.99
+        available_qty: 10
+    ResponseProducts:
+      title: ResponseProducts
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        name:
+          type: string
+        description:
+          type: string
+        price:
+          type: number
+        available_qty:
+          type: integer
+          format: int32
+        status: {}
+        product_image:
+          type: string
+      example:
+        id: 6
+        name: Product-1
+        description: Default description
+        price: 99.99
+        available_qty: 30
+        status: available
+        product_image: 1694488546355-HildayTwig.jpg
+    AddProducttoCarRequest:
+      title: AddProducttoCarRequest
+      required:
+        - product_id
+        - price
+      type: object
+      properties:
+        product_id:
+          type: integer
+          format: int32
+        price:
+          type: number
+        quantity:
+          type: integer
+          format: int32
+      example:
+        product_id: 14
+        price: 69.99
+        quantity: 3
+    BuyProductsinCarRequest:
+      title: BuyProductsinCarRequest
+      required:
+        - user_id
+        - products
+      type: object
+      properties:
+        user_id:
+          type: integer
+          format: int32
+          example: 6
+        products:
+          type: array
+          items:
+            $ref: "#/components/schemas/Product"
+          description: ""
+    Product:
+      title: Product
+      required:
+        - product_id
+        - quantity
+        - price
+      type: object
+      properties:
+        product_id:
+          type: integer
+          format: int32
+          example: 19
+        quantity:
+          type: integer
+          format: int32
+          example: 3
+        price:
+          type: number
+          example: 30
+    BuyProductsinCarRequest1:
+      title: BuyProductsinCarRequest1
+      required:
+        - products
+      type: object
+      properties:
+        order_id:
+          type: integer
+          format: int32
+          example: 3
+        total_price:
+          type: number
+          example: 90
+        products:
+          type: array
+          items:
+            $ref: "#/components/schemas/Product"
+          description: ""
+    AllProductsInCar:
+      title: AllProductsInCar
+      type: object
+      properties:
+        total_price:
+          type: number
+          example: 489.93
+        products:
+          type: array
+          items:
+            $ref: "#/components/schemas/ProductsInCar"
+          description: ""
+    ProductsInCar:
+      title: ProductsInCar
+      type: object
+      properties:
+        car_id:
+          type: integer
+          format: int32
+        product_id:
+          type: integer
+          format: int32
+        quantity:
+          type: integer
+          format: int32
+        price:
+          type: number
+        status:
+          type: string
+      example:
+        car_id: 5
+        product_id: 14
+        quantity: 7
+        price: 69.99
+        status: unpurchased
+    ApiV1UsersRegister400Error1:
+      title: ApiV1UsersRegister400Error1
+      type: object
+      properties:
+        error:
+          type: string
+          example: Invalid or missing data
+        message:
+          $ref: "#/components/schemas/Message"
+    ApiV1UsersLogin400Error1:
+      title: ApiV1UsersLogin400Error1
+      type: object
+      properties:
+        errorName:
+          type: string
+          example: Validation error
+        message:
+          type: string
+          example: password is mandatory
+    ApiV1UsersLogin401Error1:
+      title: ApiV1UsersLogin401Error1
+      type: object
+      properties:
+        errorName:
+          type: string
+          example: Unauthorized
+        message:
+          type: string
+          example: Invalid email or password
+    ApiV1UsersDelete400Error1:
+      title: ApiV1UsersDelete400Error1
+      type: object
+      properties:
+        errorName:
+          type: string
+          example: Invalid user
+        message:
+          type: string
+          example: User doesn't exists
+    ApiV1UsersDelete401Error1:
+      title: ApiV1UsersDelete401Error1
+      type: object
+      properties:
+        errorName:
+          type: string
+          example: Role required
+        message:
+          type: string
+          example: Sorry Osimitzu only admins can access here
+    ApiV1UsersDelete498Error1:
+      title: ApiV1UsersDelete498Error1
+      type: object
+      properties:
+        errorName:
+          type: string
+          example: Invalid or expired token
+        message:
+          type: string
+          example: Token is not valid or is expired, please check it out and try again
+    ApiV1UsersRole400Error1:
+      title: ApiV1UsersRole400Error1
+      type: object
+      properties:
+        errorName:
+          type: string
+          example: Invalid user
+        message:
+          type: string
+          example: User doesn't exists
+    ApiV1UsersRole401Error1:
+      title: ApiV1UsersRole401Error1
+      type: object
+      properties:
+        errorName:
+          type: string
+          example: Role required
+        message:
+          type: string
+          example: Sorry Osimitzu only admins can access here
+    ApiV1UsersRole498Error1:
+      title: ApiV1UsersRole498Error1
+      type: object
+      properties:
+        errorName:
+          type: string
+          example: Invalid or expired token
+        message:
+          type: string
+          example: Token is not valid or is expired, please check it out and try again
+    ApiV1UsersInfo400Error1:
+      title: ApiV1UsersInfo400Error1
+      type: object
+      properties:
+        errorName:
+          type: string
+          example: Unauthorized
+        message:
+          type: string
+          example: Token does not belong to this user
+    ApiV1UsersInfo401Error1:
+      title: ApiV1UsersInfo401Error1
+      type: object
+      properties:
+        errorName:
+          type: string
+          example: Role required
+        message:
+          type: string
+          example: Sorry Osimitzu only admins can access here
+    ApiV1UsersInfo498Error1:
+      title: ApiV1UsersInfo498Error1
+      type: object
+      properties:
+        errorName:
+          type: string
+          example: Invalid or expired token
+        message:
+          type: string
+          example: Token is not valid or is expired, please check it out and try again
+    ApiV1UsersInfo500Error1:
+      title: ApiV1UsersInfo500Error1
+      type: object
+      properties:
+        message:
+          type: string
+          example: Only image/jpeg, image/png mimetypes are allowed
+    ApiV1UsersPasswordReset400Error1:
+      title: ApiV1UsersPasswordReset400Error1
+      type: object
+      properties:
+        errorName:
+          type: string
+          example: Invalid user
+        message:
+          type: string
+          example: User doesn't exists
+    ApiV1ProductsCreate400Error1:
+      title: ApiV1ProductsCreate400Error1
+      type: object
+      properties:
+        errorName:
+          type: string
+          example: Validation error
+        message:
+          type: string
+          example: price is mandatory
+    ApiV1ProductsCreate401Error1:
+      title: ApiV1ProductsCreate401Error1
+      type: object
+      properties:
+        errorName:
+          type: string
+          example: Role required
+        message:
+          type: string
+          example: Sorry Osimitzu only admins can access here
+    ApiV1ProductsCreate498Error1:
+      title: ApiV1ProductsCreate498Error1
+      type: object
+      properties:
+        errorName:
+          type: string
+          example: Invalid or expired token
+        message:
+          type: string
+          example: Token is not valid or is expired, please check it out and try again
+    ApiV1ProductsImage400Error1:
+      title: ApiV1ProductsImage400Error1
+      type: object
+      properties:
+        errorName:
+          type: string
+          example: Invalid product
+        message:
+          type: string
+          example: Product doesn't exist
+    ApiV1ProductsImage401Error1:
+      title: ApiV1ProductsImage401Error1
+      type: object
+      properties:
+        errorName:
+          type: string
+          example: Role required
+        message:
+          type: string
+          example: Sorry Osimitzu only admins can access here
+    ApiV1ProductsImage498Error1:
+      title: ApiV1ProductsImage498Error1
+      type: object
+      properties:
+        errorName:
+          type: string
+          example: Invalid or expired token
+        message:
+          type: string
+          example: Token is not valid or is expired, please check it out and try again
+    ApiV1ProductsImage500Error1:
+      title: ApiV1ProductsImage500Error1
+      type: object
+      properties:
+        message:
+          type: string
+          example: Only image/jpeg, image/png mimetypes are allowed
+    ApiV1ProductsInfo400Error1:
+      title: ApiV1ProductsInfo400Error1
+      type: object
+      properties:
+        errorName:
+          type: string
+          example: Invalid product
+        message:
+          type: string
+          example: Product doesn't exist
+    ApiV1ProductsInfo401Error1:
+      title: ApiV1ProductsInfo401Error1
+      type: object
+      properties:
+        errorName:
+          type: string
+          example: Role required
+        message:
+          type: string
+          example: Sorry Osimitzu only admins can access here
+    ApiV1ProductsInfo498Error1:
+      title: ApiV1ProductsInfo498Error1
+      type: object
+      properties:
+        errorName:
+          type: string
+          example: Invalid or expired token
+        message:
+          type: string
+          example: Token is not valid or is expired, please check it out and try again
+    ApiV1ProductsSingleProduct400Error1:
+      title: ApiV1ProductsSingleProduct400Error1
+      type: object
+      properties:
+        errorName:
+          type: string
+          example: Invalid product
+        message:
+          type: string
+          example: Product doesn't exist
+    ApiV1ProductsDelete400Error1:
+      title: ApiV1ProductsDelete400Error1
+      type: object
+      properties:
+        errorName:
+          type: string
+          example: Invalid product
+        message:
+          type: string
+          example: Product doesn't exist
+    ApiV1ProductsDelete401Error1:
+      title: ApiV1ProductsDelete401Error1
+      type: object
+      properties:
+        errorName:
+          type: string
+          example: Role required
+        message:
+          type: string
+          example: Sorry Osimitzu only admins can access here
+    ApiV1ProductsDelete498Error1:
+      title: ApiV1ProductsDelete498Error1
+      type: object
+      properties:
+        errorName:
+          type: string
+          example: Invalid or expired token
+        message:
+          type: string
+          example: Token is not valid or is expired, please check it out and try again
+    ApiV1CartsAddProduct400Error1:
+      title: ApiV1CartsAddProduct400Error1
+      type: object
+      properties:
+        errorName:
+          type: string
+          example: Invalid cart
+        message:
+          type: string
+          example: Cart doesn't exist
+    ApiV1CartsAddProduct498Error1:
+      title: ApiV1CartsAddProduct498Error1
+      type: object
+      properties:
+        errorName:
+          type: string
+          example: Invalid or expired token
+        message:
+          type: string
+          example: Token is not valid or is expired, please check it out and try again
+    ApiV1CartsProducts400Error1:
+      title: ApiV1CartsProducts400Error1
+      type: object
+      properties:
+        errorName:
+          type: string
+          example: Invalid user
+        message:
+          type: string
+          example: User doesn't exist
+    ApiV1CartsProducts498Error1:
+      title: ApiV1CartsProducts498Error1
+      type: object
+      properties:
+        errorName:
+          type: string
+          example: Invalid or expired token
+        message:
+          type: string
+          example: Token is not valid or is expired, please check it out and try again
+    ApiV1OrdersBuy400Error1:
+      title: ApiV1OrdersBuy400Error1
+      type: object
+      properties:
+        errorName:
+          type: string
+          example: Invalid order
+        message:
+          type: string
+          example: User's cart is empty
+    ApiV1OrdersBuy498Error1:
+      title: ApiV1OrdersBuy498Error1
+      type: object
+      properties:
+        errorName:
+          type: string
+          example: Invalid or expired token
+        message:
+          type: string
+          example: Token is not valid or is expired, please check it out and try again
+    ApiV1OrdersAllPendingOrders401Error1:
+      title: ApiV1OrdersAllPendingOrders401Error1
+      type: object
+      properties:
+        errorName:
+          type: string
+          example: Role required
+        message:
+          type: string
+          example: Sorry Osimitzu only admins can access here
+    ApiV1OrdersAllPendingOrders498Error1:
+      title: ApiV1OrdersAllPendingOrders498Error1
+      type: object
+      properties:
+        errorName:
+          type: string
+          example: Invalid or expired token
+        message:
+          type: string
+          example: Token is not valid or is expired, please check it out and try again
+    ApiV1OrdersCompleteOrder400Error1:
+      title: ApiV1OrdersCompleteOrder400Error1
+      type: object
+      properties:
+        errorName:
+          type: string
+          example: Invalid order
+        message:
+          type: string
+          example: Order doesn't exist or has been already completed
+    ApiV1OrdersCompleteOrder401Error1:
+      title: ApiV1OrdersCompleteOrder401Error1
+      type: object
+      properties:
+        errorName:
+          type: string
+          example: Role required
+        message:
+          type: string
+          example: Sorry Osimitzu only admins can access here
+    ApiV1OrdersCompleteOrder498Error1:
+      title: ApiV1OrdersCompleteOrder498Error1
+      type: object
+      properties:
+        errorName:
+          type: string
+          example: Invalid or expired token
+        message:
+          type: string
+          example: Token is not valid or is expired, please check it out and try again
+    Message:
+      title: Message
+      type: object
+      properties:
+        errorQty:
+          type: number
+          example: 2
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: jwt
+security: []
+tags:
+  - name: Users
+    description: Users Routes
+  - name: Products
+    description: Products Routes
+  - name: Carts
+    description: Carts Routes
+  - name: Orders
+    description: Orders Routes
