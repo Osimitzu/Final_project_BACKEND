@@ -12,11 +12,11 @@
   },
   "servers": [
     {
-      "url": "https://e-commerce-backend-sxpd.onrender.com/api/v1"
+      "url": "https://e-commerce-backend-sxpd.onrender.com"
     }
   ],
   "paths": {
-    "/users/register": {
+    "/api/v1/users/register": {
       "post": {
         "tags": ["Users"],
         "summary": "User register",
@@ -82,7 +82,7 @@
         "deprecated": false
       }
     },
-    "/users/login": {
+    "/api/v1/users/login": {
       "post": {
         "tags": ["Users"],
         "summary": "Login",
@@ -164,7 +164,7 @@
         "deprecated": false
       }
     },
-    "/users/delete/{id}": {
+    "/api/v1/users/delete/{id}": {
       "delete": {
         "security": [
           {
@@ -251,7 +251,7 @@
         "deprecated": false
       }
     },
-    "/users/role/{id}": {
+    "/api/v1/users/role/{id}": {
       "put": {
         "security": [
           {
@@ -357,7 +357,7 @@
         "deprecated": true
       }
     },
-    "/users/info/{id}": {
+    "/api/v1/users/info/{id}": {
       "put": {
         "security": [
           {
@@ -489,7 +489,7 @@
         "deprecated": false
       }
     },
-    "/users/passwordReset": {
+    "/api/v1/users/passwordReset": {
       "put": {
         "tags": ["Users"],
         "summary": "Password Reset",
@@ -542,7 +542,7 @@
         "deprecated": false
       }
     },
-    "/products/create": {
+    "/api/v1/products/create": {
       "post": {
         "security": [
           {
@@ -643,7 +643,7 @@
         "deprecated": false
       }
     },
-    "/products/image/{id}": {
+    "/api/v1/products/image/{id}": {
       "put": {
         "security": [
           {
@@ -763,7 +763,7 @@
         "deprecated": false
       }
     },
-    "/products/info/{id}": {
+    "/api/v1/products/info/{id}": {
       "put": {
         "security": [
           {
@@ -872,7 +872,7 @@
         "deprecated": false
       }
     },
-    "/products/all": {
+    "/api/v1/products/all": {
       "get": {
         "tags": ["Products"],
         "summary": "Get All Available Products",
@@ -898,7 +898,7 @@
         "deprecated": false
       }
     },
-    "/products/singleProduct/{id}": {
+    "/api/v1/products/singleProduct/{id}": {
       "get": {
         "tags": ["Products"],
         "summary": "Get One Product",
@@ -952,7 +952,7 @@
         "deprecated": false
       }
     },
-    "/products/delete/{id}": {
+    "/api/v1/products/delete/{id}": {
       "delete": {
         "security": [
           {
@@ -1039,7 +1039,7 @@
         "deprecated": false
       }
     },
-    "/carts/addProduct/{id}": {
+    "/api/v1/carts/addProduct/{id}": {
       "post": {
         "security": [
           {
@@ -1127,7 +1127,7 @@
         "deprecated": false
       }
     },
-    "/carts/products/{user_id}": {
+    "/api/v1/carts/products/{user_id}": {
       "get": {
         "security": [
           {
@@ -1202,7 +1202,7 @@
         "deprecated": false
       }
     },
-    "/orders/buy": {
+    "/api/v1/orders/buy": {
       "post": {
         "security": [
           {
@@ -1279,7 +1279,7 @@
         "deprecated": false
       }
     },
-    "/orders/allPendingOrders": {
+    "/api/v1/orders/allPendingOrders": {
       "get": {
         "security": [
           {
@@ -1338,7 +1338,7 @@
         "deprecated": false
       }
     },
-    "/orders/completeOrder/{id}": {
+    "/api/v1/orders/completeOrder/{id}": {
       "put": {
         "security": [
           {
