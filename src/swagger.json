@@ -21,7 +21,6 @@
         "tags": ["Users"],
         "summary": "User register",
         "description": "To create a new user, it is essential to provide a valid email address, a password with a minimum of 8 characters, and a username. These fields are mandatory. If the information is provided correctly, you will receive an email to validate your user account.",
-        "operationId": "CreateNewUser",
         "requestBody": {
           "content": {
             "application/json": {
