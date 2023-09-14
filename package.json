@@ -4,15 +4,16 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node ./src/app.js",
     "dev": "nodemon ./src/app.js",
     "createDB": "npx sequelize db:create",
     "dropDB": "npx sequelize db:drop",
-    "migrate": "npx sequelize-cli db:migrate",
     "undoMigrate": "npx sequelize-cli db:migrate:undo:all",
-    "seedAll": "npx sequelize-cli db:seed:all",
     "undoSeedAll": "npx sequelize-cli db:seed:undo:all",
-    "test": "jest --verbose --coverage"
+    "test": "jest --verbose --coverage",
+    "migrate": "npx sequelize-cli db:migrate",
+    "seedAll": "npx sequelize-cli db:seed:all",
+    "init": "node ./src/app.js",
+    "start": "npm run migrate && npm run seedAll && npm run init"
   },
   "keywords": [
     "e-commerce"
