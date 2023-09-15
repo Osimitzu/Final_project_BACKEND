@@ -40,7 +40,7 @@ module.exports = {
       },
       valid_user: {
         type: Sequelize.BOOLEAN,
-        defaultValue: false,
+        defaultValue: true,
       },
       createdAt: {
         allowNull: true,

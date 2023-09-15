@@ -71,14 +71,6 @@ class usersServices {
         };
       }
 
-      // Validacion de usuario automatica activada temporalmente:
-      await users.update(
-        {
-          valid_user: true,
-        },
-        { where: email }
-      );
-
       if (!user.valid_user) {
         throw {
           status: 401,
