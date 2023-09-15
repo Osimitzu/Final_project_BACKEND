@@ -71,13 +71,14 @@ class usersServices {
         };
       }
 
-      if (!user.valid_user) {
-        throw {
-          status: 401,
-          name: "Email is not verified",
-          message: "user has not verified his email",
-        };
-      }
+      // VERIFICACION DESACTIVADA TEMPORALMENTE
+      // if (!user.valid_user) {
+      //   throw {
+      //     status: 401,
+      //     name: "Email is not verified",
+      //     message: "user has not verified his email",
+      //   };
+      // }
 
       const validPassword = await bcrypt.compare(password, user.password);
 
