@@ -20,7 +20,7 @@ const router = Router();
 
 router.post("/api/v1/users/register", createUserValidator, createNewUserCTRL);
 
-router.post("/api/v1/users/email-validate", validateEmail);
+router.post("/api/v1/users/emailValidate", validateEmail);
 
 router.post("/api/v1/users/login", loginUserValidator, loginCTRL);
 
