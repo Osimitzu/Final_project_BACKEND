@@ -1916,6 +1916,7 @@
           "products": {
             "type": "array",
             "items": {
+              "title": "Product",
               "type": "object",
               "properties": {
                 "car_id": {
