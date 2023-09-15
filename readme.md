@@ -10,6 +10,7 @@ Proyecto final Academlo...
 
 - Correo con detalles de compra y reseteo de contraseña no se han personalisado.
 - Faltan la mayoría de pruebas unitarias.
+- Actualizar ruta de update user role para quitar el 'deprecated'
 
 <!-- ## Models
 
