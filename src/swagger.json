@@ -1315,7 +1315,7 @@
                             "type": "number"
                           },
                           "status": {
-                            "type": "string"
+                            "type": "enum"
                           }
                         },
                         "example": {
@@ -1932,7 +1932,7 @@
                   "type": "number"
                 },
                 "status": {
-                  "type": "string"
+                  "type": "enum"
                 }
               },
               "example": {
