@@ -27,18 +27,7 @@
             "application/json": {
               "schema": {
                 "type": "object",
-                "allOf": [
-                  {
-                    "$ref": "#/components/schemas/CreateNewUserRequest"
-                  },
-                  {
-                    "example": {
-                      "username": "Cervantes",
-                      "email": "cervantes.aocc@gmail.com",
-                      "password": "12345678"
-                    }
-                  }
-                ]
+                "$ref": "#/components/schemas/CreateNewUserRequest"
               }
             }
           },
