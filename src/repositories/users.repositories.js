@@ -3,6 +3,13 @@ const { users, cars } = require("../models");
 const createNewUserREPO = async (newUser) => {
   const user = await users.create(newUser);
   const car = await cars.create({ user_id: user.id });
+  // Validacion de usuario automatica activada temporalmente:
+  await users.update(
+    {
+      valid_user: true,
+    },
+    { where: user.id }
+  );
   return { user, car };
 };
 
