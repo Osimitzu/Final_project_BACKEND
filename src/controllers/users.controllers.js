@@ -48,7 +48,7 @@ const createNewUserCTRL = async (req, res, next) => {
 
 const validateEmail = async (req, res, next) => {
   try {
-    const { token } = req.body;
+    const { token } = req.query;
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET_EMAIL_VALIDATION, {
       algorithms: "HS512",
