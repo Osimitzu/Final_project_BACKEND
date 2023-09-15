@@ -50,13 +50,6 @@ class usersServices {
 
   static async loginSRVC(email, password) {
     try {
-      // Validacion de usuario automatica activada temporalmente:
-      await users.update(
-        {
-          valid_user: true,
-        },
-        { where: email }
-      );
       const user = await users.findOne({
         where: { email },
       });
@@ -77,6 +70,14 @@ class usersServices {
           message: "Invalid email or password",
         };
       }
+
+      // Validacion de usuario automatica activada temporalmente:
+      await users.update(
+        {
+          valid_user: true,
+        },
+        { where: email }
+      );
 
       if (!user.valid_user) {
         throw {
