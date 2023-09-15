@@ -97,17 +97,20 @@
           "content": {
             "application/json": {
               "schema": {
-                "allOf": [
-                  {
-                    "$ref": "#/components/schemas/LoginRequest"
+                "required": ["email", "password"],
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string"
                   },
-                  {
-                    "example": {
-                      "email": "cervantes.aocc@gmail.com",
-                      "password": "12345678"
-                    }
+                  "password": {
+                    "type": "string"
                   }
-                ]
+                },
+                "example": {
+                  "email": "cervantes.aocc@gmail.com",
+                  "password": "12345678"
+                }
               }
             }
           },
@@ -120,7 +123,38 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "$ref": "#/components/schemas/ResponseUser"
+                  "properties": {
+                    "id": {
+                      "type": "integer"
+                    },
+                    "username": {
+                      "type": "string"
+                    },
+                    "email": {
+                      "type": "string"
+                    },
+                    "avatar": {
+                      "type": "string"
+                    },
+                    "role_id": {
+                      "type": "integer"
+                    },
+                    "car_id": {
+                      "type": "integer"
+                    },
+                    "token": {
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "id": 6,
+                    "username": "Cervantes",
+                    "email": "cervantes.aocc@gmail.com",
+                    "avatar": "1693224115672-gorillaProfilePic.jpg",
+                    "role_id": 2,
+                    "car_id": 5,
+                    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+                  }
                 }
               }
             }
@@ -279,16 +313,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "allOf": [
-                  {
-                    "$ref": "#/components/schemas/UpdateUserRoleRequest"
-                  },
-                  {
-                    "example": {
-                      "role_id": 2
-                    }
+                "required": ["role_id"],
+                "type": "object",
+                "properties": {
+                  "role_id": {
+                    "type": "integer",
+                    "format": "int32"
                   }
-                ]
+                },
+                "example": {
+                  "role_id": 2
+                }
               }
             }
           },
@@ -504,16 +539,16 @@
           "content": {
             "application/json": {
               "schema": {
-                "allOf": [
-                  {
-                    "$ref": "#/components/schemas/PasswordResetRequest"
-                  },
-                  {
-                    "example": {
-                      "email": "cervantes.aocc@gmail.com"
-                    }
+                "required": ["email"],
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string"
                   }
-                ]
+                },
+                "example": {
+                  "email": "cervantes.aocc@gmail.com"
+                }
               }
             }
           },
