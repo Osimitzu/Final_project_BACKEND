@@ -317,8 +317,7 @@
                 "type": "object",
                 "properties": {
                   "role_id": {
-                    "type": "integer",
-                    "format": "int32"
+                    "type": "integer"
                   }
                 },
                 "example": {
@@ -597,19 +596,28 @@
           "content": {
             "application/json": {
               "schema": {
-                "allOf": [
-                  {
-                    "$ref": "#/components/schemas/CreateNewProductRequest"
+                "required": ["name", "price"],
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
                   },
-                  {
-                    "example": {
-                      "name": "Product-25",
-                      "description": "Descipcion del producto pwoqeuradfgasd",
-                      "price": 99.99,
-                      "available_qty": 10
-                    }
+                  "description": {
+                    "type": "string"
+                  },
+                  "price": {
+                    "type": "number"
+                  },
+                  "available_qty": {
+                    "type": "integer"
                   }
-                ]
+                },
+                "example": {
+                  "name": "Product-25",
+                  "description": "Descipcion del producto pwoqeurpoiuqweafgadfgasd",
+                  "price": 99.99,
+                  "available_qty": 10
+                }
               }
             }
           },
@@ -826,19 +834,27 @@
           "content": {
             "application/json": {
               "schema": {
-                "allOf": [
-                  {
-                    "$ref": "#/components/schemas/UpdateProductInfoRequest"
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
                   },
-                  {
-                    "example": {
-                      "name": "Banana Premium",
-                      "description": "banana buena bonita y barata",
-                      "price": 249.99,
-                      "available_qty": 10
-                    }
+                  "description": {
+                    "type": "string"
+                  },
+                  "price": {
+                    "type": "number"
+                  },
+                  "available_qty": {
+                    "type": "integer"
                   }
-                ]
+                },
+                "example": {
+                  "name": "Banana Premium",
+                  "description": "banana buena bonita y barata",
+                  "price": 249.99,
+                  "available_qty": 10
+                }
               }
             }
           },
@@ -925,9 +941,58 @@
               "application/json": {
                 "schema": {
                   "type": "array",
-                  "allOf": [
+                  "items": {
+                    "id": {
+                      "type": "integer"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "description": {
+                      "type": "string"
+                    },
+                    "price": {
+                      "type": "number"
+                    },
+                    "available_qty": {
+                      "type": "integer"
+                    },
+                    "product_image": {
+                      "type": "string"
+                    }
+                  },
+                  "example": [
                     {
-                      "$ref": "#/components/schemas/ResponseProducts"
+                      "id": 6,
+                      "name": "Product-1",
+                      "description": "Default description",
+                      "price": 99.99,
+                      "available_qty": 30,
+                      "product_image": "1694488546355-HildayTwig.jpg"
+                    },
+                    {
+                      "id": 9,
+                      "name": "Product-7",
+                      "description": "Default description",
+                      "price": 21.59,
+                      "available_qty": 2,
+                      "product_image": "1694488546355-HildayTwig.jpg"
+                    },
+                    {
+                      "id": 11,
+                      "name": "Product-24",
+                      "description": "Default description",
+                      "price": 12.0,
+                      "available_qty": 98,
+                      "product_image": "1694488546355-HildayTwig.jpg"
+                    },
+                    {
+                      "id": 18,
+                      "name": "Product-41",
+                      "description": "Default description",
+                      "price": 34.5,
+                      "available_qty": 16,
+                      "product_image": "1694488546355-HildayTwig.jpg"
                     }
                   ]
                 }
@@ -958,12 +1023,40 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "allOf": [
-                    {
-                      "$ref": "#/components/schemas/ResponseOneProduct"
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "description": {
+                      "type": "string"
+                    },
+                    "price": {
+                      "type": "number"
+                    },
+                    "available_qty": {
+                      "type": "integer"
+                    },
+                    "status": {
+                      "type": "enum"
+                    },
+                    "product_image": {
+                      "type": "string"
                     }
-                  ]
+                  },
+
+                  "example": {
+                    "id": 6,
+                    "name": "Product-1",
+                    "description": "Default description",
+                    "price": 99.99,
+                    "available_qty": 30,
+                    "status": "available",
+                    "product_image": "1694488546355-HildayTwig.jpg"
+                  }
                 }
               }
             }
@@ -1102,18 +1195,24 @@
           "content": {
             "application/json": {
               "schema": {
-                "allOf": [
-                  {
-                    "$ref": "#/components/schemas/AddProducttoCarRequest"
+                "required": ["product_id", "price"],
+                "type": "object",
+                "properties": {
+                  "product_id": {
+                    "type": "integer"
                   },
-                  {
-                    "example": {
-                      "product_id": 14,
-                      "price": 69.99,
-                      "quantity": 3
-                    }
+                  "price": {
+                    "type": "number"
+                  },
+                  "quantity": {
+                    "type": "integer"
                   }
-                ]
+                },
+                "example": {
+                  "product_id": 14,
+                  "price": 69.99,
+                  "quantity": 3
+                }
               }
             }
           },
@@ -1193,7 +1292,42 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "$ref": "#/components/schemas/AllProductsInCar"
+                  "properties": {
+                    "total_price": {
+                      "type": "number",
+                      "example": 489.93
+                    },
+                    "products": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "car_id": {
+                            "type": "integer"
+                          },
+                          "product_id": {
+                            "type": "integer"
+                          },
+                          "quantity": {
+                            "type": "integer"
+                          },
+                          "price": {
+                            "type": "number"
+                          },
+                          "status": {
+                            "type": "string"
+                          }
+                        },
+                        "example": {
+                          "car_id": 5,
+                          "product_id": 14,
+                          "quantity": 7,
+                          "price": 69.99,
+                          "status": "unpurchased"
+                        }
+                      }
+                    }
+                  }
                 }
               }
             }
@@ -1257,7 +1391,36 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/BuyProductsinCarRequest"
+                "required": ["user_id", "products"],
+                "type": "object",
+                "properties": {
+                  "user_id": {
+                    "type": "integer",
+                    "format": "int32",
+                    "example": 6
+                  },
+                  "products": {
+                    "type": "array",
+                    "items": {
+                      "required": ["product_id", "quantity", "price"],
+                      "type": "object",
+                      "properties": {
+                        "product_id": {
+                          "type": "integer",
+                          "example": 19
+                        },
+                        "quantity": {
+                          "type": "integer",
+                          "example": 3
+                        },
+                        "price": {
+                          "type": "number",
+                          "example": 30
+                        }
+                      }
+                    }
+                  }
+                }
               }
             }
           },
@@ -1269,8 +1432,39 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "required": ["user_id", "products"],
                   "type": "object",
-                  "$ref": "#/components/schemas/OrderDetailsResponse"
+                  "properties": {
+                    "order_id": {
+                      "type": "integer",
+                      "example": 3
+                    },
+                    "total_price": {
+                      "type": "number",
+                      "example": 90
+                    },
+                    "products": {
+                      "type": "array",
+                      "items": {
+                        "required": ["product_id", "quantity", "price"],
+                        "type": "object",
+                        "properties": {
+                          "product_id": {
+                            "type": "integer",
+                            "example": 19
+                          },
+                          "quantity": {
+                            "type": "integer",
+                            "example": 3
+                          },
+                          "price": {
+                            "type": "number",
+                            "example": 30
+                          }
+                        }
+                      }
+                    }
+                  }
                 }
               }
             }
@@ -1549,8 +1743,7 @@
         "type": "object",
         "properties": {
           "role_id": {
-            "type": "integer",
-            "format": "int32"
+            "type": "integer"
           }
         },
         "example": {
@@ -1585,8 +1778,7 @@
             "type": "number"
           },
           "available_qty": {
-            "type": "integer",
-            "format": "int32"
+            "type": "integer"
           }
         },
         "example": {
@@ -1610,8 +1802,7 @@
             "type": "number"
           },
           "available_qty": {
-            "type": "integer",
-            "format": "int32"
+            "type": "integer"
           }
         },
         "example": {
@@ -1623,10 +1814,10 @@
       },
       "ResponseProducts": {
         "title": "ResponseProducts",
-        "required": [""],
         "type": "array",
-        "properties": [
-          {
+        "items": {
+          "title": "Products",
+          "properties": {
             "id": {
               "type": "integer"
             },
@@ -1645,45 +1836,19 @@
             "product_image": {
               "type": "string"
             }
-          }
-        ],
-        "example": [
-          {
+          },
+          "example": {
             "id": 6,
             "name": "Product-1",
             "description": "Default description",
             "price": 99.99,
             "available_qty": 30,
             "product_image": "1694488546355-HildayTwig.jpg"
-          },
-          {
-            "id": 9,
-            "name": "Product-7",
-            "description": "Default description",
-            "price": 21.59,
-            "available_qty": 2,
-            "product_image": "1694488546355-HildayTwig.jpg"
-          },
-          {
-            "id": 11,
-            "name": "Product-24",
-            "description": "Default description",
-            "price": 12.0,
-            "available_qty": 98,
-            "product_image": "1694488546355-HildayTwig.jpg"
-          },
-          {
-            "id": 18,
-            "name": "Product-41",
-            "description": "Default description",
-            "price": 34.5,
-            "available_qty": 16,
-            "product_image": "1694488546355-HildayTwig.jpg"
           }
-        ]
+        }
       },
       "ResponseOneProduct": {
-        "title": "ResponseProducts",
+        "title": "ResponseOneProduct",
         "required": [""],
         "type": "object",
         "properties": {
@@ -1702,12 +1867,13 @@
           "available_qty": {
             "type": "integer"
           },
-          "status": "available",
+          "status": {
+            "type": "enum"
+          },
           "product_image": {
             "type": "string"
           }
         },
-
         "example": {
           "id": 6,
           "name": "Product-1",
@@ -1724,21 +1890,59 @@
         "type": "object",
         "properties": {
           "product_id": {
-            "type": "integer",
-            "format": "int32"
+            "type": "integer"
           },
           "price": {
             "type": "number"
           },
           "quantity": {
-            "type": "integer",
-            "format": "int32"
+            "type": "integer"
           }
         },
         "example": {
           "product_id": 14,
           "price": 69.99,
           "quantity": 3
+        }
+      },
+      "AllProductsInCar": {
+        "title": "AllProductsInCar",
+        "type": "object",
+        "properties": {
+          "total_price": {
+            "type": "number",
+            "example": 489.93
+          },
+          "products": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "car_id": {
+                  "type": "integer"
+                },
+                "product_id": {
+                  "type": "integer"
+                },
+                "quantity": {
+                  "type": "integer"
+                },
+                "price": {
+                  "type": "number"
+                },
+                "status": {
+                  "type": "string"
+                }
+              },
+              "example": {
+                "car_id": 5,
+                "product_id": 14,
+                "quantity": 7,
+                "price": 69.99,
+                "status": "unpurchased"
+              }
+            }
+          }
         }
       },
       "BuyProductsinCarRequest": {
@@ -1748,7 +1952,6 @@
         "properties": {
           "user_id": {
             "type": "integer",
-            "format": "int32",
             "example": 6
           },
           "products": {
@@ -1779,7 +1982,7 @@
         }
       },
       "OrderDetailsResponse": {
-        "title": "BuyProductsinCarRequest",
+        "title": "OrderDetailsResponse",
         "required": ["user_id", "products"],
         "type": "object",
         "properties": {
@@ -1797,50 +2000,6 @@
               "$ref": "#/components/schemas/Product"
             }
           }
-        }
-      },
-      "AllProductsInCar": {
-        "title": "AllProductsInCar",
-        "type": "object",
-        "properties": {
-          "total_price": {
-            "type": "number",
-            "example": 489.93
-          },
-          "products": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ProductsInCar"
-            }
-          }
-        }
-      },
-      "ProductsInCar": {
-        "title": "ProductsInCar",
-        "type": "array",
-        "properties": {
-          "car_id": {
-            "type": "integer"
-          },
-          "product_id": {
-            "type": "integer"
-          },
-          "quantity": {
-            "type": "integer"
-          },
-          "price": {
-            "type": "number"
-          },
-          "status": {
-            "type": "string"
-          }
-        },
-        "example": {
-          "car_id": 5,
-          "product_id": 14,
-          "quantity": 7,
-          "price": 69.99,
-          "status": "unpurchased"
         }
       }
     },
