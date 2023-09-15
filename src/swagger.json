@@ -1188,7 +1188,7 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "description": "Please enter the ID of the shopping cart to which the product will be added. NOTE: You can get this when you logged in as 'car_id'"
+            "description": "Please enter the ID of the shopping cart to which the product will be added. NOTE: You can get this 'id' when you logged in as 'car_id'"
           }
         ],
         "requestBody": {
@@ -1957,27 +1957,24 @@
           "products": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/Product"
+              "title": "Product",
+              "required": ["product_id", "quantity", "price"],
+              "type": "object",
+              "properties": {
+                "product_id": {
+                  "type": "integer",
+                  "example": 19
+                },
+                "quantity": {
+                  "type": "integer",
+                  "example": 3
+                },
+                "price": {
+                  "type": "number",
+                  "example": 30
+                }
+              }
             }
-          }
-        }
-      },
-      "Product": {
-        "title": "Product",
-        "required": ["product_id", "quantity", "price"],
-        "type": "object",
-        "properties": {
-          "product_id": {
-            "type": "integer",
-            "example": 19
-          },
-          "quantity": {
-            "type": "integer",
-            "example": 3
-          },
-          "price": {
-            "type": "number",
-            "example": 30
           }
         }
       },
@@ -1997,7 +1994,23 @@
           "products": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/Product"
+              "title": "Product",
+              "required": ["product_id", "quantity", "price"],
+              "type": "object",
+              "properties": {
+                "product_id": {
+                  "type": "integer",
+                  "example": 19
+                },
+                "quantity": {
+                  "type": "integer",
+                  "example": 3
+                },
+                "price": {
+                  "type": "number",
+                  "example": 30
+                }
+              }
             }
           }
         }
