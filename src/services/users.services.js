@@ -43,13 +43,6 @@ class usersServices {
         }
       );
       sendWelcomeMail(email, { username, verifyToken });
-      // Validacion de usuario automatica activada temporalmente:
-      await users.update(
-        {
-          valid_user: true,
-        },
-        { where: user.id }
-      );
     } catch (err) {
       throw err;
     }
@@ -57,6 +50,13 @@ class usersServices {
 
   static async loginSRVC(email, password) {
     try {
+      // Validacion de usuario automatica activada temporalmente:
+      await users.update(
+        {
+          valid_user: true,
+        },
+        { where: email }
+      );
       const user = await users.findOne({
         where: { email },
       });
