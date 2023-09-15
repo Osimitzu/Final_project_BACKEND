@@ -43,6 +43,13 @@ class usersServices {
         }
       );
       sendWelcomeMail(email, { username, verifyToken });
+      // Validacion de usuario automatica activada temporalmente:
+      await users.update(
+        {
+          valid_user: true,
+        },
+        { where: user.id }
+      );
     } catch (err) {
       throw err;
     }
