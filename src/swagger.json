@@ -932,7 +932,7 @@
       "get": {
         "tags": ["Products"],
         "summary": "Get All Available Products",
-        "description": "Through this endpoint, you can retrieve all products with the 'available' status.",
+        "description": "Through this endpoint, you can retrieve all products with the 'available' status. Note: this endpoint features pagination and will display only 10 products per page. If the page is not specified, the first 10 products will be shown automatically.",
         "operationId": "GetAllProducts",
         "parameters": [
           {
