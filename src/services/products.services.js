@@ -69,9 +69,9 @@ class productsServices {
     }
   }
 
-  static async getAllProductsSRVC() {
+  static async getAllProductsSRVC(currentPage, resultPerPage) {
     try {
-      const allProducts = await getAllProductsREPO();
+      const allProducts = await getAllProductsREPO(currentPage, resultPerPage);
       return allProducts;
     } catch (err) {
       throw err;

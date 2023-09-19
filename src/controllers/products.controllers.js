@@ -106,7 +106,13 @@ const updateProductInfoCTRL = async (req, res, next) => {
 
 const getAllProductsCTRL = async (req, res, next) => {
   try {
-    const allProducts = await productsServices.getAllProductsSRVC();
+    const currentPage = parseInt(req.query.page) || 1;
+    const resultPerPage = 10;
+
+    const allProducts = await productsServices.getAllProductsSRVC(
+      currentPage,
+      resultPerPage
+    );
     res.json(allProducts);
   } catch (err) {
     next(err);

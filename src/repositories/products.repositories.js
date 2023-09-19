@@ -48,7 +48,9 @@ const updateProductInfoREPO = async (
   );
 };
 
-const getAllProductsREPO = async () => {
+const getAllProductsREPO = async (currentPage, resultPerPage) => {
+  const offset = (currentPage - 1) * resultPerPage;
+
   const allProducts = await products.findAll({
     where: {
       status: "available",
@@ -56,6 +58,8 @@ const getAllProductsREPO = async () => {
     attributes: {
       exclude: ["createdAt", "updatedAt", "status"],
     },
+    limit: resultPerPage,
+    offset: offset,
   });
   return allProducts;
 };
