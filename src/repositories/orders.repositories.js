@@ -8,10 +8,12 @@ const {
 } = require("../models");
 
 const verifyCar = async (user_id) => {
+  // Buscar el carrito del usuario en la base de datos
   const car = await cars.findOne({
     where: { user_id },
   });
 
+  // Verificar si el carrito existe
   if (!car) {
     throw {
       status: 400,
@@ -20,6 +22,7 @@ const verifyCar = async (user_id) => {
     };
   }
 
+  // Verificar si el carrito está vacío
   if (car.total_price === 0) {
     throw {
       status: 400,
@@ -30,6 +33,7 @@ const verifyCar = async (user_id) => {
 };
 
 const buyProductsInCarREPO = async (user_id, total_price) => {
+  // Crear una nueva orden en la base de datos
   const order = await orders.create(user_id, total_price);
   return order;
 };
@@ -96,6 +100,7 @@ const emptyCar = async (user_id) => {
 };
 
 const infoForMail = async (user_id) => {
+  // Buscar la información del usuario y su correo electrónico en la base de datos
   const data = await orders.findOne({
     where: { user_id },
     include: [
@@ -107,6 +112,7 @@ const infoForMail = async (user_id) => {
     ],
   });
 
+  // Si se encuentra información del usuario y su correo electrónico, retornar el correo electrónico
   if (data && data.user) {
     const userEmail = data.user.email;
     return userEmail;
@@ -114,6 +120,7 @@ const infoForMail = async (user_id) => {
 };
 
 const getAllPendingOrdersREPO = async () => {
+  // Buscar todas las órdenes pendientes en la base de datos
   const pendingOrders = await orders.findAll({
     where: { status: "pending" },
     attributes: {
@@ -140,14 +147,18 @@ const getAllPendingOrdersREPO = async () => {
       },
     ],
   });
+
+  // Retornar la lista de órdenes pendientes
   return pendingOrders;
 };
 
 const completeOrderREPO = async (id) => {
+  // Buscar la orden en la base de datos por su ID
   const order = await orders.findOne({
     where: { id },
   });
 
+  // Verificar si la orden existe o si ya está completada
   if (!order || order.status === "completed") {
     throw {
       status: 400,
@@ -156,6 +167,7 @@ const completeOrderREPO = async (id) => {
     };
   }
 
+  // Actualizar el estado de la orden a "completed"
   await orders.update(
     { status: "completed" },
     {

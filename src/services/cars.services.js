@@ -48,7 +48,9 @@ class carsServices {
 
   static async getAllProductsInCarSRVC(user_id) {
     try {
+      // Obtener todos los productos en el carrito del usuario
       const productsInCar = await getAllProductsInCarREPO(user_id);
+
       return productsInCar;
     } catch (err) {
       throw err;

@@ -6,13 +6,14 @@ const productsRoutes = require("./products.routes");
 const carsRoutes = require("./cars.routes");
 const ordersRoutes = require("./orders.routes");
 
-// recibe como parametro una instancia de expres
+// Middleware for serving Swagger UI and documentation
+// Middleware para servir Swagger UI y la documentación
 const apiRoutes = (app) => {
-  app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDoc));
-  app.use(usersRoutes);
-  app.use(productsRoutes);
-  app.use(carsRoutes);
-  app.use(ordersRoutes);
+  app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDoc)); // Configura la ruta '/docs' para mostrar la documentación Swagger
+  app.use(usersRoutes); // Agrega las rutas relacionadas con usuarios
+  app.use(productsRoutes); // Agrega las rutas relacionadas con productos
+  app.use(carsRoutes); // Agrega las rutas relacionadas con automóviles
+  app.use(ordersRoutes); // Agrega las rutas relacionadas con órdenes
 };
 
-module.exports = apiRoutes;
+module.exports = apiRoutes; // Exporta el módulo que define las rutas de la API

@@ -1,65 +1,29 @@
 const express = require("express");
-require("dotenv").config();
-const apiRoutes = require("./routes");
-const errorRoutes = require("./routes/errors.routes");
-const cors = require("cors");
-// const multer = require("multer");
+require("dotenv").config(); // Carga las variables de entorno desde un archivo .env
+const apiRoutes = require("./routes"); // Importa las rutas de la API principal
+const errorRoutes = require("./routes/errors.routes"); // Importa las rutas para el manejo de errores
+const cors = require("cors"); // Importa el middleware para habilitar CORS (Cross-Origin Resource Sharing)
 
-const PORT = process.env.PORT || 8000;
+const PORT = process.env.PORT || 8000; // Obtiene el número de puerto desde las variables de entorno o usa el puerto 8000 por defecto
 
-const app = express();
+const app = express(); // Crea una instancia de la aplicación Express
 
-//Multer configuration
-// const types = ["image/jpeg", "image/png"];
-// const upload = multer({
-//   storage: multer.diskStorage({
-//     destination: "./src/files",
-//     filename: (req, file, cb) => {
-//       const date = Date.now();
-//       cb(null, `${date}-${file.originalname}`);
-//     },
-//   }),
-//   limits: {
-//     fileSize: 1000000, // 1000 KyloBytes o un mega aprox
-//   },
-//   fileFilter: (req, file, cb) => {
-//     // Solo aceptaremos archivos .jpeg y .png
-
-//     if (!types.includes(file.mimetype)) {
-//       cb(
-//         {
-//           error: "file not supported",
-//           message: `Only ${types.join(", ")} mimetypes are allowed`,
-//         },
-//         false
-//       );
-//     } else {
-//       cb(null, true);
-//     }
-//   },
-// });
-
-// app.post("/files", upload.single("image"), (req, res) => {
-//   console.log(req.file);
-//   req.file
-//     ? res.status(201).json({ message: "image loaded successfully" })
-//     : res.status(400).json({ message: "something went wrong" });
-// });
-
-app.use(express.json());
-app.use(cors());
+app.use(express.json()); // Habilita el middleware para el análisis de JSON en las solicitudes
+app.use(cors()); // Habilita el middleware CORS para permitir solicitudes desde otros dominios
 
 app.get("/", (req, res) => {
-  // res.send("Servidor OK");
+  // Ruta de inicio, responde con un mensaje JSON
   res.json({
     message: "Servidor OK",
   });
 });
 
+// Incluir rutas de la API principal y rutas de manejo de errores
 apiRoutes(app);
 errorRoutes(app);
 
 const server = app.listen(PORT, () => {
+  // Inicia el servidor en el puerto especificado
   console.log(`Servidor escuchando en el puerto ${PORT}`);
 });
 
