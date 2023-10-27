@@ -5,7 +5,7 @@
     "description": "This API is designed for a custom e-commerce platform, and features an administrative panel for product and order management, while restricting purchases to registered users. IMPORTANT: To use the routes that ask for administrator permissions, you must use the user that is in the 'login' example. This API was developed using [Express](https://expressjs.com) and [PostgreSQL](https://www.postgresql.org) as the database, with [Sequelize CLI](https://sequelize.org) as the ORM. You can find more information and details about this API at the following link: [Github Repositorie](https://github.com/Osimitzu/ecommerce_project_BACKEND)",
     "contact": {
       "name": "Osiris Contreras",
-      "url": "https://github.com/Osimitzu",
+      "url": "https://osirisdev.netlify.app",
       "email": "angel_aocc@hotmail.com"
     },
     "version": "1.0.2"
